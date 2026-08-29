@@ -1,0 +1,33 @@
+# Secrets
+.env
+*.env
+tito/cookies/cookies.txt
+
+# Telegram sessions
+*.session
+*.session-journal
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Downloaded media
+downloads/
+*.mp4
+*.mp3
+*.wav
+*.flac
+
+# Runtime cache
+cache/
+
+# Logs
+*.log
+log.txt
+unknown_errors.txt
+
+# Local files
+*.tmp
+*.bak
