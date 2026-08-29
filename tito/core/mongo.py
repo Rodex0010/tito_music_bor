@@ -229,6 +229,15 @@ class MongoDB:
 
         return tune.clients_by_num.get(self.assistant[chat_id])
 
+    async def get_assistant_num(self, chat_id: int) -> int | None:
+        """Return which assistant slot (1/2/3) is serving this chat.
+
+        Ensures get_assistant() has already run so self.assistant[chat_id]
+        is populated and pointing at a currently-connected assistant.
+        """
+        await self.get_assistant(chat_id)
+        return self.assistant.get(chat_id)
+
     async def get_client(self, chat_id: int):
         if chat_id not in self.assistant:
             await self.get_assistant(chat_id)
