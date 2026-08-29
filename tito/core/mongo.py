@@ -204,7 +204,25 @@ class MongoDB:
             self.assistant[chat_id] = None
             return None
 
-        num = choice(nums)
+        # ------------------------------------------------------------
+        # Prefer an assistant that isn't hosting any active call right
+        # now. PyTgCalls isn't reliable serving several truly-concurrent
+        # streams from ONE client, so spreading active calls across
+        # separate accounts avoids one chat's stream interfering with
+        # another's (premature "stream ended", cross-attributed events).
+        # Only fall back to a busy assistant if every connected one is
+        # already hosting a call.
+        # ------------------------------------------------------------
+        busy_nums = {
+            self.assistant[c]
+            for c in self.active_calls
+            if c in self.assistant and self.assistant[c] is not None
+        }
+
+        idle_nums = [n for n in nums if n not in busy_nums]
+        candidates = idle_nums or nums
+
+        num = choice(candidates)
         await self.assistantdb.update_one(
             {"_id": chat_id},
             {"$set": {"num": num}},
