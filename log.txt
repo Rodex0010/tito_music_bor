@@ -1,0 +1,1934 @@
+[22-Aug-26 11:07:04 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:07:04 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:07:06 - INFO] - tito: ✅ Database connection successful. (1.71s)
+[22-Aug-26 11:07:07 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:07:07 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:07:12 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:07:13 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:07:13 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:07:13 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:07:13 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:07:13 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:07:13 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:07:14 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:07:14 - INFO] - tito: 📞 PyTgCalls client(s) started.
+[22-Aug-26 11:07:14 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:07:14 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:07:14 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:07:14 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:07:15 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:07:32 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia")), falling back to text message. caption='<blockquote><emoji id="5965401908456722374">🔴</emoji> <b>بدأ البث المطلوب</b></blockquote>\n<blockquote><emoji id="6050603223406874700">➤</emoji> <b>العنوان :</b> <a href="https://www.youtube.com/watch?v=hAS9vOQycZo">George Wassouf  ... Ya No</a>\n<emoji id="6050603223406874700">➤</emoji> <b>المدة :</b> 05:01 دقيقة\n<emoji id="6050603223406874700">➤</emoji> <b>طلبها :</b> <a href="tg://user?id=7876741744">-</a></blockquote>'
+[22-Aug-26 11:07:32 - ERROR] - tito: Fallback text send also failed for -1004387392097: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMessage"). text='<blockquote><emoji id="5965401908456722374">🔴</emoji> <b>بدأ البث المطلوب</b></blockquote>\n<blockquote><emoji id="6050603223406874700">➤</emoji> <b>العنوان :</b> <a href="https://www.youtube.com/watch?v=hAS9vOQycZo">George Wassouf  ... Ya No</a>\n<emoji id="6050603223406874700">➤</emoji> <b>المدة :</b> 05:01 دقيقة\n<emoji id="6050603223406874700">➤</emoji> <b>طلبها :</b> <a href="tg://user?id=7876741744">-</a></blockquote>'
+[22-Aug-26 11:20:30 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:20:30 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:20:30 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:20:30 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:20:30 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:21:33 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:21:33 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:21:35 - INFO] - tito: ✅ Database connection successful. (1.74s)
+[22-Aug-26 11:21:36 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:21:37 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:21:37 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:21:38 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:21:38 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:21:38 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:21:38 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:21:38 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:21:38 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:21:39 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:21:39 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:21:39 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:21:39 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:21:39 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:21:39 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:21:40 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:21:40 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:21:40 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:22:00 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 11:22:01 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:22:01 - WARNING] - tito: Plain caption also failed for -1004387392097: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:23:52 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:23:52 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:23:52 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:23:52 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:23:52 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:24:16 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:24:16 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:24:18 - INFO] - tito: ✅ Database connection successful. (1.63s)
+[22-Aug-26 11:24:19 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:24:19 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:24:20 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:24:21 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:24:21 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:24:21 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:24:21 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:24:21 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:24:21 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:24:22 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:24:22 - ERROR] - tito: Critical error in main: 'TgCall' object has no attribute 'boot'
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot_patched\tito\__main__.py", line 42, in main
+    await tune.boot()
+          ^^^^^^^^^
+AttributeError: 'TgCall' object has no attribute 'boot'
+[22-Aug-26 11:24:22 - ERROR] - tito: Unexpected error caused bot to stop: 'TgCall' object has no attribute 'boot'
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot_patched\tito\__main__.py", line 95, in <module>
+    loop.run_until_complete(main())
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Atia\Downloads\music_bot_patched\tito\__main__.py", line 42, in main
+    await tune.boot()
+          ^^^^^^^^^
+AttributeError: 'TgCall' object has no attribute 'boot'
+[22-Aug-26 11:26:23 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:26:23 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:26:25 - INFO] - tito: ✅ Database connection successful. (1.73s)
+[22-Aug-26 11:26:26 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:26:26 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:26:27 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:26:28 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:26:28 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:26:28 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:26:28 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:26:28 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:26:28 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:26:29 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:26:29 - ERROR] - tito: Critical error in main: 'TgCall' object has no attribute 'boot'
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot_patched\tito\__main__.py", line 42, in main
+    await tune.boot()
+          ^^^^^^^^^
+AttributeError: 'TgCall' object has no attribute 'boot'
+[22-Aug-26 11:26:29 - ERROR] - tito: Unexpected error caused bot to stop: 'TgCall' object has no attribute 'boot'
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot_patched\tito\__main__.py", line 95, in <module>
+    loop.run_until_complete(main())
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Atia\Downloads\music_bot_patched\tito\__main__.py", line 42, in main
+    await tune.boot()
+          ^^^^^^^^^
+AttributeError: 'TgCall' object has no attribute 'boot'
+[22-Aug-26 11:26:48 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:26:48 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:26:51 - INFO] - tito: ✅ Database connection successful. (1.58s)
+[22-Aug-26 11:26:51 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:26:52 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:26:52 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:26:53 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:26:54 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:26:54 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:26:54 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:26:54 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:26:54 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:26:54 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:26:54 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:26:54 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:26:54 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:26:54 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:26:55 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:26:55 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:26:55 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:26:56 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:27:18 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 11:27:19 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:27:19 - WARNING] - tito: Plain caption also failed for -1004387392097: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:28:09 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:28:09 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:28:09 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:28:09 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:28:09 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:29:39 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:29:40 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:29:42 - INFO] - tito: ✅ Database connection successful. (1.86s)
+[22-Aug-26 11:29:43 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:29:43 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:29:44 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:29:45 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:29:45 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:29:45 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:29:45 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:29:45 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:29:45 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:29:46 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:29:46 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:29:46 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:29:46 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:29:46 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:29:46 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:29:47 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:29:47 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:29:47 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:32:21 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:32:21 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:32:24 - INFO] - tito: ✅ Database connection successful. (1.86s)
+[22-Aug-26 11:32:24 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:32:25 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:32:26 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:32:26 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:32:27 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:32:27 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:32:27 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:32:27 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:32:27 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:32:28 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:32:28 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:32:28 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:32:28 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:32:28 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:32:28 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:32:28 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:32:28 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:32:29 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:33:13 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 11:33:14 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:33:14 - WARNING] - tito: Plain caption also failed for -1004387392097: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:34:00 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 11:34:01 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:34:01 - WARNING] - tito: Plain caption also failed for -1004387392097: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:37:51 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:37:51 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:37:51 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:37:52 - WARNING] - tito: Error leaving call for -1002751482940: MTProto client not connected
+[22-Aug-26 11:37:52 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:37:52 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:38:39 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:38:39 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:38:41 - INFO] - tito: ✅ Database connection successful. (1.64s)
+[22-Aug-26 11:38:41 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:38:42 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:38:43 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:38:44 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:38:44 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:38:44 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:38:44 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:38:44 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:38:44 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:38:45 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:38:45 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:38:45 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:38:45 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:38:45 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:38:45 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:38:45 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:38:45 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:38:46 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:41:04 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:41:04 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:41:04 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:41:04 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:41:04 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:43:01 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:43:01 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:43:04 - INFO] - tito: ✅ Database connection successful. (1.75s)
+[22-Aug-26 11:43:04 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:43:05 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:43:06 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:43:06 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:43:07 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:43:07 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:43:07 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:43:07 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:43:07 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:43:07 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:43:07 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:43:08 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:43:08 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:43:08 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:43:08 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:43:08 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:43:08 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:43:09 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:43:26 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 11:43:27 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:44:30 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:44:34 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:44:34 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:44:34 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:44:34 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:49:01 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:49:01 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:49:03 - INFO] - tito: ✅ Database connection successful. (1.79s)
+[22-Aug-26 11:49:04 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:49:04 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:49:05 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:49:06 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:49:06 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:49:06 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:49:06 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:49:06 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:49:06 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:49:07 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:49:07 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:49:07 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:49:07 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:49:07 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:49:07 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:49:08 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:49:08 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:49:08 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:49:38 - WARNING] - tito: Group send_photo with plain text failed: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia")
+[22-Aug-26 11:49:39 - WARNING] - tito: Plain caption failed: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:51:15 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:51:15 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:51:15 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:51:15 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:51:15 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:51:39 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:51:39 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:51:42 - INFO] - tito: ✅ Database connection successful. (1.66s)
+[22-Aug-26 11:51:42 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:51:43 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:51:43 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:51:44 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:51:44 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:51:44 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:51:44 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:51:44 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:51:44 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:51:45 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:51:46 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:51:46 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:51:46 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:51:46 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:51:46 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:51:46 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:51:46 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:51:47 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:52:00 - WARNING] - tito: Group send_photo with plain text failed: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia")
+[22-Aug-26 11:52:01 - WARNING] - tito: Plain caption failed: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:53:55 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:53:55 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:53:55 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:53:55 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:53:55 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:54:48 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:54:48 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:54:50 - INFO] - tito: ✅ Database connection successful. (1.82s)
+[22-Aug-26 11:54:51 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:54:51 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:54:52 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:54:53 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:54:53 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:54:53 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:54:53 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:54:53 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:54:53 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:54:54 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:54:54 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:54:54 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:54:54 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:54:54 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:54:55 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:54:55 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:54:55 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:54:56 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:55:36 - WARNING] - tito: Group send_message failed: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMessage")
+[22-Aug-26 11:56:26 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:56:26 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:56:28 - INFO] - tito: ✅ Database connection successful. (1.61s)
+[22-Aug-26 11:56:29 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:56:29 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:56:30 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:56:31 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:56:31 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:56:31 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:56:31 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:56:31 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:56:31 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:56:32 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:56:32 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:56:32 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:56:32 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:56:32 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:56:32 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:56:32 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:56:32 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:56:33 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:56:50 - WARNING] - tito: Group send_photo with plain text failed: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia")
+[22-Aug-26 11:56:52 - WARNING] - tito: Plain caption failed: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:57:23 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 11:57:23 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 11:57:23 - INFO] - tito: Assistants stopped.
+[22-Aug-26 11:57:23 - INFO] - tito: Database connection closed.
+[22-Aug-26 11:57:23 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 11:57:43 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:57:43 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:57:45 - INFO] - tito: ✅ Database connection successful. (1.64s)
+[22-Aug-26 11:57:46 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:57:46 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:57:47 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:57:48 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:57:48 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:57:48 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:57:48 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:57:48 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:57:48 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:57:49 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:57:49 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:57:49 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:57:49 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:57:49 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:57:49 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 11:57:49 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 11:57:49 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 11:57:50 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 11:58:06 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 11:58:06 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 11:59:53 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 11:59:53 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 11:59:55 - INFO] - tito: ✅ Database connection successful. (1.67s)
+[22-Aug-26 11:59:55 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 11:59:56 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 11:59:57 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 11:59:58 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 11:59:58 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 11:59:58 - ERROR] - tito:    This could be due to:
+[22-Aug-26 11:59:58 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 11:59:58 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 11:59:58 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 11:59:59 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 11:59:59 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 11:59:59 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 11:59:59 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 11:59:59 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 11:59:59 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:00:00 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:00:00 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:00:01 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:00:14 - ERROR] - tito: Unexpected error in play_media for -1004387392097: incomplete escape \u at position 71
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\calls.py", line 1070, in _play_media_impl
+    await self._send_photo_with_retry(
+    ...<4 lines>...
+    )
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\calls.py", line 246, in _send_photo_with_retry
+    plain_caption = self._clean_caption_for_group(caption)
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\calls.py", line 177, in _clean_caption_for_group
+    caption = re.sub(r'[^\w\s\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}.,!?()\-]', ' ', caption, flags=re.UNICODE)
+  File "C:\Python313\Lib\re\__init__.py", line 208, in sub
+    return _compile(pattern, flags).sub(repl, string, count)
+           ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\re\__init__.py", line 350, in _compile
+    p = _compiler.compile(pattern, flags)
+  File "C:\Python313\Lib\re\_compiler.py", line 748, in compile
+    p = _parser.parse(p, flags)
+  File "C:\Python313\Lib\re\_parser.py", line 980, in parse
+    p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)
+  File "C:\Python313\Lib\re\_parser.py", line 459, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+                ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                       not nested and not items))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\re\_parser.py", line 572, in _parse
+    code1 = _class_escape(source, this)
+  File "C:\Python313\Lib\re\_parser.py", line 331, in _class_escape
+    raise source.error("incomplete escape %s" % escape, len(escape))
+re.PatternError: incomplete escape \u at position 71
+[22-Aug-26 12:01:57 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:01:57 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:01:59 - INFO] - tito: ✅ Database connection successful. (1.76s)
+[22-Aug-26 12:02:00 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:02:00 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:02:01 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:02:02 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:02:02 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:02:02 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:02:02 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:02:02 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:02:02 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:02:03 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:02:03 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:02:03 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:02:03 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:02:03 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:02:03 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:02:04 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:02:04 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:02:04 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:03:53 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:03:53 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:03:53 - ERROR] - asyncio: Task exception was never retrieved
+future: <Task finished name='Task-2049' coro=<Client.handle_updates() done, defined at C:\Python313\Lib\site-packages\pyrogram\client.py:805> exception=ProgrammingError('Cannot operate on a closed database.')>
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 810, in handle_updates
+    await self.fetch_peers(updates.users),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 798, in fetch_peers
+    await self.storage.update_peers(parsed_peers)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 331, in update_peers
+    self.conn.executemany(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        "REPLACE INTO peers (id, access_hash, type, phone_number) VALUES (?, ?, ?, ?)", peers
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+[22-Aug-26 12:03:53 - ERROR] - asyncio: Task exception was never retrieved
+future: <Task finished name='Task-2050' coro=<Client.handle_updates() done, defined at C:\Python313\Lib\site-packages\pyrogram\client.py:805> exception=ProgrammingError('Cannot operate on a closed database.')>
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 810, in handle_updates
+    await self.fetch_peers(updates.users),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 798, in fetch_peers
+    await self.storage.update_peers(parsed_peers)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 331, in update_peers
+    self.conn.executemany(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        "REPLACE INTO peers (id, access_hash, type, phone_number) VALUES (?, ?, ?, ?)", peers
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+[22-Aug-26 12:03:53 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:03:53 - ERROR] - asyncio: Task exception was never retrieved
+future: <Task finished name='Task-2062' coro=<Client.handle_updates() done, defined at C:\Python313\Lib\site-packages\pyrogram\client.py:805> exception=ProgrammingError('Cannot operate on a closed database.')>
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 810, in handle_updates
+    await self.fetch_peers(updates.users),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 798, in fetch_peers
+    await self.storage.update_peers(parsed_peers)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 331, in update_peers
+    self.conn.executemany(
+    ~~~~~~~~~~~~~~~~~~~~~^
+        "REPLACE INTO peers (id, access_hash, type, phone_number) VALUES (?, ?, ?, ?)", peers
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+sqlite3.ProgrammingError: Cannot operate on a closed database.
+[22-Aug-26 12:03:53 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:03:53 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:04:14 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:04:14 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:04:16 - INFO] - tito: ✅ Database connection successful. (1.84s)
+[22-Aug-26 12:04:17 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:04:17 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:04:18 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:04:19 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:04:19 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:04:19 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:04:19 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:04:19 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:04:19 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:04:20 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:04:20 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:04:20 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:04:20 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:04:20 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:04:20 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:04:21 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:04:21 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:04:22 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:05:20 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:05:20 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:05:20 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:05:20 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:05:20 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:05:46 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:05:46 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:05:48 - INFO] - tito: ✅ Database connection successful. (1.63s)
+[22-Aug-26 12:05:49 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:05:49 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:05:50 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:05:51 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:05:51 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:05:51 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:05:51 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:05:51 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:05:51 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:05:52 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:05:52 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:05:52 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:05:52 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:05:52 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:05:52 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:05:53 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:05:53 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:05:54 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:07:55 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:07:55 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:07:55 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:07:55 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:07:55 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:08:31 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:08:31 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:08:33 - INFO] - tito: ✅ Database connection successful. (1.72s)
+[22-Aug-26 12:09:01 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:09:02 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:09:02 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:09:03 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:09:04 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:09:04 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:09:04 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:09:04 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:09:04 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:09:04 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:09:04 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:09:04 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:09:04 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:09:04 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:09:05 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:09:05 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:09:05 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:09:06 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:09:20 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 12:09:21 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 12:14:07 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:14:07 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:14:09 - INFO] - tito: ✅ Database connection successful. (1.70s)
+[22-Aug-26 12:14:10 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:14:11 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:14:11 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:14:12 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:14:13 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:14:13 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:14:13 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:14:13 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:14:13 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:14:13 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:14:13 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:14:14 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:14:14 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:14:14 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:14:14 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:14:14 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:14:14 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:14:15 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:15:42 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:15:42 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:15:42 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:15:42 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:15:42 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:16:22 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:16:22 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:16:25 - INFO] - tito: ✅ Database connection successful. (1.78s)
+[22-Aug-26 12:16:25 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:16:26 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:16:27 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:16:27 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:16:28 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:16:28 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:16:28 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:16:28 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:16:28 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:16:28 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:16:29 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:16:29 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:16:29 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:16:29 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:16:29 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:16:29 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:16:29 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:16:30 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:16:46 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 12:16:48 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 12:17:11 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:17:11 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:17:11 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:17:11 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:17:11 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:17:33 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:17:33 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:17:36 - INFO] - tito: ✅ Database connection successful. (1.77s)
+[22-Aug-26 12:17:36 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:17:37 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:17:38 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:17:39 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:17:39 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:17:39 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:17:39 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:17:39 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:17:39 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:17:40 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:17:40 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:17:40 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:17:40 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:17:40 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:17:40 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:17:40 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:17:40 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:17:41 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:17:57 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 12:17:58 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 12:20:33 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:20:33 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:20:35 - INFO] - tito: ✅ Database connection successful. (1.87s)
+[22-Aug-26 12:20:36 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:20:36 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:20:37 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:20:38 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:20:38 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:20:38 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:20:38 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:20:38 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:20:38 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:20:39 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:20:39 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:20:39 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:20:39 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:20:39 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:20:39 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:20:39 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:20:39 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:20:40 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:20:54 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[22-Aug-26 12:20:56 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[22-Aug-26 12:21:06 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:21:06 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:21:06 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:21:06 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:21:06 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:24:08 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:24:08 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:24:10 - INFO] - tito: ✅ Database connection successful. (1.72s)
+[22-Aug-26 12:24:11 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:24:11 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:24:12 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:24:13 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:24:13 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:24:13 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:24:13 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:24:13 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:24:13 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:24:14 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:24:14 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:24:14 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:24:14 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:24:14 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:24:14 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:24:14 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:24:14 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:24:15 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:25:19 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:25:19 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:25:19 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:25:19 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:25:19 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:27:57 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:27:57 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:27:59 - INFO] - tito: ✅ Database connection successful. (1.74s)
+[22-Aug-26 12:28:00 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:28:00 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:28:01 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:28:02 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:28:02 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:28:02 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:28:02 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:28:02 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:28:02 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:28:03 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:28:03 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:28:03 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:28:03 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:28:03 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:28:03 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:28:04 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:28:04 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:28:04 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:32:11 - WARNING] - tito: Owner-panel broadcast: pin failed for 7876741744 (BotOnesideNotAvail: Telegram says: [400 BOT_ONESIDE_NOT_AVAIL] - Bots can't pin messages in private chats just for themselves. (caused by "messages.UpdatePinnedMessage"))
+[22-Aug-26 12:32:12 - WARNING] - tito: Owner-panel broadcast: pin failed for 8208687745 (BotOnesideNotAvail: Telegram says: [400 BOT_ONESIDE_NOT_AVAIL] - Bots can't pin messages in private chats just for themselves. (caused by "messages.UpdatePinnedMessage"))
+[22-Aug-26 12:32:13 - WARNING] - tito: Owner-panel broadcast: pin failed for 8519852360 (BotOnesideNotAvail: Telegram says: [400 BOT_ONESIDE_NOT_AVAIL] - Bots can't pin messages in private chats just for themselves. (caused by "messages.UpdatePinnedMessage"))
+[22-Aug-26 12:32:14 - WARNING] - tito: Owner-panel broadcast: pin failed for 8608045728 (BotOnesideNotAvail: Telegram says: [400 BOT_ONESIDE_NOT_AVAIL] - Bots can't pin messages in private chats just for themselves. (caused by "messages.UpdatePinnedMessage"))
+[22-Aug-26 12:32:14 - WARNING] - tito: Owner-panel broadcast: pin failed for 8390917914 (BotOnesideNotAvail: Telegram says: [400 BOT_ONESIDE_NOT_AVAIL] - Bots can't pin messages in private chats just for themselves. (caused by "messages.UpdatePinnedMessage"))
+[22-Aug-26 12:41:51 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:41:51 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:41:53 - INFO] - tito: ✅ Database connection successful. (1.85s)
+[22-Aug-26 12:41:54 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:41:54 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:41:55 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:41:56 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:41:56 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:41:56 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:41:56 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:41:56 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:41:56 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:41:57 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:41:57 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:41:57 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:41:57 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:41:57 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:41:57 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:41:57 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:41:57 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:41:58 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:42:24 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 7876741744 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:42:24 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8208687745 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:42:25 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8519852360 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:42:26 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8608045728 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:42:26 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8390917914 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:43:12 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 7876741744 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:43:13 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8208687745 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:43:14 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8519852360 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:43:15 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8608045728 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:43:15 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8390917914 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:45:05 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:45:05 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:45:05 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:45:05 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:45:05 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:45:44 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:45:44 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:45:46 - INFO] - tito: ✅ Database connection successful. (1.62s)
+[22-Aug-26 12:45:46 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:45:47 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:45:48 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:45:48 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:45:49 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:45:49 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:45:49 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:45:49 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:45:49 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:45:50 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:45:50 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:45:50 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:45:50 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:45:50 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:45:50 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:45:50 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:45:50 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:45:51 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:46:05 - ERROR] - tito: ❌ فشل الإرسال لـ 7876741744: 'Message' object has no attribute 'parse_mode'
+[22-Aug-26 12:46:05 - ERROR] - tito: ❌ فشل الإرسال لـ 8208687745: 'Message' object has no attribute 'parse_mode'
+[22-Aug-26 12:46:06 - ERROR] - tito: ❌ فشل الإرسال لـ 8519852360: 'Message' object has no attribute 'parse_mode'
+[22-Aug-26 12:46:06 - ERROR] - tito: ❌ فشل الإرسال لـ 1605038720: 'Message' object has no attribute 'parse_mode'
+[22-Aug-26 12:46:06 - ERROR] - tito: ❌ فشل الإرسال لـ 8608045728: 'Message' object has no attribute 'parse_mode'
+[22-Aug-26 12:46:07 - ERROR] - tito: ❌ فشل الإرسال لـ 8390917914: 'Message' object has no attribute 'parse_mode'
+[22-Aug-26 12:46:29 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:46:29 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:46:29 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:46:29 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:46:29 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:49:04 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:49:05 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:49:08 - INFO] - tito: ✅ Database connection successful. (3.16s)
+[22-Aug-26 12:49:09 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:49:10 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:49:11 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:49:11 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:49:12 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:49:12 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:49:12 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:49:12 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:49:12 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:49:12 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:49:13 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:49:13 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:49:13 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:49:13 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:49:13 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:49:13 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:49:13 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:49:14 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:49:27 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 7876741744 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:49:28 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8208687745 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:49:28 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8519852360 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:49:29 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8608045728 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:49:30 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8390917914 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:51:29 - INFO] - tito: 🛑 Stopping bot...
+[22-Aug-26 12:51:29 - INFO] - tito: 🤖 Bot client stopped.
+[22-Aug-26 12:51:29 - INFO] - tito: Assistants stopped.
+[22-Aug-26 12:51:29 - INFO] - tito: Database connection closed.
+[22-Aug-26 12:51:29 - INFO] - tito: ✅ Bot stopped successfully.
+
+[22-Aug-26 12:52:17 - INFO] - tito: 📁 Cache directories updated.
+[22-Aug-26 12:52:17 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[22-Aug-26 12:52:20 - INFO] - tito: ✅ Database connection successful. (3.00s)
+[22-Aug-26 12:52:21 - INFO] - tito: 📦 Loading database cache...
+[22-Aug-26 12:52:22 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[22-Aug-26 12:52:22 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[22-Aug-26 12:52:23 - INFO] - tito: 👤 Assistant 1 started as @None
+[22-Aug-26 12:52:23 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[22-Aug-26 12:52:23 - ERROR] - tito:    This could be due to:
+[22-Aug-26 12:52:23 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[22-Aug-26 12:52:23 - ERROR] - tito:    • Session logged out from another device
+[22-Aug-26 12:52:23 - ERROR] - tito:    • Network/connectivity issues
+[22-Aug-26 12:52:24 - INFO] - tito: 👤 Assistant 3 started as @None
+[22-Aug-26 12:52:24 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[22-Aug-26 12:52:24 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[22-Aug-26 12:52:24 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[22-Aug-26 12:52:24 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[22-Aug-26 12:52:24 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[22-Aug-26 12:52:25 - INFO] - tito: 👑 Loaded 2 sudo users.
+[22-Aug-26 12:52:25 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[22-Aug-26 12:52:25 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[22-Aug-26 12:52:38 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 7876741744 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:52:39 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8208687745 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:52:39 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8519852360 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:52:40 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8608045728 لكن التثبيت فشل (المحادثة مقفولة)
+[22-Aug-26 12:52:41 - INFO] - tito: 📨 الرسالة اتسابت للمستخدم 8390917914 لكن التثبيت فشل (المحادثة مقفولة)
+[23-Aug-26 02:30:20 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 02:30:21 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 02:30:23 - INFO] - tito: ✅ Database connection successful. (1.90s)
+[23-Aug-26 02:30:24 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 02:30:24 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 02:30:25 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 02:30:26 - INFO] - tito: 👤 Assistant 1 started as @None
+[23-Aug-26 02:30:26 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 02:30:26 - ERROR] - tito:    This could be due to:
+[23-Aug-26 02:30:26 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 02:30:26 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 02:30:26 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 02:30:27 - INFO] - tito: 👤 Assistant 3 started as @None
+[23-Aug-26 02:30:27 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[23-Aug-26 02:30:27 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[23-Aug-26 02:30:27 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[23-Aug-26 02:30:27 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 02:30:27 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[23-Aug-26 02:30:27 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 02:30:27 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 02:30:28 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 02:31:50 - WARNING] - tito: send_photo failed for -1004387392097 (BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.SendMedia"))
+[23-Aug-26 02:31:52 - WARNING] - tito: Could not add HTML caption for -1004387392097: BadRequest: Telegram says: [400 Bad Request] - [400 ENTITY_TEXT_INVALID] (caused by "messages.EditMessage")
+[23-Aug-26 02:32:53 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 02:32:53 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 02:32:56 - INFO] - tito: ✅ Database connection successful. (1.74s)
+[23-Aug-26 02:32:56 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 02:32:57 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 02:32:58 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 02:32:59 - INFO] - tito: 👤 Assistant 1 started as @None
+[23-Aug-26 02:33:00 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 02:33:00 - ERROR] - tito:    This could be due to:
+[23-Aug-26 02:33:00 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 02:33:00 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 02:33:00 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 02:33:00 - INFO] - tito: 👤 Assistant 3 started as @None
+[23-Aug-26 02:33:00 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[23-Aug-26 02:33:01 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[23-Aug-26 02:33:01 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[23-Aug-26 02:33:01 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 02:33:01 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[23-Aug-26 02:33:01 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 02:33:01 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 02:33:02 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 04:47:49 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 04:47:49 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 04:47:51 - INFO] - tito: ✅ Database connection successful. (1.78s)
+[23-Aug-26 04:47:52 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 04:47:52 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 04:47:53 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 04:47:54 - INFO] - tito: 👤 Assistant 1 started as @None
+[23-Aug-26 04:47:54 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 04:47:54 - ERROR] - tito:    This could be due to:
+[23-Aug-26 04:47:54 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 04:47:54 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 04:47:54 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 04:47:55 - INFO] - tito: 👤 Assistant 3 started as @None
+[23-Aug-26 04:47:55 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[23-Aug-26 04:47:55 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[23-Aug-26 04:47:55 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[23-Aug-26 04:47:55 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 04:47:55 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[23-Aug-26 04:47:55 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 04:47:55 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 04:47:56 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 04:48:47 - WARNING] - tito: ⚠️ Download error for Hd4zxdwr_X0: [0;31mERROR:[0m Unable to rename file: [WinError 32] The process cannot access the file because it is being used by another process: 'downloads\\Hd4zxdwr_X0.mp4.part' -> 'downloads\\Hd4zxdwr_X0.mp4'. Giving up after 10 retries
+[23-Aug-26 04:48:47 - INFO] - tito: Queue altered during play_next download for -1004387392097
+[23-Aug-26 05:00:00 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 05:00:00 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 05:00:03 - INFO] - tito: ✅ Database connection successful. (1.82s)
+[23-Aug-26 05:00:03 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 05:00:04 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 05:00:04 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 05:00:05 - INFO] - tito: 👤 Assistant 1 started as @None
+[23-Aug-26 05:00:06 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 05:00:06 - ERROR] - tito:    This could be due to:
+[23-Aug-26 05:00:06 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 05:00:06 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 05:00:06 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 05:00:06 - INFO] - tito: 👤 Assistant 3 started as @None
+[23-Aug-26 05:00:07 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[23-Aug-26 05:00:07 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[23-Aug-26 05:00:07 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[23-Aug-26 05:00:07 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 05:00:07 - INFO] - tito: 🔌 Loaded 38 plugin modules.
+[23-Aug-26 05:00:07 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 05:00:07 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 05:00:08 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 05:03:42 - INFO] - tito: 🛑 Stopping bot...
+[23-Aug-26 05:03:42 - INFO] - tito: 🤖 Bot client stopped.
+[23-Aug-26 05:03:42 - INFO] - tito: Assistants stopped.
+[23-Aug-26 05:03:42 - INFO] - tito: Database connection closed.
+[23-Aug-26 05:03:42 - INFO] - tito: ✅ Bot stopped successfully.
+
+[23-Aug-26 05:04:13 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 05:04:13 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 05:04:15 - INFO] - tito: ✅ Database connection successful. (1.71s)
+[23-Aug-26 05:04:16 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 05:04:16 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 05:04:17 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 05:04:18 - INFO] - tito: 👤 Assistant 1 started as @None
+[23-Aug-26 05:04:18 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 05:04:18 - ERROR] - tito:    This could be due to:
+[23-Aug-26 05:04:18 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 05:04:18 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 05:04:18 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 05:04:19 - INFO] - tito: 👤 Assistant 3 started as @None
+[23-Aug-26 05:04:19 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[23-Aug-26 05:04:19 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[23-Aug-26 05:04:19 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[23-Aug-26 05:04:19 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 05:04:19 - INFO] - tito: 🔌 Loaded 39 plugin modules.
+[23-Aug-26 05:04:20 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 05:04:20 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 05:04:20 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 05:10:05 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 05:10:05 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 05:10:07 - INFO] - tito: ✅ Database connection successful. (1.86s)
+[23-Aug-26 05:10:08 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 05:10:09 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 05:10:10 - ERROR] - tito: Critical error in main: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\bot.py", line 69, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\auth\connect.py", line 39, in connect
+    await self.load_session()
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 908, in load_session
+    await self.storage.open()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 312, in open
+    await self.update()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 229, in update
+    await self.version(version)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 432, in version
+    return await self._accessor("version", "number", value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 402, in _accessor
+    return await self._get(table, attr) if value is object else await self._set(table, attr, value)
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 399, in _set
+    self.conn.execute(f"UPDATE {table} SET {attr} = ?", (value,))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+[23-Aug-26 05:10:10 - ERROR] - tito: Unexpected error caused bot to stop: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 95, in <module>
+    loop.run_until_complete(main())
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\bot.py", line 69, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\auth\connect.py", line 39, in connect
+    await self.load_session()
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 908, in load_session
+    await self.storage.open()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 312, in open
+    await self.update()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 229, in update
+    await self.version(version)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 432, in version
+    return await self._accessor("version", "number", value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 402, in _accessor
+    return await self._get(table, attr) if value is object else await self._set(table, attr, value)
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 399, in _set
+    self.conn.execute(f"UPDATE {table} SET {attr} = ?", (value,))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+[23-Aug-26 05:11:33 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 05:11:33 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 05:11:35 - INFO] - tito: ✅ Database connection successful. (1.59s)
+[23-Aug-26 05:11:36 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 05:11:36 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 05:11:38 - WARNING] - tito: ⚠️ tito.session is locked (attempt 1/5), retrying in 2s - if this keeps happening, make sure no other copy of the bot is already running, and that the bot's folder isn't inside a OneDrive/Google Drive synced path.
+[23-Aug-26 05:11:41 - WARNING] - tito: ⚠️ tito.session is locked (attempt 2/5), retrying in 2s - if this keeps happening, make sure no other copy of the bot is already running, and that the bot's folder isn't inside a OneDrive/Google Drive synced path.
+[23-Aug-26 05:11:44 - WARNING] - tito: ⚠️ tito.session is locked (attempt 3/5), retrying in 2s - if this keeps happening, make sure no other copy of the bot is already running, and that the bot's folder isn't inside a OneDrive/Google Drive synced path.
+[23-Aug-26 05:11:47 - WARNING] - tito: ⚠️ tito.session is locked (attempt 4/5), retrying in 2s - if this keeps happening, make sure no other copy of the bot is already running, and that the bot's folder isn't inside a OneDrive/Google Drive synced path.
+[23-Aug-26 05:11:50 - ERROR] - tito: Critical error in main: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\bot.py", line 82, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\auth\connect.py", line 39, in connect
+    await self.load_session()
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 908, in load_session
+    await self.storage.open()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 312, in open
+    await self.update()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 229, in update
+    await self.version(version)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 432, in version
+    return await self._accessor("version", "number", value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 402, in _accessor
+    return await self._get(table, attr) if value is object else await self._set(table, attr, value)
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 399, in _set
+    self.conn.execute(f"UPDATE {table} SET {attr} = ?", (value,))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+[23-Aug-26 05:11:50 - ERROR] - tito: Unexpected error caused bot to stop: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 95, in <module>
+    loop.run_until_complete(main())
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\bot.py", line 82, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\auth\connect.py", line 39, in connect
+    await self.load_session()
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 908, in load_session
+    await self.storage.open()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 312, in open
+    await self.update()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 229, in update
+    await self.version(version)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 432, in version
+    return await self._accessor("version", "number", value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 402, in _accessor
+    return await self._get(table, attr) if value is object else await self._set(table, attr, value)
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 399, in _set
+    self.conn.execute(f"UPDATE {table} SET {attr} = ?", (value,))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+[23-Aug-26 05:13:16 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 05:13:16 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 05:13:18 - INFO] - tito: ✅ Database connection successful. (1.63s)
+[23-Aug-26 05:13:19 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 05:13:20 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 05:13:21 - WARNING] - tito: ⚠️ tito.session is locked (attempt 1/5), retrying in 2s - if this keeps happening, make sure no other copy of the bot is already running, and that the bot's folder isn't inside a OneDrive/Google Drive synced path.
+[23-Aug-26 05:13:24 - WARNING] - tito: ⚠️ tito.session is locked (attempt 2/5), retrying in 2s - if this keeps happening, make sure no other copy of the bot is already running, and that the bot's folder isn't inside a OneDrive/Google Drive synced path.
+[23-Aug-26 05:13:27 - WARNING] - tito: ⚠️ tito.session is locked (attempt 3/5), retrying in 2s - if this keeps happening, make sure no other copy of the bot is already running, and that the bot's folder isn't inside a OneDrive/Google Drive synced path.
+[23-Aug-26 05:13:30 - WARNING] - tito: ⚠️ tito.session is locked (attempt 4/5), retrying in 2s - if this keeps happening, make sure no other copy of the bot is already running, and that the bot's folder isn't inside a OneDrive/Google Drive synced path.
+[23-Aug-26 05:13:34 - ERROR] - tito: Critical error in main: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\bot.py", line 82, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\auth\connect.py", line 39, in connect
+    await self.load_session()
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 908, in load_session
+    await self.storage.open()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 312, in open
+    await self.update()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 229, in update
+    await self.version(version)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 432, in version
+    return await self._accessor("version", "number", value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 402, in _accessor
+    return await self._get(table, attr) if value is object else await self._set(table, attr, value)
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 399, in _set
+    self.conn.execute(f"UPDATE {table} SET {attr} = ?", (value,))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+[23-Aug-26 05:13:34 - ERROR] - tito: Unexpected error caused bot to stop: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 95, in <module>
+    loop.run_until_complete(main())
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Atia\Downloads\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\Downloads\music_bot\tito\core\bot.py", line 82, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\auth\connect.py", line 39, in connect
+    await self.load_session()
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 908, in load_session
+    await self.storage.open()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 312, in open
+    await self.update()
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 229, in update
+    await self.version(version)
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 432, in version
+    return await self._accessor("version", "number", value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 402, in _accessor
+    return await self._get(table, attr) if value is object else await self._set(table, attr, value)
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\storage\sqlite_storage.py", line 399, in _set
+    self.conn.execute(f"UPDATE {table} SET {attr} = ?", (value,))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+[23-Aug-26 05:13:42 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 05:13:42 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 05:13:44 - INFO] - tito: ✅ Database connection successful. (1.70s)
+[23-Aug-26 05:13:45 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 05:13:45 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 05:13:46 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 05:13:47 - INFO] - tito: 👤 Assistant 1 started as @None
+[23-Aug-26 05:13:47 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 05:13:47 - ERROR] - tito:    This could be due to:
+[23-Aug-26 05:13:47 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 05:13:47 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 05:13:47 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 05:13:48 - INFO] - tito: 👤 Assistant 3 started as @None
+[23-Aug-26 05:13:48 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[23-Aug-26 05:13:48 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[23-Aug-26 05:13:48 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[23-Aug-26 05:13:48 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 05:13:48 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[23-Aug-26 05:13:49 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 05:13:49 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 05:13:49 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 05:41:27 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 05:41:27 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 05:41:30 - INFO] - tito: ✅ Database connection successful. (1.84s)
+[23-Aug-26 05:41:30 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 05:41:31 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 05:41:32 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 05:41:32 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[23-Aug-26 05:41:32 - ERROR] - tito:    This could be due to:
+[23-Aug-26 05:41:32 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[23-Aug-26 05:41:32 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 05:41:32 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 05:41:32 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 05:41:32 - ERROR] - tito:    This could be due to:
+[23-Aug-26 05:41:32 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 05:41:32 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 05:41:32 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 05:41:33 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[23-Aug-26 05:41:33 - ERROR] - tito:    This could be due to:
+[23-Aug-26 05:41:33 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[23-Aug-26 05:41:33 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 05:41:33 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 05:41:33 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[23-Aug-26 05:41:33 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 05:41:33 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[23-Aug-26 05:41:33 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 05:41:33 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 05:41:34 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 05:42:45 - INFO] - tito: 🛑 Stopping bot...
+[23-Aug-26 05:42:45 - INFO] - tito: 🤖 Bot client stopped.
+[23-Aug-26 05:42:45 - INFO] - tito: Assistants stopped.
+[23-Aug-26 05:42:45 - INFO] - tito: Database connection closed.
+[23-Aug-26 05:42:45 - INFO] - tito: ✅ Bot stopped successfully.
+
+[23-Aug-26 06:05:57 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 06:06:21 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 06:06:23 - INFO] - tito: ✅ Database connection successful. (1.70s)
+[23-Aug-26 06:06:24 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 06:06:24 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 06:06:25 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 06:06:25 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [401 USER_DEACTIVATED] - The current user has been deleted/deactivated. (caused by "updates.GetState")
+[23-Aug-26 06:06:25 - ERROR] - tito:    This could be due to:
+[23-Aug-26 06:06:25 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[23-Aug-26 06:06:25 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 06:06:25 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 06:06:26 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 06:06:26 - ERROR] - tito:    This could be due to:
+[23-Aug-26 06:06:26 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 06:06:26 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 06:06:26 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 06:06:26 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 06:06:26 - ERROR] - tito:    This could be due to:
+[23-Aug-26 06:06:26 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[23-Aug-26 06:06:26 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 06:06:26 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 06:06:26 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[23-Aug-26 06:06:26 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 06:06:26 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[23-Aug-26 06:06:26 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 06:06:26 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 06:06:27 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 06:08:12 - INFO] - tito: 🛑 Stopping bot...
+[23-Aug-26 06:08:12 - INFO] - tito: 🤖 Bot client stopped.
+[23-Aug-26 06:08:12 - INFO] - tito: Assistants stopped.
+[23-Aug-26 06:08:12 - INFO] - tito: Database connection closed.
+[23-Aug-26 06:08:12 - INFO] - tito: ✅ Bot stopped successfully.
+
+[23-Aug-26 06:08:17 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 06:08:18 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 06:08:21 - INFO] - tito: ✅ Database connection successful. (3.22s)
+[23-Aug-26 06:08:22 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 06:08:22 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 06:08:23 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 06:08:23 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[23-Aug-26 06:08:23 - ERROR] - tito:    This could be due to:
+[23-Aug-26 06:08:23 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[23-Aug-26 06:08:23 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 06:08:23 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 06:08:24 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 06:08:24 - ERROR] - tito:    This could be due to:
+[23-Aug-26 06:08:24 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 06:08:24 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 06:08:24 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 06:08:24 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[23-Aug-26 06:08:24 - ERROR] - tito:    This could be due to:
+[23-Aug-26 06:08:24 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[23-Aug-26 06:08:24 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 06:08:24 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 06:08:24 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[23-Aug-26 06:08:24 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 06:08:24 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[23-Aug-26 06:08:24 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 06:08:24 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 06:08:25 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[23-Aug-26 06:10:24 - INFO] - tito: 🛑 Stopping bot...
+[23-Aug-26 06:10:24 - INFO] - tito: 🤖 Bot client stopped.
+[23-Aug-26 06:10:24 - INFO] - tito: Assistants stopped.
+[23-Aug-26 06:10:24 - INFO] - tito: Database connection closed.
+[23-Aug-26 06:10:24 - INFO] - tito: ✅ Bot stopped successfully.
+
+[23-Aug-26 06:16:06 - INFO] - tito: 📁 Cache directories updated.
+[23-Aug-26 06:16:06 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[23-Aug-26 06:16:09 - INFO] - tito: ✅ Database connection successful. (1.66s)
+[23-Aug-26 06:16:09 - INFO] - tito: 📦 Loading database cache...
+[23-Aug-26 06:16:10 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[23-Aug-26 06:16:10 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[23-Aug-26 06:16:11 - WARNING] - tito: ⚠️ Assistant 1 couldn't send message to logger: Telegram says: [400 CHANNEL_INVALID] - The provided channel is invalid. (caused by "channels.GetChannels")
+[23-Aug-26 06:16:11 - INFO] - tito: 👤 Assistant 1 started as @None
+[23-Aug-26 06:16:11 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[23-Aug-26 06:16:11 - ERROR] - tito:    This could be due to:
+[23-Aug-26 06:16:11 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[23-Aug-26 06:16:11 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 06:16:11 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 06:16:12 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[23-Aug-26 06:16:12 - ERROR] - tito:    This could be due to:
+[23-Aug-26 06:16:12 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[23-Aug-26 06:16:12 - ERROR] - tito:    • Session logged out from another device
+[23-Aug-26 06:16:12 - ERROR] - tito:    • Network/connectivity issues
+[23-Aug-26 06:16:12 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[23-Aug-26 06:16:12 - INFO] - tito: 📞 PyTgCalls client(s) started: 1
+[23-Aug-26 06:16:12 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[23-Aug-26 06:16:12 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[23-Aug-26 06:16:12 - INFO] - tito: 👑 Loaded 2 sudo users.
+[23-Aug-26 06:16:12 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[23-Aug-26 06:16:13 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[25-Aug-26 11:10:00 - INFO] - tito: 📁 Cache directories updated.
+[25-Aug-26 11:10:01 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[25-Aug-26 11:10:03 - INFO] - tito: ✅ Database connection successful. (1.91s)
+[25-Aug-26 11:10:04 - INFO] - tito: 📦 Loading database cache...
+[25-Aug-26 11:10:05 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[25-Aug-26 11:10:05 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[25-Aug-26 11:10:06 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[25-Aug-26 11:10:06 - ERROR] - tito:    This could be due to:
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Session logged out from another device
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Network/connectivity issues
+[25-Aug-26 11:10:06 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[25-Aug-26 11:10:06 - ERROR] - tito:    This could be due to:
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Session logged out from another device
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Network/connectivity issues
+[25-Aug-26 11:10:06 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[25-Aug-26 11:10:06 - ERROR] - tito:    This could be due to:
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Session logged out from another device
+[25-Aug-26 11:10:06 - ERROR] - tito:    • Network/connectivity issues
+[25-Aug-26 11:10:06 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[25-Aug-26 11:10:06 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[25-Aug-26 11:10:06 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[25-Aug-26 11:10:07 - INFO] - tito: 👑 Loaded 2 sudo users.
+[25-Aug-26 11:10:07 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[25-Aug-26 11:10:07 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 04:15:46 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 04:15:46 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 04:15:49 - INFO] - tito: ✅ Database connection successful. (1.91s)
+[28-Aug-26 04:15:49 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 04:15:50 - INFO] - tito: ✅ Cache loaded: 3 chats, 6 users, 0 blacklisted.
+[28-Aug-26 04:15:51 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 04:15:51 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 04:15:51 - ERROR] - tito:    This could be due to:
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 04:15:51 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [401 AUTH_KEY_UNREGISTERED] - The specified authorization key is not registered in the system (for example, a PFS temporary key has expired). Delete your session file and login again. (caused by "updates.GetState")
+[28-Aug-26 04:15:51 - ERROR] - tito:    This could be due to:
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 04:15:51 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 04:15:51 - ERROR] - tito:    This could be due to:
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 04:15:51 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 04:15:51 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[28-Aug-26 04:15:51 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 04:15:52 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 04:15:52 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 04:15:52 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 04:15:52 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 04:44:01 - INFO] - tito: 🛑 Stopping bot...
+[28-Aug-26 04:44:01 - INFO] - tito: 🤖 Bot client stopped.
+[28-Aug-26 04:44:01 - INFO] - tito: Assistants stopped.
+[28-Aug-26 04:44:01 - INFO] - tito: Database connection closed.
+[28-Aug-26 04:44:01 - INFO] - tito: ✅ Bot stopped successfully.
+
+[28-Aug-26 04:48:30 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 04:48:30 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 04:48:32 - INFO] - tito: ✅ Database connection successful. (1.86s)
+[28-Aug-26 04:48:33 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 04:48:34 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 04:48:35 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 04:48:37 - WARNING] - tito: ⚠️ Assistant 1 couldn't send message to logger: Telegram says: [400 CHANNEL_INVALID] - The provided channel is invalid. (caused by "channels.GetChannels")
+[28-Aug-26 04:48:37 - INFO] - tito: 👤 Assistant 1 started as @kreizamusic
+[28-Aug-26 04:48:38 - WARNING] - tito: ⚠️ Assistant 2 couldn't send message to logger: Telegram says: [400 CHANNEL_INVALID] - The provided channel is invalid. (caused by "channels.GetChannels")
+[28-Aug-26 04:48:38 - INFO] - tito: 👤 Assistant 2 started as @noonaamusic
+[28-Aug-26 04:48:38 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[28-Aug-26 04:48:38 - INFO] - tito: 📞 PyTgCalls assistant 2 started.
+[28-Aug-26 04:48:38 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[28-Aug-26 04:48:38 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 04:48:38 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 04:48:38 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 04:48:38 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 04:48:39 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 04:50:16 - INFO] - tito: 🛑 Stopping bot...
+[28-Aug-26 04:50:16 - INFO] - tito: 🤖 Bot client stopped.
+[28-Aug-26 04:50:16 - INFO] - tito: Assistants stopped.
+[28-Aug-26 04:50:16 - INFO] - tito: Database connection closed.
+[28-Aug-26 04:50:16 - INFO] - tito: ✅ Bot stopped successfully.
+
+[28-Aug-26 04:50:39 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 04:50:40 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 04:50:42 - INFO] - tito: ✅ Database connection successful. (1.74s)
+[28-Aug-26 04:50:42 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 04:50:43 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 04:50:44 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 04:50:44 - WARNING] - tito: ⚠️ Assistant 1 couldn't send message to logger: Telegram says: [400 CHANNEL_INVALID] - The provided channel is invalid. (caused by "channels.GetChannels")
+[28-Aug-26 04:50:44 - INFO] - tito: 👤 Assistant 1 started as @noonaamusic
+[28-Aug-26 04:50:45 - INFO] - tito: 👤 Assistant 2 started as @kreizamusic
+[28-Aug-26 04:50:45 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[28-Aug-26 04:50:45 - INFO] - tito: 📞 PyTgCalls assistant 2 started.
+[28-Aug-26 04:50:45 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[28-Aug-26 04:50:45 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 04:50:45 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 04:50:45 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 04:50:45 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 04:50:46 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 04:59:00 - WARNING] - tito: azan: ADHAN_AUDIO_PATH is not set - sending text announcement only, the voice chat will NOT be opened. Set ADHAN_AUDIO_PATH in your .env to a path/URL of the azan audio file to enable the call + playback.
+[28-Aug-26 05:05:31 - INFO] - tito: 🛑 Stopping bot...
+[28-Aug-26 05:05:31 - INFO] - tito: 🤖 Bot client stopped.
+[28-Aug-26 05:05:31 - INFO] - tito: Assistants stopped.
+[28-Aug-26 05:05:32 - INFO] - tito: Database connection closed.
+[28-Aug-26 05:05:32 - INFO] - tito: ✅ Bot stopped successfully.
+
+[28-Aug-26 05:05:35 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 05:05:35 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 05:05:38 - INFO] - tito: ✅ Database connection successful. (2.36s)
+[28-Aug-26 05:05:39 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 05:05:40 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 05:05:41 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 05:05:41 - WARNING] - tito: ⚠️ Assistant 1 couldn't send message to logger: Telegram says: [400 CHANNEL_INVALID] - The provided channel is invalid. (caused by "channels.GetChannels")
+[28-Aug-26 05:05:41 - INFO] - tito: 👤 Assistant 1 started as @noonaamusic
+[28-Aug-26 05:05:42 - INFO] - tito: 👤 Assistant 2 started as @kreizamusic
+[28-Aug-26 05:05:42 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[28-Aug-26 05:05:42 - INFO] - tito: 📞 PyTgCalls assistant 2 started.
+[28-Aug-26 05:05:42 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[28-Aug-26 05:05:42 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 05:05:42 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 05:05:42 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 05:05:42 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 05:05:43 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 05:06:14 - INFO] - tito: 🛑 Stopping bot...
+[28-Aug-26 05:06:14 - INFO] - tito: 🤖 Bot client stopped.
+[28-Aug-26 05:06:14 - INFO] - tito: Assistants stopped.
+[28-Aug-26 05:06:14 - INFO] - tito: Database connection closed.
+[28-Aug-26 05:06:14 - INFO] - tito: ✅ Bot stopped successfully.
+
+[28-Aug-26 05:06:54 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 05:06:54 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 05:06:57 - INFO] - tito: ✅ Database connection successful. (1.59s)
+[28-Aug-26 05:06:57 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 05:06:58 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 05:06:58 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 05:07:00 - ERROR] - asyncio: Task exception was never retrieved
+future: <Task finished name='Task-97' coro=<Session.restart() done, defined at C:\Python313\Lib\site-packages\pyrogram\session\session.py:271> exception=AuthKeyNotFound('Auth key not found in the system. Try again or delete your session file and log in again with your phone number or bot token.')>
+Traceback (most recent call last):
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 276, in restart
+    await self.stop()
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 258, in stop
+    await self.recv_task
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 435, in recv_worker
+    raise AuthKeyNotFound(
+    ...<2 lines>...
+    )
+pyrogram.session.session.AuthKeyNotFound: Auth key not found in the system. Try again or delete your session file and log in again with your phone number or bot token.
+[28-Aug-26 05:07:15 - INFO] - tito: Bot stopped by user (Ctrl+C)
+[28-Aug-26 05:08:31 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 05:08:31 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 05:08:33 - INFO] - tito: ✅ Database connection successful. (1.71s)
+[28-Aug-26 05:08:33 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 05:08:34 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 05:08:35 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 05:08:35 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 05:08:35 - ERROR] - tito:    This could be due to:
+[28-Aug-26 05:08:35 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[28-Aug-26 05:08:35 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 05:08:35 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 05:08:36 - INFO] - tito: 👤 Assistant 2 started as @kreizamusic
+[28-Aug-26 05:08:37 - WARNING] - tito: ⚠️ Assistant 3 couldn't send message to logger: Telegram says: [400 CHANNEL_INVALID] - The provided channel is invalid. (caused by "channels.GetChannels")
+[28-Aug-26 05:08:37 - INFO] - tito: 👤 Assistant 3 started as @noonaamusic
+[28-Aug-26 05:08:37 - INFO] - tito: 📞 PyTgCalls assistant 2 started.
+[28-Aug-26 05:08:37 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[28-Aug-26 05:08:37 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[28-Aug-26 05:08:37 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 05:08:37 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 05:08:37 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 05:08:37 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 05:08:38 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 05:09:57 - INFO] - tito: 🛑 Stopping bot...
+[28-Aug-26 05:09:57 - INFO] - tito: 🤖 Bot client stopped.
+[28-Aug-26 05:09:57 - INFO] - tito: Assistants stopped.
+[28-Aug-26 05:09:57 - INFO] - tito: Database connection closed.
+[28-Aug-26 05:09:57 - INFO] - tito: ✅ Bot stopped successfully.
+
+[28-Aug-26 05:10:00 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 05:10:00 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 05:10:02 - INFO] - tito: ✅ Database connection successful. (1.61s)
+[28-Aug-26 05:10:03 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 05:10:03 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 05:10:04 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 05:10:05 - INFO] - tito: 👤 Assistant 1 started as @kreizamusic
+[28-Aug-26 05:10:05 - WARNING] - tito: ⚠️ Assistant 3 couldn't send message to logger: Telegram says: [400 CHANNEL_INVALID] - The provided channel is invalid. (caused by "channels.GetChannels")
+[28-Aug-26 05:10:05 - INFO] - tito: 👤 Assistant 3 started as @noonaamusic
+[28-Aug-26 05:10:05 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[28-Aug-26 05:10:06 - INFO] - tito: 📞 PyTgCalls assistant 3 started.
+[28-Aug-26 05:10:06 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[28-Aug-26 05:10:06 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 05:10:06 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 05:10:06 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 05:10:06 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 05:10:07 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 06:05:45 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 06:05:50 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 08:00:46 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 08:00:46 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 08:00:49 - INFO] - tito: ✅ Database connection successful. (1.95s)
+[28-Aug-26 08:00:49 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 08:00:50 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 08:00:50 - ERROR] - tito: Critical error in main: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+Traceback (most recent call last):
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\core\bot.py", line 82, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\auth\connect.py", line 41, in connect
+    self.session = await self.get_session(
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 1399, in get_session
+    await session.start()
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 215, in start
+    raise e
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 188, in start
+    await self.send(
+    ...<15 lines>...
+    )
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 514, in send
+    RPCError.raise_it(result, type(data))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\errors\rpc_error.py", line 91, in raise_it
+    raise getattr(
+    ...<5 lines>...
+      is_signed=is_signed)
+pyrogram.errors.exceptions.not_acceptable_406.AuthKeyDuplicated: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 08:00:50 - ERROR] - tito: Unexpected error caused bot to stop: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+Traceback (most recent call last):
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\__main__.py", line 95, in <module>
+    loop.run_until_complete(main())
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\core\bot.py", line 82, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\auth\connect.py", line 41, in connect
+    self.session = await self.get_session(
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\pyrogram\client.py", line 1399, in get_session
+    await session.start()
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 215, in start
+    raise e
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 188, in start
+    await self.send(
+    ...<15 lines>...
+    )
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 514, in send
+    RPCError.raise_it(result, type(data))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\errors\rpc_error.py", line 91, in raise_it
+    raise getattr(
+    ...<5 lines>...
+      is_signed=is_signed)
+pyrogram.errors.exceptions.not_acceptable_406.AuthKeyDuplicated: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 08:02:43 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 08:02:43 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 08:02:46 - INFO] - tito: ✅ Database connection successful. (1.86s)
+[28-Aug-26 08:02:46 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 08:02:47 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 08:02:52 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 08:02:52 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 08:02:52 - ERROR] - tito:    This could be due to:
+[28-Aug-26 08:02:52 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[28-Aug-26 08:02:52 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 08:02:52 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 08:02:52 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 08:02:52 - ERROR] - tito:    This could be due to:
+[28-Aug-26 08:02:52 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[28-Aug-26 08:02:52 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 08:02:52 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 08:02:52 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[28-Aug-26 08:02:52 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 08:02:52 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 08:02:53 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 08:02:53 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 08:02:54 - INFO] - tito: 🔄 Chat reconciliation done: removed 1 stale, classified 0.
+[28-Aug-26 08:35:45 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 08:35:46 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 08:35:48 - INFO] - tito: ✅ Database connection successful. (1.84s)
+[28-Aug-26 08:35:48 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 08:35:49 - INFO] - tito: ✅ Cache loaded: 4 chats, 9 users, 0 blacklisted.
+[28-Aug-26 08:35:50 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 08:35:51 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 08:35:51 - ERROR] - tito:    This could be due to:
+[28-Aug-26 08:35:51 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[28-Aug-26 08:35:51 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 08:35:51 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 08:35:51 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 08:35:51 - ERROR] - tito:    This could be due to:
+[28-Aug-26 08:35:51 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[28-Aug-26 08:35:51 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 08:35:51 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 08:35:51 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[28-Aug-26 08:35:51 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 08:35:51 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 08:35:51 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 08:35:51 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 08:35:52 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 09:14:45 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 09:14:45 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 09:14:47 - INFO] - tito: ✅ Database connection successful. (1.90s)
+[28-Aug-26 09:14:48 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 09:14:48 - INFO] - tito: ✅ Cache loaded: 4 chats, 10 users, 0 blacklisted.
+[28-Aug-26 09:14:49 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 09:14:50 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 09:14:50 - ERROR] - tito:    This could be due to:
+[28-Aug-26 09:14:50 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[28-Aug-26 09:14:50 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 09:14:50 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 09:14:50 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 09:14:50 - ERROR] - tito:    This could be due to:
+[28-Aug-26 09:14:50 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[28-Aug-26 09:14:50 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 09:14:50 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 09:14:50 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[28-Aug-26 09:14:50 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 09:14:50 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 09:14:50 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 09:14:50 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 09:14:51 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 09:35:48 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 09:35:48 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 09:36:07 - INFO] - tito: ✅ Database connection successful. (18.72s)
+[28-Aug-26 09:36:08 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 09:36:09 - INFO] - tito: ✅ Cache loaded: 6 chats, 11 users, 0 blacklisted.
+[28-Aug-26 09:36:11 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 09:36:12 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 09:36:12 - ERROR] - tito:    This could be due to:
+[28-Aug-26 09:36:12 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[28-Aug-26 09:36:12 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 09:36:12 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 09:36:13 - ERROR] - tito: ❌ Assistant 3 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 09:36:13 - ERROR] - tito:    This could be due to:
+[28-Aug-26 09:36:13 - ERROR] - tito:    • Invalid session string (STRING_SESSION3)
+[28-Aug-26 09:36:13 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 09:36:13 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 09:36:13 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[28-Aug-26 09:36:13 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 09:36:13 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 09:36:13 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 09:36:13 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 09:36:17 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 09:40:39 - INFO] - tito: 🛑 Stopping bot...
+[28-Aug-26 09:40:39 - INFO] - tito: 🤖 Bot client stopped.
+[28-Aug-26 09:40:39 - INFO] - tito: Assistants stopped.
+[28-Aug-26 09:40:39 - INFO] - tito: Database connection closed.
+[28-Aug-26 09:40:39 - INFO] - tito: ✅ Bot stopped successfully.
+
+[28-Aug-26 09:40:43 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 09:40:44 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 09:40:54 - INFO] - tito: ✅ Database connection successful. (9.71s)
+[28-Aug-26 09:40:54 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 09:40:55 - INFO] - tito: ✅ Cache loaded: 6 chats, 11 users, 0 blacklisted.
+[28-Aug-26 09:40:56 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 09:40:56 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 09:40:56 - ERROR] - tito:    This could be due to:
+[28-Aug-26 09:40:56 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[28-Aug-26 09:40:56 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 09:40:56 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 09:40:56 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 09:40:56 - ERROR] - tito:    This could be due to:
+[28-Aug-26 09:40:56 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[28-Aug-26 09:40:56 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 09:40:56 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 09:40:56 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[28-Aug-26 09:40:56 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 09:40:56 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 09:40:57 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 09:40:57 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 09:40:58 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[28-Aug-26 10:06:17 - INFO] - tito: 📁 Cache directories updated.
+[28-Aug-26 10:06:17 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[28-Aug-26 10:06:19 - INFO] - tito: ✅ Database connection successful. (1.83s)
+[28-Aug-26 10:06:20 - INFO] - tito: 📦 Loading database cache...
+[28-Aug-26 10:06:20 - INFO] - tito: ✅ Cache loaded: 6 chats, 11 users, 0 blacklisted.
+[28-Aug-26 10:06:25 - INFO] - tito: 🤖 Bot started successfully as @Angamiibot
+[28-Aug-26 10:06:25 - ERROR] - tito: ❌ Assistant 1 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 10:06:25 - ERROR] - tito:    This could be due to:
+[28-Aug-26 10:06:25 - ERROR] - tito:    • Invalid session string (STRING_SESSION1)
+[28-Aug-26 10:06:25 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 10:06:25 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 10:06:26 - ERROR] - tito: ❌ Assistant 2 failed to start: Telegram says: [406 AUTH_KEY_DUPLICATED] - The same authorization key (session file) was used in more than one place simultaneously, the current session was invalidated by the server for security reasons! You must delete your session file and log in again with your phone number or bot token. (caused by "InvokeWithLayer")
+[28-Aug-26 10:06:26 - ERROR] - tito:    This could be due to:
+[28-Aug-26 10:06:26 - ERROR] - tito:    • Invalid session string (STRING_SESSION2)
+[28-Aug-26 10:06:26 - ERROR] - tito:    • Session logged out from another device
+[28-Aug-26 10:06:26 - ERROR] - tito:    • Network/connectivity issues
+[28-Aug-26 10:06:26 - ERROR] - tito: ❌ No PyTgCalls clients were started!
+[28-Aug-26 10:06:26 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[28-Aug-26 10:06:26 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[28-Aug-26 10:06:26 - INFO] - tito: 👑 Loaded 2 sudo users.
+[28-Aug-26 10:06:26 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[28-Aug-26 10:06:28 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[29-Aug-26 06:54:08 - INFO] - tito: 📁 Cache directories updated.
+[29-Aug-26 06:54:09 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[29-Aug-26 06:54:12 - INFO] - tito: ✅ Database connection successful. (2.40s)
+[29-Aug-26 06:54:12 - INFO] - tito: 📦 Loading database cache...
+[29-Aug-26 06:54:13 - INFO] - tito: ✅ Cache loaded: 1 chats, 11 users, 0 blacklisted.
+[29-Aug-26 06:54:14 - ERROR] - tito: Critical error in main: Telegram says: [401 USER_DEACTIVATED] - The current user has been deleted/deactivated. (caused by "updates.GetState")
+Traceback (most recent call last):
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\core\bot.py", line 82, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 95, in start
+    await self.invoke(raw.functions.updates.GetState())
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\advanced\invoke.py", line 107, in invoke
+    r = await session.invoke(
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 551, in invoke
+    return await self.send(query, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 514, in send
+    RPCError.raise_it(result, type(data))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\errors\rpc_error.py", line 91, in raise_it
+    raise getattr(
+    ...<5 lines>...
+      is_signed=is_signed)
+pyrogram.errors.exceptions.unauthorized_401.UserDeactivated: Telegram says: [401 USER_DEACTIVATED] - The current user has been deleted/deactivated. (caused by "updates.GetState")
+[29-Aug-26 06:54:14 - ERROR] - tito: Unexpected error caused bot to stop: Telegram says: [401 USER_DEACTIVATED] - The current user has been deleted/deactivated. (caused by "updates.GetState")
+Traceback (most recent call last):
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\__main__.py", line 95, in <module>
+    loop.run_until_complete(main())
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\__main__.py", line 36, in main
+    await app.boot()
+  File "C:\Users\Atia\OneDrive\Desktop\music_bot\tito\core\bot.py", line 82, in boot
+    await super().start()
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\utilities\start.py", line 95, in start
+    await self.invoke(raw.functions.updates.GetState())
+  File "C:\Python313\Lib\site-packages\pyrogram\methods\advanced\invoke.py", line 107, in invoke
+    r = await session.invoke(
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 551, in invoke
+    return await self.send(query, timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\session\session.py", line 514, in send
+    RPCError.raise_it(result, type(data))
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\site-packages\pyrogram\errors\rpc_error.py", line 91, in raise_it
+    raise getattr(
+    ...<5 lines>...
+      is_signed=is_signed)
+pyrogram.errors.exceptions.unauthorized_401.UserDeactivated: Telegram says: [401 USER_DEACTIVATED] - The current user has been deleted/deactivated. (caused by "updates.GetState")
+[29-Aug-26 06:55:29 - INFO] - tito: 📁 Cache directories updated.
+[29-Aug-26 06:55:29 - INFO] - tito: 🌐 Loaded languages: ar, en, si, ta, hi, ms, tl, ru
+[29-Aug-26 06:55:32 - INFO] - tito: ✅ Database connection successful. (2.10s)
+[29-Aug-26 06:55:33 - INFO] - tito: 📦 Loading database cache...
+[29-Aug-26 06:55:33 - INFO] - tito: ✅ Cache loaded: 1 chats, 11 users, 0 blacklisted.
+[29-Aug-26 06:55:38 - INFO] - tito: 🤖 Bot started successfully as @Angameibot
+[29-Aug-26 06:55:39 - INFO] - tito: 👤 Assistant 1 started as @noonaamusic
+[29-Aug-26 06:55:40 - INFO] - tito: 👤 Assistant 2 started as @kreizamusic
+[29-Aug-26 06:55:40 - INFO] - tito: 📞 PyTgCalls assistant 1 started.
+[29-Aug-26 06:55:41 - INFO] - tito: 📞 PyTgCalls assistant 2 started.
+[29-Aug-26 06:55:41 - INFO] - tito: 📞 PyTgCalls client(s) started: 2
+[29-Aug-26 06:55:41 - INFO] - tito: 🕌 Azan (prayer time) scheduler started.
+[29-Aug-26 06:55:41 - INFO] - tito: 🔌 Loaded 40 plugin modules.
+[29-Aug-26 06:55:41 - INFO] - tito: 👑 Loaded 2 sudo users.
+[29-Aug-26 06:55:41 - INFO] - tito: 
+🎉 Bot started successfully! Ready to play music! 🎵
+
+[29-Aug-26 06:55:41 - INFO] - tito: 🔄 Chat reconciliation done: removed 0 stale, classified 0.
+[29-Aug-26 06:56:19 - INFO] - tito: Session invalidated while sending now-playing panel for -1004387392097
