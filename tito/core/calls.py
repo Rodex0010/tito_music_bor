@@ -88,6 +88,17 @@ class TgCall(PyTgCalls):
         # One lock for each chat to avoid playback conflicts
         self._chat_locks = {}
 
+        # One lock per assistant slot (1/2/3). Two chats sharing the same
+        # assistant account must not run leave_call()/play() on that
+        # assistant's client at the exact same moment — PyTgCalls isn't
+        # safe against truly concurrent join/leave handshakes on one
+        # client instance. The lock is released right after the join
+        # succeeds/fails, so it does NOT block the two chats' audio from
+        # playing simultaneously afterwards, and does NOT stop one
+        # account from serving many chats at once — it only serializes
+        # the brief connect/reconnect step.
+        self._assistant_locks = {}
+
         # Session generation prevents stale background tasks
         self._session_gen = {}
 
@@ -106,6 +117,12 @@ class TgCall(PyTgCalls):
             self._chat_locks[chat_id] = asyncio.Lock()
 
         return self._chat_locks[chat_id]
+
+    def get_assistant_lock(self, num: int) -> asyncio.Lock:
+        if num not in self._assistant_locks:
+            self._assistant_locks[num] = asyncio.Lock()
+
+        return self._assistant_locks[num]
 
     # ==========================================================================
     # Edit Media With Retry
@@ -805,6 +822,36 @@ class TgCall(PyTgCalls):
         )
 
         # --------------------------------------------------------------
+        # Assistant-level lock
+        # --------------------------------------------------------------
+        # Only serializes the connect/reconnect handshake below for
+        # chats sharing this same assistant account, so two chats
+        # joining/leaving on one client at the exact same instant don't
+        # corrupt each other's connection. It's released right after the
+        # handshake finishes (success or failure) — the account still
+        # streams to every chat it's in fully in parallel afterwards.
+
+        assistant_num = await db.get_assistant_num(chat_id)
+
+        # If no assistant is connected at all, there's nothing to
+        # serialize against — client will be None and the calls below
+        # will simply fail fast through the normal error handling.
+        # IMPORTANT: never fall back to self.get_lock(chat_id) here —
+        # this function always runs with that same per-chat lock already
+        # held by the caller (play_media/play_next), so re-acquiring it
+        # would deadlock.
+        assistant_lock = (
+            self.get_assistant_lock(assistant_num)
+            if assistant_num is not None
+            else None
+        )
+
+        if assistant_lock is not None:
+            await assistant_lock.acquire()
+
+        _assistant_lock_released = assistant_lock is None
+
+        # --------------------------------------------------------------
         # Remove old/ghost stream
         # --------------------------------------------------------------
 
@@ -955,9 +1002,16 @@ class TgCall(PyTgCalls):
                     raise
 
             if not playback_started:
+                if not _assistant_lock_released:
+                    assistant_lock.release()
+                    _assistant_lock_released = True
                 raise RuntimeError(
                     "Playback could not be started."
                 )
+
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
 
             # ----------------------------------------------------------
             # Update playback position
@@ -1180,8 +1234,16 @@ class TgCall(PyTgCalls):
         # ==============================================================
         # Playback errors
         # ==============================================================
+        # Any exception landing here means we never reached the release
+        # point above, so make sure the assistant lock is freed — a
+        # failed join for one chat must not block other chats sharing
+        # the same assistant account.
 
         except FileNotFoundError:
+
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
 
             if message:
                 try:
@@ -1199,6 +1261,10 @@ class TgCall(PyTgCalls):
 
         except exceptions.NoActiveGroupCall:
 
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
+
             await self._stop_impl(
                 chat_id
             )
@@ -1212,6 +1278,10 @@ class TgCall(PyTgCalls):
                     pass
 
         except errors.RPCError as e:
+
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
 
             error_str = str(e)
 
@@ -1273,6 +1343,10 @@ class TgCall(PyTgCalls):
 
         except exceptions.NoAudioSourceFound:
 
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
+
             if message:
                 try:
                     await message.edit_text(
@@ -1286,6 +1360,10 @@ class TgCall(PyTgCalls):
             )
 
         except TransportParseException:
+
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
 
             logger.warning(
                 f"Transport not found for {chat_id} "
@@ -1309,6 +1387,10 @@ class TgCall(PyTgCalls):
             TelegramServerError,
         ):
 
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
+
             await self._stop_impl(
                 chat_id
             )
@@ -1322,6 +1404,10 @@ class TgCall(PyTgCalls):
                     pass
 
         except TimeoutError as e:
+
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
 
             logger.warning(
                 f"⏱️ Timeout joining voice chat "
@@ -1352,6 +1438,10 @@ class TgCall(PyTgCalls):
             )
 
         except Exception as e:
+
+            if not _assistant_lock_released:
+                assistant_lock.release()
+                _assistant_lock_released = True
 
             logger.error(
                 f"Unexpected error in play_media "
