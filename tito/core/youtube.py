@@ -593,7 +593,6 @@ class YouTube:
             # Mark this video as actively downloading so the periodic
             # cleanup sweep (cleanup.py) never deletes its file mid-write.
             self.active_downloads.add(video_id)
-            cookie = self.get_cookies()
             base_opts = {
                 "outtmpl": "downloads/%(id)s.%(ext)s",
                 "quiet": True,
@@ -656,38 +655,58 @@ class YouTube:
                     "postprocessors": [],
                 }
 
-            ydl_opts_cookie = {
-                **ydl_opts,
-                "cookiefile": cookie,
-            }
+            # Signals that mean "YouTube flagged this specific cookie/client
+            # combo as a bot", as opposed to a real "video doesn't exist"
+            # error. These are worth retrying with a different cookie file
+            # and/or client order - the same request often succeeds on the
+            # very next attempt once a fresh identity is used.
+            BOT_DETECTION_MARKERS = (
+                "sign in to confirm",
+                "not a bot",
+                "confirm you're not a bot",
+                "429",
+                "too many requests",
+            )
 
-            def _download(ydl_runtime_opts):
+            def _is_bot_detection(error_msg: str) -> bool:
+                low = error_msg.lower()
+                return any(marker in low for marker in BOT_DETECTION_MARKERS)
+
+            def _download(ydl_runtime_opts, bad_cookie_path: Optional[str]):
+                """Returns (file_path_or_None, bot_detected: bool)."""
                 ydl_instance = None
                 try:
                     ydl_instance = yt_dlp.YoutubeDL(ydl_runtime_opts)
-                    # Extract info
                     info = ydl_instance.extract_info(url, download=True)
                     if not info:
                         logger.error(f"❌ Failed to extract info for {video_id}")
-                        return None
-                    
+                        return None, False
+
                     time.sleep(0.5)
                     located = self._locate_download_file(video_id, video=video)
                     if located:
-                        return located
+                        return located, False
                     logger.error(f"❌ Download completed but file not found for: {video_id}")
-                    return None
+                    return None, False
                 except yt_dlp.utils.ExtractorError as ex:
                     error_msg = str(ex)
                     if "not available" in error_msg.lower():
                         logger.error(
                             "❌ Video not available: May be region-blocked or private.")
+                        return None, False
                     elif "age" in error_msg.lower():
                         logger.error(
                             "❌ Age-restricted video: Cookies required.")
+                        return None, False
+                    bot_detected = _is_bot_detection(error_msg)
+                    if bot_detected and bad_cookie_path:
+                        logger.warning(
+                            f"⚠️ Cookie {Path(bad_cookie_path).name} looks stale/blocked "
+                            f"(bot detection), dropping it and retrying with another one."
+                        )
                     else:
                         logger.error("❌ YouTube extraction failed: %s", ex)
-                    return None
+                    return None, bot_detected
                 except yt_dlp.utils.DownloadError as ex:
                     error_msg = str(ex)
                     recovered = self._locate_download_file(video_id, video=video)
@@ -695,31 +714,80 @@ class YouTube:
                         logger.warning(
                             f"⚠️ Renaming failed for {video_id}, using recovered file {Path(recovered).name}"
                         )
-                        return recovered
+                        return recovered, False
                     if "416" in error_msg or "Requested range not satisfiable" in error_msg:
-                        # HTTP 416 range error
                         logger.warning(f"⚠️ Range error for {video_id}, skipping")
+                        return None, False
+                    bot_detected = _is_bot_detection(error_msg)
+                    if bot_detected and bad_cookie_path:
+                        logger.warning(
+                            f"⚠️ Cookie {Path(bad_cookie_path).name} looks stale/blocked "
+                            f"(bot detection), dropping it and retrying with another one."
+                        )
                     else:
                         logger.warning(f"⚠️ Download error for {video_id}: {ex}")
-                        if recovered:
-                            logger.warning(
-                                f"⚠️ Using recovered file for {video_id} despite download error"
-                            )
-                            return recovered
-                    return None
+                    if recovered:
+                        logger.warning(
+                            f"⚠️ Using recovered file for {video_id} despite download error"
+                        )
+                        return recovered, False
+                    return None, bot_detected
                 except Exception as ex:
                     logger.warning(f"⚠️ Unexpected download error for {video_id}: {ex}")
-                    return None
+                    return None, False
                 finally:
-                    # Close yt-dlp safely
                     if ydl_instance:
                         try:
                             ydl_instance.close()
                         except Exception:
                             pass
 
-            # Start download thread
+            # Build the list of attempts to try, in order:
+            #   1. a random cookie file (if any are on disk)
+            #   2. up to 2 more *different* cookie files, if bot-detected
+            #   3. a final attempt with no cookie file at all - some videos
+            #      don't need one, and it's a last resort before giving up.
+            # Any cookie that trips bot-detection is deleted from disk so
+            # it's never handed out again by get_cookies().
+            tried_cookies: set[str] = set()
+            attempts_left = 3
+            result_path = None
+
             try:
-                return await asyncio.to_thread(_download, ydl_opts_cookie)
+                while attempts_left > 0:
+                    attempts_left -= 1
+                    cookie = self.get_cookies()
+                    if cookie and cookie in tried_cookies:
+                        # Ran out of fresh cookies to rotate through - fall
+                        # back to a cookie-less attempt instead of retrying
+                        # the exact same one.
+                        cookie = None
+                    if cookie:
+                        tried_cookies.add(cookie)
+
+                    ydl_opts_attempt = {**ydl_opts, "cookiefile": cookie}
+
+                    result_path, bot_detected = await asyncio.to_thread(
+                        _download, ydl_opts_attempt, cookie
+                    )
+
+                    if result_path:
+                        break
+
+                    if bot_detected and cookie:
+                        try:
+                            os.remove(cookie)
+                            if os.path.basename(cookie) in self.cookies:
+                                self.cookies.remove(os.path.basename(cookie))
+                        except Exception:
+                            pass
+
+                    if not bot_detected:
+                        # A non-bot-detection failure (video unavailable,
+                        # age restricted, etc.) won't be fixed by
+                        # retrying - stop.
+                        break
+
+                return result_path
             finally:
                 self.active_downloads.discard(video_id)
