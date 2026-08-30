@@ -213,7 +213,7 @@ class YouTube:
                         "quiet": True,
                         "noplaylist": True,
                         "extract_flat": "in_playlist",
-                        "extractor_args": {"youtube": {"player_client": ["tv", "android", "ios", "web"]}},
+                        
                 "js_runtimes": {"node": {}},
                         "cookiefile": cookie
                     }
@@ -250,7 +250,7 @@ class YouTube:
                     ydl_opts = {
                         "quiet": True,
                         "extract_flat": True,
-                        "extractor_args": {"youtube": {"player_client": ["tv", "android", "ios", "web"]}},
+                        
                 "js_runtimes": {"node": {}},
                         "cookiefile": cookie
                     }
@@ -319,7 +319,7 @@ class YouTube:
                 ydl_opts = {
                     "quiet": True,
                     "extract_flat": "in_playlist",
-                    "extractor_args": {"youtube": {"player_client": ["tv", "android", "ios", "web"]}},
+                    
                 "js_runtimes": {"node": {}},
                     "cookiefile": cookie
                 }
@@ -392,7 +392,7 @@ class YouTube:
             "extractor_retries": 3,
             "nocheckcertificate": True,
             "geo_bypass": True,
-            "extractor_args": {"youtube": {"player_client": ["tv", "android", "ios", "web"]}},
+            
                 "js_runtimes": {"node": {}},
         }
 
@@ -453,7 +453,7 @@ class YouTube:
                 # android/ios clients don't need the nsig/JS-signature challenge
                 # that the "web" client currently breaks on ("The page needs to
                 # be reloaded." errors) - so put them first and fall back to web.
-                "extractor_args": {"youtube": {"player_client": ["tv", "android", "ios", "web"]}},
+                
                 "js_runtimes": {"node": {}},
             }
 
@@ -622,7 +622,7 @@ class YouTube:
                 # android/ios clients skip the nsig/JS-signature challenge that
                 # the "web" client currently breaks on ("The page needs to be
                 # reloaded." errors) - try those first, fall back to web.
-                "extractor_args": {"youtube": {"player_client": ["tv", "android", "ios", "web"]}},
+                
             }
 
             if video:
