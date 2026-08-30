@@ -214,7 +214,6 @@ class YouTube:
                         "noplaylist": True,
                         "extract_flat": "in_playlist",
                         
-                "js_runtimes": {"deno": {}},
                         "cookiefile": cookie
                     }
                     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -251,7 +250,6 @@ class YouTube:
                         "quiet": True,
                         "extract_flat": True,
                         
-                "js_runtimes": {"deno": {}},
                         "cookiefile": cookie
                     }
                     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -320,7 +318,6 @@ class YouTube:
                     "quiet": True,
                     "extract_flat": "in_playlist",
                     
-                "js_runtimes": {"deno": {}},
                     "cookiefile": cookie
                 }
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -393,7 +390,6 @@ class YouTube:
             "nocheckcertificate": True,
             "geo_bypass": True,
             
-                "js_runtimes": {"deno": {}},
         }
 
         def _extract():
@@ -454,7 +450,6 @@ class YouTube:
                 # that the "web" client currently breaks on ("The page needs to
                 # be reloaded." errors) - so put them first and fall back to web.
                 
-                "js_runtimes": {"deno": {}},
             }
 
             def _extract_url():
@@ -596,7 +591,6 @@ class YouTube:
             base_opts = {
                 "outtmpl": "downloads/%(id)s.%(ext)s",
                 "quiet": True,
-                "js_runtimes": {"deno": {}},
                 "noplaylist": True,
                 "geo_bypass": True,
                 "no_warnings": True,
