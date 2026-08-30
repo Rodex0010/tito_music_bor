@@ -17,6 +17,7 @@
 
 import asyncio
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 import aiohttp
 
@@ -38,7 +39,14 @@ class PrayerScheduler:
     def __init__(self):
         self._task: asyncio.Task | None = None
 
-    async def _fetch_timings(self, city: str, country: str) -> dict | None:
+    async def _fetch_timings(self, city: str, country: str) -> tuple[dict, str] | None:
+        """Returns (timings, iana_timezone) for the given city, or None.
+
+        Aladhan returns clock-time strings ("15:42") that are already local
+        to the requested city, plus the IANA timezone name for that city in
+        data.meta.timezone. Both pieces are needed - the timings alone are
+        meaningless without knowing which timezone they're local to.
+        """
         params = {
             "city": city,
             "country": country,
@@ -50,7 +58,12 @@ class PrayerScheduler:
                     if resp.status != 200:
                         return None
                     data = await resp.json()
-                    return data.get("data", {}).get("timings")
+                    payload = data.get("data", {})
+                    timings = payload.get("timings")
+                    tz_name = payload.get("meta", {}).get("timezone")
+                    if not timings or not tz_name:
+                        return None
+                    return timings, tz_name
         except Exception as e:
             logger.warning(f"azan: failed fetching timings for {city},{country}: {e}")
             return None
@@ -96,13 +109,23 @@ class PrayerScheduler:
             logger.warning(f"azan: failed to play in {chat_id}: {e}")
 
     async def _schedule_chat_today(self, chat_id: int, city: str, country: str) -> None:
-        timings = await self._fetch_timings(city, country)
-        if not timings:
+        result = await self._fetch_timings(city, country)
+        if not result:
+            return
+        timings, tz_name = result
+
+        try:
+            tz = ZoneInfo(tz_name)
+        except Exception as e:
+            logger.warning(f"azan: unknown timezone '{tz_name}' for {city},{country}: {e}")
             return
 
-        now = datetime.now()
+        # "now" must be computed in the CITY's timezone, not the server's -
+        # otherwise every chat whose timezone differs from the server's
+        # gets prayer times off by the UTC offset difference.
+        now = datetime.now(tz)
         for key in PRAYERS:
-            raw = timings.get(key)  # e.g. "15:42"
+            raw = timings.get(key)  # e.g. "15:42" - already local to `tz`
             if not raw:
                 continue
             try:
