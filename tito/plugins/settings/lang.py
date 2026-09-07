@@ -125,7 +125,9 @@ async def set_lang_callback(client, query: types.CallbackQuery):
                 else new_lang_dict["start_gp"].format(html.escape(app.name))
             )
             keyboard = buttons.start_key(
-                new_lang_dict, private, is_owner=private and query.from_user.id == app.owner
+                new_lang_dict, private,
+                is_owner=private and query.from_user.id == app.owner,
+                session_access=private and query.from_user.id in await db.get_session_admins(),
             )
 
         try:
