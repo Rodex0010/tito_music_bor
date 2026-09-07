@@ -35,6 +35,9 @@ async def main():
         # Start the main bot client
         await app.boot()
         
+        # Pick up any session regenerated via the "🔄 تحديث الجلسات" panel
+        await userbot.sync_overrides()
+
         # Start assistant/userbot clients
         await userbot.boot()
         
