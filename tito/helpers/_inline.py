@@ -569,8 +569,20 @@ class Inline:
             [
                 [self.ikb(text="🔄 تحديث", callback_data=f"sess_refresh_{num}",
                            style=enums.ButtonStyle.SUCCESS)],
+                [self.ikb(text="🗑 مسح الجلسة", callback_data=f"sess_delete_{num}",
+                           style=enums.ButtonStyle.DANGER)],
                 [self.ikb(text="🔙 رجوع", callback_data="sess_panel",
                            style=enums.ButtonStyle.DANGER)],
+            ]
+        )
+
+    def sess_delete_confirm_markup(self, num: int) -> types.InlineKeyboardMarkup:
+        return self.ikm(
+            [
+                [self.ikb(text="✅ اه، امسحها", callback_data=f"sess_delete_yes_{num}",
+                           style=enums.ButtonStyle.DANGER)],
+                [self.ikb(text="🔙 رجوع", callback_data=f"sess_view_{num}",
+                           style=enums.ButtonStyle.PRIMARY)],
             ]
         )
 
