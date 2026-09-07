@@ -90,6 +90,10 @@ class MongoDB:
         self.azan = {}
         self.azandb = self.db.azan
 
+        # Assistant session overrides (created via the "🔄 تحديث الجلسات" panel)
+        # and the set of non-owner admins allowed to see/use that panel.
+        self.sessionsdb = self.db.sessions
+
     async def connect(self) -> None:
         # connect to the database and retry if it fails.
         max_retries = 3
@@ -572,6 +576,38 @@ class MongoDB:
     async def get_sudoers(self) -> list[int]:
         doc = await self.cache.find_one({"_id": "sudoers"})
         return doc.get("user_ids", []) if doc else []
+
+    # SESSION REFRESH PANEL
+    # ------------------------------------------------------------------------
+    # session_admins: non-owner users allowed to see/use "🔄 تحديث الجلسات".
+    # session_override_<n>: the latest regenerated STRING_SESSION for
+    # assistant <n>, so a restart keeps using the fresh session instead of
+    # falling back to the (now logged-out) one in .env.
+
+    async def get_session_admins(self) -> list[int]:
+        doc = await self.cache.find_one({"_id": "session_admins"})
+        return doc.get("user_ids", []) if doc else []
+
+    async def add_session_admin(self, user_id: int) -> None:
+        await self.cache.update_one(
+            {"_id": "session_admins"}, {"$addToSet": {"user_ids": user_id}}, upsert=True
+        )
+
+    async def del_session_admin(self, user_id: int) -> None:
+        await self.cache.update_one(
+            {"_id": "session_admins"}, {"$pull": {"user_ids": user_id}}
+        )
+
+    async def get_session_override(self, num: int) -> str | None:
+        doc = await self.sessionsdb.find_one({"_id": f"assistant_{num}"})
+        return doc.get("session") if doc else None
+
+    async def set_session_override(self, num: int, session_string: str) -> None:
+        await self.sessionsdb.update_one(
+            {"_id": f"assistant_{num}"},
+            {"$set": {"session": session_string, "updated_at": time()}},
+            upsert=True,
+        )
 
     # USER METHODS
     async def is_user(self, user_id: int) -> bool:
