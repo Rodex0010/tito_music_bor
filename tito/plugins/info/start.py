@@ -179,6 +179,10 @@ async def start(_, message: types.Message):
             private
             and message.from_user.id == app.owner
         ),
+        session_access=(
+            private
+            and message.from_user.id in await db.get_session_admins()
+        ),
     )
 
     # --------------------------------------------------------------------------
