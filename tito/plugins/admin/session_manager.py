@@ -115,18 +115,37 @@ async def _sess_panel(_, query: types.CallbackQuery):
     await _render_list(query.message, query.from_user.id)
 
 
+@app.on_callback_query(filters.regex(r"^sess_add$"))
+async def _sess_add(_, query: types.CallbackQuery):
+    if not await _allowed(query.from_user.id):
+        return await _deny(query)
+    await query.answer()
+    text = (
+        "<u><b>➕ اضافة جلسة</b></u>\n\n"
+        "اختار السلوت اللي عاوز تسجل دخول أسستنت جديد فيه:"
+    )
+    await _edit(query.message, text, buttons.sess_add_markup())
+
+
 @app.on_callback_query(filters.regex(r"^sess_view_[123]$"))
 async def _sess_view(_, query: types.CallbackQuery):
     if not await _allowed(query.from_user.id):
         return await _deny(query)
     await query.answer()
     num = int(query.data.rsplit("_", 1)[-1])
-    text = (
-        f"<u><b>👤 {_assistant_label(num)}</b></u>\n\n"
-        "دوس \"تحديث\" لو عاوز تسجّل دخول جديد للحساب ده.\n"
-        "الجلسة القديمة هتتلغي أوتوماتيك بعد ما الجلسة الجديدة تتظبط، عشان الحساب ميتجمدش."
-    )
-    await _edit(query.message, text, buttons.sess_detail_markup(num))
+    configured = bool(getattr(config, f"SESSION{num}", ""))
+    if configured:
+        text = (
+            f"<u><b>👤 {_assistant_label(num)}</b></u>\n\n"
+            "دوس \"تحديث\" لو عاوز تسجّل دخول جديد للحساب ده.\n"
+            "الجلسة القديمة هتتلغي أوتوماتيك بعد ما الجلسة الجديدة تتظبط، عشان الحساب ميتجمدش."
+        )
+    else:
+        text = (
+            f"<u><b>👤 Assistant {num}</b></u>\n\n"
+            "السلوت ده فاضي دلوقتي. دوس \"➕ تسجيل دخول\" وابعتلي رقم الحساب اللي عاوز تضيفه."
+        )
+    await _edit(query.message, text, buttons.sess_detail_markup(num, configured))
 
 
 # ------------------------------------------------------------------------------
@@ -192,11 +211,11 @@ async def _sess_delete_do(_, query: types.CallbackQuery):
     await db.del_session_override(num)
 
     text = (
-        f"<u><b>✅ اتمسحت جلسة: {_assistant_label(num)}</b></u>\n\n"
+        f"<u><b>✅ اتمسحت جلسة: Assistant {num}</b></u>\n\n"
         "الحساب سجل خروج والجلسة اتشالت خالص، مفيش حاجة هتفضل عالقة.\n"
-        "لو عاوز تفعّل الأسستنت ده تاني، دوس \"🔄 تحديث\" وسجل دخول جديد."
+        "لو عاوز تفعّل الأسستنت ده تاني، دوس \"➕ تسجيل دخول\" وسجل دخول جديد."
     )
-    await _edit(query.message, text, buttons.sess_detail_markup(num))
+    await _edit(query.message, text, buttons.sess_detail_markup(num, configured=False))
 
 
 @app.on_callback_query(filters.regex(r"^sess_cancel_[123]$"))
@@ -206,8 +225,9 @@ async def _sess_cancel(_, query: types.CallbackQuery):
     num = int(query.data.rsplit("_", 1)[-1])
     await _cleanup(query.from_user.id)
     await query.answer("تم الإلغاء.")
+    configured = bool(getattr(config, f"SESSION{num}", ""))
     text = f"<u><b>👤 {_assistant_label(num)}</b></u>"
-    await _edit(query.message, text, buttons.sess_detail_markup(num))
+    await _edit(query.message, text, buttons.sess_detail_markup(num, configured))
 
 
 @app.on_callback_query(filters.regex(r"^sess_noop$"))
