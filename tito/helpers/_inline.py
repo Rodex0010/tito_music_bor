@@ -555,6 +555,11 @@ class Inline:
             [self.ikb(text=f"👤 {label}", callback_data=f"sess_view_{num}")]
             for num, label in assistants
         ]
+        if not assistants:
+            rows.append(
+                [self.ikb(text="➕ اضافة جلسة", callback_data="sess_add",
+                           style=enums.ButtonStyle.SUCCESS)]
+            )
         if is_owner:
             rows.append(
                 [self.ikb(text="👥 صلاحيات التحديث", callback_data="sess_admins_0")]
@@ -564,17 +569,33 @@ class Inline:
         )
         return self.ikm(rows)
 
-    def sess_detail_markup(self, num: int) -> types.InlineKeyboardMarkup:
-        return self.ikm(
-            [
-                [self.ikb(text="🔄 تحديث", callback_data=f"sess_refresh_{num}",
-                           style=enums.ButtonStyle.SUCCESS)],
-                [self.ikb(text="🗑 مسح الجلسة", callback_data=f"sess_delete_{num}",
-                           style=enums.ButtonStyle.DANGER)],
-                [self.ikb(text="🔙 رجوع", callback_data="sess_panel",
-                           style=enums.ButtonStyle.DANGER)],
-            ]
+    def sess_add_markup(self) -> types.InlineKeyboardMarkup:
+        """Slot picker shown when there are no configured assistants yet."""
+        rows = [
+            [self.ikb(text=f"➕ Assistant {num}", callback_data=f"sess_view_{num}")]
+            for num in (1, 2, 3)
+        ]
+        rows.append(
+            [self.ikb(text="🔙 رجوع", callback_data="sess_panel",
+                       style=enums.ButtonStyle.DANGER)]
         )
+        return self.ikm(rows)
+
+    def sess_detail_markup(self, num: int, configured: bool = True) -> types.InlineKeyboardMarkup:
+        rows = [
+            [self.ikb(text="🔄 تحديث" if configured else "➕ تسجيل دخول",
+                       callback_data=f"sess_refresh_{num}", style=enums.ButtonStyle.SUCCESS)],
+        ]
+        if configured:
+            rows.append(
+                [self.ikb(text="🗑 مسح الجلسة", callback_data=f"sess_delete_{num}",
+                           style=enums.ButtonStyle.DANGER)]
+            )
+        rows.append(
+            [self.ikb(text="🔙 رجوع", callback_data="sess_panel",
+                       style=enums.ButtonStyle.DANGER)]
+        )
+        return self.ikm(rows)
 
     def sess_delete_confirm_markup(self, num: int) -> types.InlineKeyboardMarkup:
         return self.ikm(
