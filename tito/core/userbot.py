@@ -162,6 +162,49 @@ class Userbot(Client):
         await self.boot_client(num, new_client)
         return getattr(self, key)
 
+    async def remove_client(self, num: int) -> None:
+        """
+        Fully wipe assistant <num>'s session: log it out on Telegram's side
+        (so the string can never be reused / left half-alive), disconnect
+        it, and drop it from self.clients so nothing routes calls to it
+        anymore. This is the opposite of replace_client() - it leaves the
+        slot unconfigured instead of swapping in a new session, which is
+        what actually stops a bad/leftover session from sitting there
+        "frozen" (connected but unusable).
+        """
+        slots = {1: "one", 2: "two", 3: "three"}
+        key = slots[num]
+
+        old_client = getattr(self, key, None)
+        if old_client is not None:
+            self.clients = [c for c in self.clients if c is not old_client]
+            try:
+                if not old_client.is_connected:
+                    await old_client.connect()
+                await old_client.log_out()
+            except Exception as e:
+                logger.warning(f"Error logging out assistant {num} during delete: {e}")
+                try:
+                    if old_client.is_connected:
+                        await old_client.stop()
+                except Exception:
+                    pass
+
+        # Rebuild the slot as an empty, unconfigured client so the rest of
+        # the bot sees it exactly like a SESSION{num} that was never set.
+        name = f"HasiiTuneUB{num}"
+        setattr(
+            self,
+            key,
+            Client(
+                name=name,
+                api_id=config.API_ID,
+                api_hash=config.API_HASH,
+                session_string="",
+            ),
+        )
+        setattr(config, f"SESSION{num}", "")
+
     async def exit(self):
 
         # Asynchronously stops the assistants.
