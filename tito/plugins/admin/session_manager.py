@@ -155,6 +155,50 @@ async def _sess_refresh_start(_, query: types.CallbackQuery):
     await _edit(query.message, text, buttons.sess_login_cancel_markup(num))
 
 
+@app.on_callback_query(filters.regex(r"^sess_delete_[123]$"))
+async def _sess_delete_ask(_, query: types.CallbackQuery):
+    if not await _allowed(query.from_user.id):
+        return await _deny(query)
+    await query.answer()
+    num = int(query.data.rsplit("_", 1)[-1])
+    text = (
+        f"<u><b>🗑 مسح جلسة: {_assistant_label(num)}</b></u>\n\n"
+        "متأكد؟ الحساب ده هيتسجل خروج (log out) فورًا، والجلسة هتتمسح خالص من "
+        "قاعدة البيانات - مش هترجع تاني غير لو سجلت دخول جديد من \"🔄 تحديث\".\n\n"
+        "الخطوة دي عشان الجلسة متفضلش عالقة/متجمدة لو فيها مشكلة."
+    )
+    await _edit(query.message, text, buttons.sess_delete_confirm_markup(num))
+
+
+@app.on_callback_query(filters.regex(r"^sess_delete_yes_[123]$"))
+async def _sess_delete_do(_, query: types.CallbackQuery):
+    if not await _allowed(query.from_user.id):
+        return await _deny(query)
+    num = int(query.data.rsplit("_", 1)[-1])
+    await query.answer("🗑 بتتمسح...")
+
+    # If this same user (or anyone) had a login flow open on this slot,
+    # kill it first so we don't end up with a half-finished pending state
+    # pointing at a client we're about to remove.
+    for uid, state in list(pending.items()):
+        if state.get("num") == num:
+            await _cleanup(uid)
+
+    try:
+        await userbot.remove_client(num)
+    except Exception as e:
+        logger.warning(f"Couldn't cleanly remove assistant {num} session: {e}")
+
+    await db.del_session_override(num)
+
+    text = (
+        f"<u><b>✅ اتمسحت جلسة: {_assistant_label(num)}</b></u>\n\n"
+        "الحساب سجل خروج والجلسة اتشالت خالص، مفيش حاجة هتفضل عالقة.\n"
+        "لو عاوز تفعّل الأسستنت ده تاني، دوس \"🔄 تحديث\" وسجل دخول جديد."
+    )
+    await _edit(query.message, text, buttons.sess_detail_markup(num))
+
+
 @app.on_callback_query(filters.regex(r"^sess_cancel_[123]$"))
 async def _sess_cancel(_, query: types.CallbackQuery):
     if not await _allowed(query.from_user.id):
