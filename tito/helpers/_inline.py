@@ -283,7 +283,8 @@ class Inline:
         )
 
     def start_key(
-        self, lang: dict, private: bool = False, is_owner: bool = False
+        self, lang: dict, private: bool = False, is_owner: bool = False,
+        session_access: bool = False,
     ) -> types.InlineKeyboardMarkup:
         rows = [
             [
@@ -312,6 +313,24 @@ class Inline:
                     self.ikb(
                         text="🎛️ لوحة التحكم",
                         callback_data="owner_panel",
+                    ),
+                ]
+            )
+            rows.append(
+                [
+                    self.ikb(
+                        text="🔄 تحديث الجلسات",
+                        callback_data="sess_panel",
+                    ),
+                ]
+            )
+        elif private and session_access:
+            # Non-owner admin who was granted access to the sessions panel only.
+            rows.append(
+                [
+                    self.ikb(
+                        text="🔄 تحديث الجلسات",
+                        callback_data="sess_panel",
                     ),
                 ]
             )
@@ -523,6 +542,74 @@ class Inline:
                 ],
             ]
         )
+
+    # ==========================================================================
+    # SESSION REFRESH PANEL - "🔄 تحديث الجلسات"
+    # ==========================================================================
+
+    def sess_list_markup(
+        self, assistants: list[tuple[int, str]], is_owner: bool
+    ) -> types.InlineKeyboardMarkup:
+        """assistants: list of (num, label) for every configured assistant."""
+        rows = [
+            [self.ikb(text=f"👤 {label}", callback_data=f"sess_view_{num}")]
+            for num, label in assistants
+        ]
+        if is_owner:
+            rows.append(
+                [self.ikb(text="👥 صلاحيات التحديث", callback_data="sess_admins_0")]
+            )
+        rows.append(
+            [self.ikb(text="🔙 رجوع", callback_data="start", style=enums.ButtonStyle.DANGER)]
+        )
+        return self.ikm(rows)
+
+    def sess_detail_markup(self, num: int) -> types.InlineKeyboardMarkup:
+        return self.ikm(
+            [
+                [self.ikb(text="🔄 تحديث", callback_data=f"sess_refresh_{num}",
+                           style=enums.ButtonStyle.SUCCESS)],
+                [self.ikb(text="🔙 رجوع", callback_data="sess_panel",
+                           style=enums.ButtonStyle.DANGER)],
+            ]
+        )
+
+    def sess_login_cancel_markup(self, num: int) -> types.InlineKeyboardMarkup:
+        return self.ikm(
+            [[self.ikb(text="❌ إلغاء", callback_data=f"sess_cancel_{num}",
+                        style=enums.ButtonStyle.DANGER)]]
+        )
+
+    def sess_admins_markup(
+        self, sudoers: list[int], allowed: set[int], owner_id: int, page: int, has_next: bool
+    ) -> types.InlineKeyboardMarkup:
+        rows = []
+        for uid in sudoers:
+            if uid == owner_id:
+                continue
+            on = uid in allowed
+            rows.append(
+                [
+                    self.ikb(text=f"👤 {uid}", callback_data=f"sess_noop"),
+                    self.ikb(
+                        text="✅ ظاهر" if on else "◻️ مخفي",
+                        callback_data=f"sess_admin_tgl_{uid}_{page}",
+                        style=enums.ButtonStyle.SUCCESS if on else enums.ButtonStyle.PRIMARY,
+                    ),
+                ]
+            )
+        nav = []
+        if page > 0:
+            nav.append(self.ikb(text="◀️", callback_data=f"sess_admins_{page - 1}"))
+        if has_next:
+            nav.append(self.ikb(text="▶️", callback_data=f"sess_admins_{page + 1}"))
+        if nav:
+            rows.append(nav)
+        rows.append(
+            [self.ikb(text="🔙 رجوع", callback_data="sess_panel",
+                       style=enums.ButtonStyle.DANGER)]
+        )
+        return self.ikm(rows)
 
     def yt_key(self, link: str) -> types.InlineKeyboardMarkup:
         return self.ikm(
