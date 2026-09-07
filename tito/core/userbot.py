@@ -87,6 +87,39 @@ class Userbot(Client):
         self.clients.append(client)
         logger.info(f"👤 Assistant {num} started as @{client.username}")
 
+    async def sync_overrides(self):
+        """
+        Pull any regenerated session strings out of the DB (saved by the
+        "🔄 تحديث الجلسات" panel) and rebuild the matching Client *before*
+        boot() starts it, so a restart keeps using the fresh session instead
+        of the old one still sitting in .env.
+        Must run after db.connect() and before userbot.boot().
+        """
+        from tito import db, logger as _logger  # deferred: db doesn't exist yet at import time
+
+        slots = {1: "one", 2: "two", 3: "three"}
+        for num, key in slots.items():
+            try:
+                override = await db.get_session_override(num)
+            except Exception as e:
+                _logger.warning(f"Couldn't check session override for assistant {num}: {e}")
+                continue
+            if not override:
+                continue
+            name = f"HasiiTuneUB{num}"
+            setattr(
+                self,
+                key,
+                Client(
+                    name=name,
+                    api_id=config.API_ID,
+                    api_hash=config.API_HASH,
+                    session_string=override,
+                ),
+            )
+            setattr(config, f"SESSION{num}", override)
+            _logger.info(f"🔄 Loaded a refreshed session for assistant {num} from the database.")
+
     async def boot(self):
 
         #Asynchronously starts the assistants.
@@ -96,6 +129,38 @@ class Userbot(Client):
             await self.boot_client(2, self.two)
         if config.SESSION3:
             await self.boot_client(3, self.three)
+
+    async def replace_client(self, num: int, new_session_string: str) -> Client:
+        """
+        Hot-swap assistant <num> to a brand-new session string without a
+        restart: stop the old client, boot a fresh one, and keep it in
+        self.clients so the rest of the bot (call routing, /leave, etc.)
+        picks it up transparently.
+        """
+        slots = {1: "one", 2: "two", 3: "three"}
+        key = slots[num]
+
+        old_client = getattr(self, key, None)
+        if old_client is not None:
+            self.clients = [c for c in self.clients if c is not old_client]
+            try:
+                if old_client.is_connected:
+                    await old_client.stop()
+            except Exception as e:
+                logger.warning(f"Error stopping old assistant {num} before swap: {e}")
+
+        name = f"HasiiTuneUB{num}"
+        new_client = Client(
+            name=name,
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            session_string=new_session_string,
+        )
+        setattr(self, key, new_client)
+        setattr(config, f"SESSION{num}", new_session_string)
+
+        await self.boot_client(num, new_client)
+        return getattr(self, key)
 
     async def exit(self):
 
