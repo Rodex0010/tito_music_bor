@@ -609,6 +609,11 @@ class MongoDB:
             upsert=True,
         )
 
+    async def del_session_override(self, num: int) -> None:
+        # Wipes the saved override so a restart doesn't pull the deleted
+        # session back out of the DB and reconnect it.
+        await self.sessionsdb.delete_one({"_id": f"assistant_{num}"})
+
     # USER METHODS
     async def is_user(self, user_id: int) -> bool:
         return user_id in self.users
