@@ -43,7 +43,11 @@ async def _start_callback(_, query: types.CallbackQuery):
     _text = query.lang["start_pm"].format(
         html.escape(query.from_user.first_name), html.escape(app.name)
     )
-    key = buttons.start_key(query.lang, True, is_owner=query.from_user.id == app.owner)
+    key = buttons.start_key(
+        query.lang, True,
+        is_owner=query.from_user.id == app.owner,
+        session_access=query.from_user.id in await db.get_session_admins(),
+    )
     
     try:
         await query.edit_message_caption(
