@@ -270,15 +270,28 @@ class MongoDB:
         return self.assistant.get(chat_id)
 
     async def get_client(self, chat_id: int):
-        """Return the PyTgCalls-wrapped assistant client assigned to this chat.
+        """Return the raw Pyrogram userbot Client assigned to this chat.
 
-        This used to duplicate get_assistant()'s logic but looked the client
-        up through the removed userbot.one/.two/.three attributes, so it
-        always returned None even when assistants were connected. get_assistant()
-        already does the same job correctly via tune.clients_by_num, so just
-        reuse it instead of keeping a second, stale code path in sync.
+        NOTE: this is intentionally different from get_assistant(), which
+        returns the PyTgCalls-wrapped client (used for .play()/.pause()/etc).
+        Callers of get_client() need actual Client methods/attributes like
+        .id, .leave_chat(), .join_chat() - a PyTgCalls object has none of
+        those, so simply delegating to get_assistant() (as an earlier fix
+        did) breaks every caller with AttributeError: 'PyTgCalls' object has
+        no attribute 'id'. The two must stay separate; both read from the
+        same self.assistant[chat_id] assignment so they always agree on
+        *which* assistant number is serving this chat.
         """
-        return await self.get_assistant(chat_id)
+        if chat_id not in self.assistant:
+            await self.get_assistant(chat_id)
+
+        if self.assistant[chat_id] not in self._connected_assistant_nums():
+            await self.set_assistant(chat_id)
+
+        if self.assistant[chat_id] is None:
+            return None
+
+        return userbot.by_num.get(self.assistant[chat_id])
 
     # BLACKLIST METHODS
     async def add_blacklist(self, chat_id: int) -> None:
