@@ -37,6 +37,8 @@ class Config:
         self.SESSION2: str = getenv("STRING_SESSION2", "")
         self.SESSION3: str = getenv("STRING_SESSION3", "")
 
+        self.MAX_ASSISTANTS: int = int(getenv("MAX_ASSISTANTS", "3"))
+
         self.PRAYER_METHOD: int = int(getenv("PRAYER_METHOD", "5"))
 
         # Path or URL to the azan (call to prayer) audio file that gets
