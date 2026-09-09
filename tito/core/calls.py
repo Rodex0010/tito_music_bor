@@ -907,9 +907,17 @@ class TgCall(PyTgCalls):
                             f"{attempt + 1}/{max_retries}"
                         )
 
+                        if assistant_lock is not None and not _assistant_lock_released:
+                            assistant_lock.release()
+                            _assistant_lock_released = True
+
                         await asyncio.sleep(
                             retry_delay
                         )
+
+                        if assistant_lock is not None:
+                            await assistant_lock.acquire()
+                            _assistant_lock_released = False
 
                         continue
 
@@ -931,9 +939,17 @@ class TgCall(PyTgCalls):
                                 f"{attempt + 1}/{max_retries}"
                             )
 
+                            if assistant_lock is not None and not _assistant_lock_released:
+                                assistant_lock.release()
+                                _assistant_lock_released = True
+
                             await asyncio.sleep(
                                 retry_delay
                             )
+
+                            if assistant_lock is not None:
+                                await assistant_lock.acquire()
+                                _assistant_lock_released = False
 
                             continue
 
@@ -958,9 +974,17 @@ class TgCall(PyTgCalls):
                         except Exception:
                             pass
 
+                        if assistant_lock is not None and not _assistant_lock_released:
+                            assistant_lock.release()
+                            _assistant_lock_released = True
+
                         await asyncio.sleep(
                             retry_delay + 1
                         )
+
+                        if assistant_lock is not None:
+                            await assistant_lock.acquire()
+                            _assistant_lock_released = False
 
                         continue
 
@@ -993,9 +1017,17 @@ class TgCall(PyTgCalls):
                         except Exception:
                             pass
 
+                        if assistant_lock is not None and not _assistant_lock_released:
+                            assistant_lock.release()
+                            _assistant_lock_released = True
+
                         await asyncio.sleep(
                             retry_delay
                         )
+
+                        if assistant_lock is not None:
+                            await assistant_lock.acquire()
+                            _assistant_lock_released = False
 
                         continue
 
