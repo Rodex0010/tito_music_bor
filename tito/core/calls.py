@@ -2264,6 +2264,51 @@ class TgCall(PyTgCalls):
                     f"update handler error: {e}"
                 )
 
+    async def register_client(self, num: int, ub) -> None:
+        """
+        (Re)wrap a userbot client with PyTgCalls and hot-plug it into the
+        routing tables (self.clients / self.clients_by_num).
+
+        boot() only ever runs once at startup, so it only wraps whichever
+        assistants were configured back then. When userbot.replace_client()
+        or userbot.remove_client() swaps a session live (via the "🔄 تحديث
+        الجلسات" panel), the assistant's Pyrogram identity changes but
+        nothing tells THIS class about it — clients_by_num[num] keeps
+        pointing at the old, now-dead PyTgCalls wrapper (or nothing at all,
+        if that slot was never configured at boot time). get_assistant()
+        then returns None for that chat, and client.play() blows up with
+        'NoneType' object has no attribute 'play'.
+
+        Call this right after userbot.replace_client()/remove_client() so
+        the PyTgCalls layer stays in sync with whatever session is live.
+        """
+        old = self.clients_by_num.pop(num, None)
+        if old is not None:
+            self.clients = [c for c in self.clients if c is not old]
+            try:
+                await old.stop()
+            except Exception as e:
+                logger.warning(
+                    f"Error stopping old PyTgCalls client for assistant {num}: {e}"
+                )
+
+        if ub is None or not getattr(ub, "is_connected", False):
+            # Slot was removed / isn't connected - leave it unregistered.
+            return
+
+        try:
+            client = PyTgCalls(ub, cache_duration=100)
+            await client.start()
+            self.clients.append(client)
+            self.clients_by_num[num] = client
+            await self.decorators(client)
+            logger.info(f"📞 PyTgCalls assistant {num} (re)registered.")
+        except Exception as e:
+            logger.error(
+                f"Failed to (re)register PyTgCalls assistant {num}: {e}",
+                exc_info=True,
+            )
+
     async def boot(self) -> None:
 
         # Prevent PyTgCalls notice
