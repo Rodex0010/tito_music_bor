@@ -150,11 +150,16 @@ async def _sess_add(_, query: types.CallbackQuery):
     if not await _allowed(query.from_user.id):
         return await _deny(query)
     await query.answer()
+
+    empty_slots = [num for num in (1, 2, 3) if not getattr(config, f"SESSION{num}", "")]
+    if not empty_slots:
+        return await _render_list(query.message, query.from_user.id)
+
     text = (
         "<u><b>➕ اضافة جلسة</b></u>\n\n"
         "اختار السلوت اللي عاوز تسجل دخول أسستنت جديد فيه:"
     )
-    await _edit(query.message, text, buttons.sess_add_markup())
+    await _edit(query.message, text, buttons.sess_add_markup(empty_slots))
 
 
 @app.on_callback_query(filters.regex(r"^sess_view_[123]$"))
