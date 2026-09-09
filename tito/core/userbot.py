@@ -160,6 +160,10 @@ class Userbot(Client):
         setattr(config, f"SESSION{num}", new_session_string)
 
         await self.boot_client(num, new_client)
+
+        from tito import tune  # deferred: tune doesn't exist yet at import time
+        await tune.register_client(num, new_client)
+
         return getattr(self, key)
 
     async def remove_client(self, num: int) -> None:
@@ -204,6 +208,9 @@ class Userbot(Client):
             ),
         )
         setattr(config, f"SESSION{num}", "")
+
+        from tito import tune  # deferred: tune doesn't exist yet at import time
+        await tune.register_client(num, None)
 
     async def exit(self):
 
