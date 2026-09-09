@@ -214,19 +214,33 @@ class MongoDB:
         # streams from ONE client, so spreading active calls across
         # separate accounts avoids one chat's stream interfering with
         # another's (premature "stream ended", cross-attributed events).
-        # Only fall back to a busy assistant if every connected one is
-        # already hosting a call.
+        #
+        # If every connected assistant already has at least one call,
+        # don't just pick at random among them - count how many active
+        # chats each one is currently carrying and pile the new chat
+        # onto whichever has the FEWEST. This spreads unavoidable
+        # overflow evenly (e.g. 4 chats across 3 assistants ends up
+        # 2/1/1, never 2/2/0 or worse) instead of risking one account
+        # getting stacked with several extra chats while another idle-
+        # ish one sits underused - fewer chats sharing any single
+        # account means a lower chance of that account's stream
+        # stuttering under load.
         # ------------------------------------------------------------
-        busy_nums = {
-            self.assistant[c]
-            for c in self.active_calls
-            if c in self.assistant and self.assistant[c] is not None
-        }
+        load = {n: 0 for n in nums}
+        for c in self.active_calls:
+            n = self.assistant.get(c)
+            if n in load:
+                load[n] += 1
 
-        idle_nums = [n for n in nums if n not in busy_nums]
-        candidates = idle_nums or nums
+        idle_nums = [n for n in nums if load[n] == 0]
 
-        num = choice(candidates)
+        if idle_nums:
+            num = choice(idle_nums)
+        else:
+            min_load = min(load.values())
+            least_loaded = [n for n, l in load.items() if l == min_load]
+            num = choice(least_loaded)
+
         await self.assistantdb.update_one(
             {"_id": chat_id},
             {"$set": {"num": num}},
