@@ -2,23 +2,33 @@
 # session_manager.py - "🔄 تحديث الجلسات" Session Refresh Panel
 # ==============================================================================
 # Lets the OWNER, and any admin the owner explicitly grants access to, replace
-# an assistant's STRING_SESSION without touching the server:
+# an assistant's STRING_SESSION without touching the server. There are two
+# ways to set/replace an assistant's session:
 #
-#   🔄 تحديث الجلسات -> pick assistant -> 🔄 تحديث
-#     -> send phone number -> send the login code Telegram sent you
-#     -> (send 2FA password, only if the account has one)
+#   1) 🔄 تحديث  - the bot logs the account in itself:
+#        pick assistant -> 🔄 تحديث -> send phone number
+#        -> send the login code Telegram sent you
+#        -> (send 2FA password, only if the account has one)
 #
-# On success:
+#   2) 📋 لصق جلسة جاهزة - someone ALREADY has a Pyrogram string session
+#      (e.g. generated themselves with a tool like
+#      https://telegram.tools/session-string-generator#pyrogram,user) and
+#      just pastes it to the bot directly - no phone/code needed here at
+#      all. The bot only validates it works before saving it.
+#
+# On success (either path):
 #   1. The OLD session is logged out (log_out()), so it can never be reused -
 #      this is what stops the account from ever having two live logins at
 #      once, which is what gets accounts flagged/limited by Telegram.
 #   2. The NEW session replaces it live (no restart needed) and is saved to
 #      the DB so it survives one (see userbot.sync_overrides()).
 #
-# Who sees the "🔄 تحديث الجلسات" button:
+# Who is ALLOWED to open this panel and submit a session at all:
 #   - The owner, always.
 #   - Any admin in db.session_admins - toggled by the owner from
 #     🔄 تحديث الجلسات -> 👥 صلاحيات التحديث.
+#   Nobody outside that list can trigger these handlers - the _allowed()
+#   check below runs before every single callback and message handler here.
 # ==============================================================================
 
 from pyrogram import Client, errors, filters, types
@@ -32,10 +42,11 @@ SLOT = {1: "one", 2: "two", 3: "three"}
 
 # pending[user_id] = {
 #   "num": int,               assistant slot being refreshed
-#   "stage": "phone"|"code"|"password",
-#   "client": Client,         ephemeral, in-memory login client
+#   "stage": "phone"|"code"|"password"|"paste_string",
+#   "client": Client,         ephemeral, in-memory login/validation client
 #   "phone": str,
 #   "phone_code_hash": str,
+#   "session_string": str,    only set on the "paste_string" path
 #   "panel_msg": Message,     the panel message we keep editing
 # }
 pending: dict[int, dict] = {}
@@ -174,6 +185,30 @@ async def _sess_refresh_start(_, query: types.CallbackQuery):
     await _edit(query.message, text, buttons.sess_login_cancel_markup(num))
 
 
+@app.on_callback_query(filters.regex(r"^sess_paste_[123]$"))
+async def _sess_paste_start(_, query: types.CallbackQuery):
+    if not await _allowed(query.from_user.id):
+        return await _deny(query)
+    num = int(query.data.rsplit("_", 1)[-1])
+    await query.answer()
+
+    await _cleanup(query.from_user.id)
+    pending[query.from_user.id] = {
+        "num": num,
+        "stage": "paste_string",
+        "client": None,
+        "panel_msg": query.message,
+    }
+    text = (
+        f"<u><b>📋 لصق جلسة جاهزة: {_assistant_label(num)}</b></u>\n\n"
+        "ابعتلي الـ Pyrogram String Session بتاعة الحساب اللي عاوز تضيفه كأسستنت.\n\n"
+        "لو معندكش واحدة جاهزة، استخرجها من هنا:\n"
+        "https://telegram.tools/session-string-generator#pyrogram,user\n\n"
+        "⚠️ الجلسة دي بتدّي وصول كامل للحساب، ابعتها هنا بس ولحد تثق فيه."
+    )
+    await _edit(query.message, text, buttons.sess_login_cancel_markup(num))
+
+
 @app.on_callback_query(filters.regex(r"^sess_delete_[123]$"))
 async def _sess_delete_ask(_, query: types.CallbackQuery):
     if not await _allowed(query.from_user.id):
@@ -281,6 +316,82 @@ async def _finalize(user_id: int) -> None:
         "الجلسة القديمة اتلغت والجديدة شغالة دلوقتي بدون ما تعمل ريستارت للبوت."
     )
     await _edit(panel_msg, text, buttons.sess_detail_markup(num))
+
+
+async def _finalize_pasted(user_id: int, new_session: str) -> None:
+    """Same swap-in logic as _finalize(), but the session string was pasted
+    directly by the user instead of produced by an in-bot phone/code login."""
+    state = pending[user_id]
+    num = state["num"]
+    panel_msg = state["panel_msg"]
+
+    # Log out the OLD session first, so the account never has both the old
+    # and new session alive at the same time (that's what trips bans/limits).
+    old_client = getattr(userbot, SLOT[num], None)
+    if old_client is not None:
+        try:
+            if not old_client.is_connected:
+                await old_client.connect()
+            await old_client.log_out()
+        except Exception as e:
+            logger.warning(f"Couldn't cleanly log out old assistant {num} session: {e}")
+
+    # Bring the new session online in its place and persist it.
+    await userbot.replace_client(num, new_session)
+    await db.set_session_override(num, new_session)
+
+    pending.pop(user_id, None)
+
+    text = (
+        f"<u><b>✅ اتضافت جلسة: {_assistant_label(num)}</b></u>\n\n"
+        "الجلسة اللي بعتهالي اتظبطت وشغالة دلوقتي بدون ما تعمل ريستارت للبوت."
+    )
+    await _edit(panel_msg, text, buttons.sess_detail_markup(num))
+
+
+@app.on_message(_pending_stage_filter("paste_string"))
+async def _sess_receive_pasted(_, m: types.Message):
+    if not m.text:
+        return await m.reply_text("⚠️ ابعت الجلسة كنص.")
+    state = pending[m.from_user.id]
+    session_string = m.text.strip()
+    try:
+        await m.delete()
+    except Exception:
+        pass
+
+    # Validate the pasted string actually works before touching anything
+    # live - connect a throwaway client with it and confirm we can log in.
+    tmp = Client(
+        name=f"sess_paste_{m.from_user.id}",
+        api_id=config.API_ID,
+        api_hash=config.API_HASH,
+        session_string=session_string,
+        in_memory=True,
+    )
+    try:
+        await tmp.connect()
+        me = await tmp.get_me()
+    except Exception as e:
+        try:
+            await tmp.disconnect()
+        except Exception:
+            pass
+        return await state["panel_msg"].edit_text(
+            f"❌ الجلسة دي مش شغالة أو منتهية: {type(e).__name__}\n"
+            "ابعت جلسة صحيحة تاني، أو دوس إلغاء."
+        )
+
+    try:
+        await tmp.disconnect()
+    except Exception:
+        pass
+
+    logger.info(
+        f"Assistant {state['num']} session pasted by user {m.from_user.id}, "
+        f"validated as account {getattr(me, 'id', '?')}."
+    )
+    await _finalize_pasted(m.from_user.id, session_string)
 
 
 @app.on_message(_pending_stage_filter("phone"))
