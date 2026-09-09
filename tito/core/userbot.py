@@ -3,8 +3,15 @@
 # ==============================================================================
 # This file manages assistant accounts (userbots) that join voice chats to play music.
 # Assistants are user accounts (not bots) that can join and stream audio/video.
-# You can configure up to 3 assistants using SESSION1, SESSION2, SESSION3 variables.
+# The number of assistants is NOT fixed at 3 anymore: set config.MAX_ASSISTANTS
+# (env var MAX_ASSISTANTS, default 20) to however many slots you want, then fill
+# in STRING_SESSION (slot 1), STRING_SESSION2, STRING_SESSION3, ... up to that
+# number. Empty slots are simply ignored at boot and stay available for the
+# "🔄 تحديث الجلسات" panel to fill in later without a restart.
+# More assistants = ability to serve more groups simultaneously.
 # ==============================================================================
+
+import asyncio
 
 from pyrogram import Client
 
@@ -14,51 +21,43 @@ from tito import config, logger
 class Userbot(Client):
     def __init__(self):
         """
-        Initialize userbot with multiple assistant clients.
+        Initialize userbot with as many assistant clients as MAX_ASSISTANTS
+        allows.
 
-        Creates up to 3 assistant clients based on available session strings.
-        Each assistant can independently join voice chats and stream music.
-        More assistants = ability to serve more groups simultaneously.
+        Every slot from 1..MAX_ASSISTANTS gets a Client object up front
+        (even if its session string is empty), so the session-management
+        panel can always offer it as an "add assistant here" target and
+        replace_client()/remove_client() never have to special-case a slot
+        that didn't exist yet. Each assistant can independently join voice
+        chats and stream music.
         """
-        self.clients = []  # List to store all active assistant clients
+        self.clients = []  # List of assistant clients that started successfully
 
-        # Map of client names to their session string config keys
-        clients = {"one": "SESSION1", "two": "SESSION2", "three": "SESSION3"}
+        # by_num[num] -> Client for every slot 1..MAX_ASSISTANTS (whether or
+        # not it currently has a session string). This replaces the old
+        # fixed self.one / self.two / self.three attributes.
+        self.by_num: dict[int, Client] = {}
 
-        # Create a Pyrogram client for each configured session
-        for key, string_key in clients.items():
-            # Unique name: HasiiTuneUB1, HasiiTuneUB2, etc.
-            name = f"HasiiTuneUB{key[-1]}"
-            # Get session string from config
-            session = getattr(config, string_key)
+        for num in range(1, config.MAX_ASSISTANTS + 1):
+            self.by_num[num] = self._build_client(num, getattr(config, f"SESSION{num}", ""))
 
-            # Create and attach the client as an attribute (self.one, self.two, self.three)
-            setattr(
-                self,
-                key,
-                Client(
-                    name=name,
-                    api_id=config.API_ID,
-                    api_hash=config.API_HASH,
-                    session_string=session,  # Pyrogram session string
-                ),
-            )
+    @staticmethod
+    def _build_client(num: int, session: str) -> Client:
+        return Client(
+            name=f"HasiiTuneUB{num}",
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            session_string=session,  # Pyrogram session string, may be empty
+        )
 
     async def boot_client(self, num: int, ub: Client):
         """
         Boot a client and perform initial setup.
         Args:
-            num (int): The client number to boot (1, 2, or 3).
+            num (int): The assistant slot number to boot.
             ub (Client): The userbot client instance.
-        Raises:
-            SystemExit: If the client fails to send a message in the log group.
         """
-        clients = {
-            1: self.one,
-            2: self.two,
-            3: self.three,
-        }
-        client = clients[num]
+        client = ub
         try:
             await client.start()
         except Exception as e:
@@ -97,8 +96,7 @@ class Userbot(Client):
         """
         from tito import db, logger as _logger  # deferred: db doesn't exist yet at import time
 
-        slots = {1: "one", 2: "two", 3: "three"}
-        for num, key in slots.items():
+        for num in range(1, config.MAX_ASSISTANTS + 1):
             try:
                 override = await db.get_session_override(num)
             except Exception as e:
@@ -106,41 +104,34 @@ class Userbot(Client):
                 continue
             if not override:
                 continue
-            name = f"HasiiTuneUB{num}"
-            setattr(
-                self,
-                key,
-                Client(
-                    name=name,
-                    api_id=config.API_ID,
-                    api_hash=config.API_HASH,
-                    session_string=override,
-                ),
-            )
+            self.by_num[num] = self._build_client(num, override)
             setattr(config, f"SESSION{num}", override)
             _logger.info(f"🔄 Loaded a refreshed session for assistant {num} from the database.")
 
     async def boot(self):
 
-        #Asynchronously starts the assistants.
-        if config.SESSION1:
-            await self.boot_client(1, self.one)
-        if config.SESSION2:
-            await self.boot_client(2, self.two)
-        if config.SESSION3:
-            await self.boot_client(3, self.three)
+        # Asynchronously starts every configured assistant (any slot that
+        # has a non-empty session string), in parallel rather than one at a
+        # time, so N assistants come online in roughly the time one does
+        # instead of N times as long.
+        slots = [
+            num for num in range(1, config.MAX_ASSISTANTS + 1)
+            if getattr(config, f"SESSION{num}", "")
+        ]
+        await asyncio.gather(
+            *(self.boot_client(num, self.by_num[num]) for num in slots)
+        )
 
     async def replace_client(self, num: int, new_session_string: str) -> Client:
         """
         Hot-swap assistant <num> to a brand-new session string without a
         restart: stop the old client, boot a fresh one, and keep it in
         self.clients so the rest of the bot (call routing, /leave, etc.)
-        picks it up transparently.
+        picks it up transparently. Works for any slot up to MAX_ASSISTANTS,
+        including one that was never configured before (adding a new
+        assistant).
         """
-        slots = {1: "one", 2: "two", 3: "three"}
-        key = slots[num]
-
-        old_client = getattr(self, key, None)
+        old_client = self.by_num.get(num)
         if old_client is not None:
             self.clients = [c for c in self.clients if c is not old_client]
             try:
@@ -149,14 +140,8 @@ class Userbot(Client):
             except Exception as e:
                 logger.warning(f"Error stopping old assistant {num} before swap: {e}")
 
-        name = f"HasiiTuneUB{num}"
-        new_client = Client(
-            name=name,
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=new_session_string,
-        )
-        setattr(self, key, new_client)
+        new_client = self._build_client(num, new_session_string)
+        self.by_num[num] = new_client
         setattr(config, f"SESSION{num}", new_session_string)
 
         await self.boot_client(num, new_client)
@@ -164,7 +149,7 @@ class Userbot(Client):
         from tito import tune  # deferred: tune doesn't exist yet at import time
         await tune.register_client(num, new_client)
 
-        return getattr(self, key)
+        return self.by_num[num]
 
     async def remove_client(self, num: int) -> None:
         """
@@ -176,10 +161,7 @@ class Userbot(Client):
         what actually stops a bad/leftover session from sitting there
         "frozen" (connected but unusable).
         """
-        slots = {1: "one", 2: "two", 3: "three"}
-        key = slots[num]
-
-        old_client = getattr(self, key, None)
+        old_client = self.by_num.get(num)
         if old_client is not None:
             self.clients = [c for c in self.clients if c is not old_client]
             try:
@@ -196,17 +178,7 @@ class Userbot(Client):
 
         # Rebuild the slot as an empty, unconfigured client so the rest of
         # the bot sees it exactly like a SESSION{num} that was never set.
-        name = f"HasiiTuneUB{num}"
-        setattr(
-            self,
-            key,
-            Client(
-                name=name,
-                api_id=config.API_ID,
-                api_hash=config.API_HASH,
-                session_string="",
-            ),
-        )
+        self.by_num[num] = self._build_client(num, "")
         setattr(config, f"SESSION{num}", "")
 
         from tito import tune  # deferred: tune doesn't exist yet at import time
@@ -214,23 +186,17 @@ class Userbot(Client):
 
     async def exit(self):
 
-        # Asynchronously stops the assistants.
-        try:
-            if config.SESSION1 and hasattr(self.one, 'is_connected') and self.one.is_connected:
-                await self.one.stop()
-        except Exception as e:
-            logger.warning(f"Error stopping assistant 1: {e}")
-        
-        try:
-            if config.SESSION2 and hasattr(self.two, 'is_connected') and self.two.is_connected:
-                await self.two.stop()
-        except Exception as e:
-            logger.warning(f"Error stopping assistant 2: {e}")
-        
-        try:
-            if config.SESSION3 and hasattr(self.three, 'is_connected') and self.three.is_connected:
-                await self.three.stop()
-        except Exception as e:
-            logger.warning(f"Error stopping assistant 3: {e}")
-        
+        # Asynchronously stops every connected assistant, all at once
+        # instead of one at a time.
+        async def _stop(num: int, client: Client):
+            try:
+                if getattr(config, f"SESSION{num}", "") and getattr(client, "is_connected", False):
+                    await client.stop()
+            except Exception as e:
+                logger.warning(f"Error stopping assistant {num}: {e}")
+
+        await asyncio.gather(
+            *(_stop(num, client) for num, client in self.by_num.items())
+        )
+
         logger.info("Assistants stopped.")
