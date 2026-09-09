@@ -184,22 +184,17 @@ class MongoDB:
 
     # ASSISTANT METHODS
     def _connected_assistant_nums(self) -> list[int]:
-        """Real assistant numbers (1/2/3) that are actually connected right now.
+        """Real assistant numbers that are actually connected right now.
 
-        userbot.clients only contains the assistants that started successfully,
-        so its *length* is not the same thing as *which* numbers are alive
-        (e.g. if assistant 2 fails to start, clients = [assistant1, assistant3],
-        which has length 2 but does NOT mean assistant "2" is usable). We must
-        check identity against .one/.two/.three instead of using len().
+        Source of truth is tune.clients_by_num, which register_client()/boot()
+        in calls.py keep in sync with whichever assistants are actually alive
+        (any slot 1..MAX_ASSISTANTS, not just a fixed 1/2/3). The old check
+        against userbot.one/.two/.three no longer works: userbot.py dropped
+        those fixed attributes in favor of userbot.by_num, so hasattr() always
+        returned False and this always reported zero connected assistants.
         """
-        nums = []
-        if hasattr(userbot, 'one') and userbot.one in userbot.clients:
-            nums.append(1)
-        if hasattr(userbot, 'two') and userbot.two in userbot.clients:
-            nums.append(2)
-        if hasattr(userbot, 'three') and userbot.three in userbot.clients:
-            nums.append(3)
-        return nums
+        from tito import tune
+        return list(tune.clients_by_num.keys())
 
     async def set_assistant(self, chat_id: int) -> int | None:
         nums = self._connected_assistant_nums()
@@ -275,25 +270,15 @@ class MongoDB:
         return self.assistant.get(chat_id)
 
     async def get_client(self, chat_id: int):
-        if chat_id not in self.assistant:
-            await self.get_assistant(chat_id)
+        """Return the PyTgCalls-wrapped assistant client assigned to this chat.
 
-        # make sure the assigned assistant is still connected
-        if self.assistant[chat_id] not in self._connected_assistant_nums():
-            await self.set_assistant(chat_id)
-
-        if self.assistant[chat_id] is None:
-            return None
-
-        available_clients = {}
-        if hasattr(userbot, 'one') and userbot.one in userbot.clients:
-            available_clients[1] = userbot.one
-        if hasattr(userbot, 'two') and userbot.two in userbot.clients:
-            available_clients[2] = userbot.two
-        if hasattr(userbot, 'three') and userbot.three in userbot.clients:
-            available_clients[3] = userbot.three
-
-        return available_clients.get(self.assistant[chat_id])
+        This used to duplicate get_assistant()'s logic but looked the client
+        up through the removed userbot.one/.two/.three attributes, so it
+        always returned None even when assistants were connected. get_assistant()
+        already does the same job correctly via tune.clients_by_num, so just
+        reuse it instead of keeping a second, stale code path in sync.
+        """
+        return await self.get_assistant(chat_id)
 
     # BLACKLIST METHODS
     async def add_blacklist(self, chat_id: int) -> None:
