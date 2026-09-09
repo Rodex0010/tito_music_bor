@@ -96,6 +96,25 @@ class YouTube:
             return None
         return f"tito/cookies/{random.choice(self.cookies)}"
 
+    async def sync_cookie_urls(self) -> None:
+        """Pull any extra COOKIE_URL links added live via the "🍪 كوكيز
+        يوتيوب" panel out of the DB and merge them into config.COOKIES_URL,
+        so a restart keeps pulling from them too instead of only whatever
+        was in .env at boot. Must run after db.connect(), before the
+        startup refresh_cookies() call in __main__.py.
+        """
+        from tito import db, logger as _logger
+
+        try:
+            extra = await db.get_cookie_urls()
+        except Exception as e:
+            _logger.warning(f"Couldn't load extra cookie URLs from DB: {e}")
+            return
+
+        for url in extra:
+            if url not in config.COOKIES_URL:
+                config.COOKIES_URL.append(url)
+
     async def save_cookies(self, urls: list[str]) -> None:
         logger.info("🍪 Saving cookies from urls...")
         saved_count = 0
