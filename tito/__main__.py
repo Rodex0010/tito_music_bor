@@ -31,7 +31,11 @@ async def main():
     try:
         # Connect to DB
         await db.connect()
-        
+
+        # Pick up any extra YouTube cookie links added via the "🍪 كوكيز
+        # يوتيوب" panel, before we download cookies below.
+        await yt.sync_cookie_urls()
+
         # Start the main bot client
         await app.boot()
         
