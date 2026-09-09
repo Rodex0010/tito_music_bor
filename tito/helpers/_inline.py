@@ -585,6 +585,8 @@ class Inline:
         rows = [
             [self.ikb(text="🔄 تحديث" if configured else "➕ تسجيل دخول",
                        callback_data=f"sess_refresh_{num}", style=enums.ButtonStyle.SUCCESS)],
+            [self.ikb(text="📋 لصق جلسة جاهزة (String Session)",
+                       callback_data=f"sess_paste_{num}", style=enums.ButtonStyle.PRIMARY)],
         ]
         if configured:
             rows.append(
