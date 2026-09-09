@@ -646,6 +646,27 @@ class Inline:
         )
         return self.ikm(rows)
 
+    # ==========================================================================
+    # COOKIE UPDATE PANEL - "🍪 كوكيز يوتيوب"
+    # ==========================================================================
+
+    def cookie_panel_markup(self) -> types.InlineKeyboardMarkup:
+        return self.ikm(
+            [
+                [self.ikb(text="📎 رفع ملف Cookies", callback_data="cookie_upload",
+                           style=enums.ButtonStyle.SUCCESS)],
+                [self.ikb(text="🔗 لينك اونلاين", callback_data="cookie_link")],
+                [self.ikb(text="❌ إلغاء", callback_data="cookie_cancel",
+                           style=enums.ButtonStyle.DANGER)],
+            ]
+        )
+
+    def cookie_cancel_markup(self) -> types.InlineKeyboardMarkup:
+        return self.ikm(
+            [[self.ikb(text="❌ إلغاء", callback_data="cookie_cancel",
+                        style=enums.ButtonStyle.DANGER)]]
+        )
+
     def yt_key(self, link: str) -> types.InlineKeyboardMarkup:
         return self.ikm(
             [
