@@ -591,6 +591,26 @@ class MongoDB:
         doc = await self.cache.find_one({"_id": "sudoers"})
         return doc.get("user_ids", []) if doc else []
 
+    # YOUTUBE COOKIES
+    # ------------------------------------------------------------------------
+    # Extra COOKIE_URL entries added live via the "🍪 كوكيز يوتيوب" panel
+    # (in addition to whatever's already in .env), so a link submitted
+    # through the bot survives a restart too - see yt.sync_cookie_urls().
+
+    async def get_cookie_urls(self) -> list[str]:
+        doc = await self.cache.find_one({"_id": "cookie_urls"})
+        return doc.get("urls", []) if doc else []
+
+    async def add_cookie_url(self, url: str) -> None:
+        await self.cache.update_one(
+            {"_id": "cookie_urls"}, {"$addToSet": {"urls": url}}, upsert=True
+        )
+
+    async def del_cookie_url(self, url: str) -> None:
+        await self.cache.update_one(
+            {"_id": "cookie_urls"}, {"$pull": {"urls": url}}
+        )
+
     # SESSION REFRESH PANEL
     # ------------------------------------------------------------------------
     # session_admins: non-owner users allowed to see/use "🔄 تحديث الجلسات".
