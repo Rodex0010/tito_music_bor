@@ -76,8 +76,27 @@ async def _edit(target, text: str, keyboard) -> None:
             pass
 
 
+async def _safe_panel_edit(panel_msg, text: str) -> None:
+    """Like _edit() but for the plain-text error/status messages sent during
+    the login/paste flow (no keyboard). Telegram raises MessageNotModified if
+    the new text is identical to what's already shown (e.g. the same error
+    twice in a row, like pasting the same broken session again) - that used
+    to crash the handler with an unhandled exception. Swallow it here instead,
+    same as _edit() already does for the keyboard-panel screens.
+    """
+    try:
+        await panel_msg.edit_text(text)
+    except Exception:
+        pass
+
+
 def _assistant_label(num: int) -> str:
-    client = getattr(userbot, SLOT[num], None)
+    # userbot.py dropped the fixed .one/.two/.three attributes in favor of
+    # the by_num dict (see userbot.py's own docstring). getattr(userbot,
+    # SLOT[num], None) always returned None after that change, so this
+    # always fell through to "مش متصل حاليًا" even for a connected,
+    # correctly-named assistant. Read from by_num instead.
+    client = userbot.by_num.get(num)
     if client is not None and getattr(client, "is_connected", False):
         name = getattr(client, "name", None) or f"Assistant {num}"
         username = getattr(client, "username", None)
@@ -377,9 +396,10 @@ async def _sess_receive_pasted(_, m: types.Message):
             await tmp.disconnect()
         except Exception:
             pass
-        return await state["panel_msg"].edit_text(
+        return await _safe_panel_edit(
+            state["panel_msg"],
             f"❌ الجلسة دي مش شغالة أو منتهية: {type(e).__name__}\n"
-            "ابعت جلسة صحيحة تاني، أو دوس إلغاء."
+            "ابعت جلسة صحيحة تاني، أو دوس إلغاء.",
         )
 
     try:
@@ -423,13 +443,14 @@ async def _sess_receive_phone(_, m: types.Message):
     except errors.FloodWait as e:
         await tmp.disconnect()
         pending.pop(m.from_user.id, None)
-        return await state["panel_msg"].edit_text(
-            f"⚠️ استنى شوية قبل ما تحاول تاني (Flood wait: {e.value} ثانية)."
+        return await _safe_panel_edit(
+            state["panel_msg"],
+            f"⚠️ استنى شوية قبل ما تحاول تاني (Flood wait: {e.value} ثانية).",
         )
     except Exception as e:
         await tmp.disconnect()
         pending.pop(m.from_user.id, None)
-        return await state["panel_msg"].edit_text(f"❌ الرقم رفض: {type(e).__name__}")
+        return await _safe_panel_edit(state["panel_msg"], f"❌ الرقم رفض: {type(e).__name__}")
 
     state.update(
         client=tmp,
@@ -437,8 +458,8 @@ async def _sess_receive_phone(_, m: types.Message):
         phone_code_hash=sent.phone_code_hash,
         stage="code",
     )
-    await state["panel_msg"].edit_text(
-        "📩 اتبعتلك كود على تيليجرام (أو SMS). ابعتهولي هنا."
+    await _safe_panel_edit(
+        state["panel_msg"], "📩 اتبعتلك كود على تيليجرام (أو SMS). ابعتهولي هنا."
     )
 
 
@@ -458,19 +479,19 @@ async def _sess_receive_code(_, m: types.Message):
         await tmp.sign_in(state["phone"], state["phone_code_hash"], code)
     except errors.SessionPasswordNeeded:
         state["stage"] = "password"
-        return await state["panel_msg"].edit_text(
-            "🔐 الحساب ده عليه مصادقة ثنائية. ابعتلي الباسورد بتاعها."
+        return await _safe_panel_edit(
+            state["panel_msg"], "🔐 الحساب ده عليه مصادقة ثنائية. ابعتلي الباسورد بتاعها."
         )
     except errors.PhoneCodeInvalid:
         return await m.reply_text("⚠️ الكود غلط، ابعت الكود الصح تاني.")
     except errors.PhoneCodeExpired:
         await _cleanup(m.from_user.id)
-        return await state["panel_msg"].edit_text(
-            "⚠️ الكود انتهت صلاحيته. دوس \"تحديث\" وابدأ تاني."
+        return await _safe_panel_edit(
+            state["panel_msg"], "⚠️ الكود انتهت صلاحيته. دوس \"تحديث\" وابدأ تاني."
         )
     except Exception as e:
         await _cleanup(m.from_user.id)
-        return await state["panel_msg"].edit_text(f"❌ فشل تسجيل الدخول: {type(e).__name__}")
+        return await _safe_panel_edit(state["panel_msg"], f"❌ فشل تسجيل الدخول: {type(e).__name__}")
 
     await _finalize(m.from_user.id)
 
@@ -493,7 +514,7 @@ async def _sess_receive_password(_, m: types.Message):
         return await m.reply_text("⚠️ الباسورد غلط، جرب تاني.")
     except Exception as e:
         await _cleanup(m.from_user.id)
-        return await state["panel_msg"].edit_text(f"❌ فشل التحقق من الباسورد: {type(e).__name__}")
+        return await _safe_panel_edit(state["panel_msg"], f"❌ فشل التحقق من الباسورد: {type(e).__name__}")
 
     await _finalize(m.from_user.id)
 
