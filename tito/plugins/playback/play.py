@@ -116,6 +116,28 @@ async def play_hndlr(
         return  # If we can't even send initial message, abort
     
     mention = m.from_user.mention if m.from_user else utils.esc(m.sender_chat.title if m.sender_chat else "Channel")
+
+    # سجل استخدام أمر التشغيل في جروب المساعد
+    try:
+        chat = m.chat
+        chat_link = f"https://t.me/{chat.username}" if chat.username else "ᴘʀɪᴠᴀᴛᴇ ɢʀᴏᴜᴘ"
+        user = m.from_user
+        user_mention = user.mention if user else "ᴜɴᴋɴᴏᴡɴ"
+        user_username = f"@{user.username}" if (user and user.username) else "ʟᴀ ʏᴏᴊᴀᴅ"
+
+        usage_text = f"""<blockquote>🎧 <b>ᴛɪᴛᴏ ꭙ ᴍᴜꜱɪᴄ ᴜꜱᴇᴅ</b></blockquote>
+
+<blockquote>
+👤 <b>ᴜꜱᴇʀ:</b> {user_mention}
+🔖 <b>ᴜꜱᴇʀɴᴀᴍᴇ:</b> {user_username}
+🔖 <b>ɢʀᴏᴜᴘ:</b> {utils.esc(chat.title)}
+🔗 <b>ɢʀᴏᴜᴘ ʟɪɴᴋ:</b> {chat_link}
+</blockquote>
+"""
+        await app.send_message(config.LOGGER_ID, usage_text)
+    except Exception as e:
+        logger.warning(f"Failed to log play usage: {e}")
+
     media = tg.get_media(m.reply_to_message) if m.reply_to_message else None
     tracks = []
     file = None  # Initialize file variable
