@@ -555,7 +555,14 @@ class Inline:
             [self.ikb(text=f"👤 {label}", callback_data=f"sess_view_{num}")]
             for num, label in assistants
         ]
-        if not assistants:
+        # Show "add a session" as long as any of the 3 slots is still free -
+        # not just when zero are configured. Previously this button vanished
+        # after adding the FIRST assistant, so there was no way to reach an
+        # empty slot 2/3 from the list view; the only visible button was the
+        # already-configured slot 1, whose "🔄 تحديث" logs the old session
+        # out and replaces it - which looked like "adding session 2 deleted
+        # session 1" when someone used it thinking it would add a new one.
+        if len(assistants) < 3:
             rows.append(
                 [self.ikb(text="➕ اضافة جلسة", callback_data="sess_add",
                            style=enums.ButtonStyle.SUCCESS)]
@@ -569,11 +576,18 @@ class Inline:
         )
         return self.ikm(rows)
 
-    def sess_add_markup(self) -> types.InlineKeyboardMarkup:
-        """Slot picker shown when there are no configured assistants yet."""
+    def sess_add_markup(self, empty_slots: list[int] | None = None) -> types.InlineKeyboardMarkup:
+        """Slot picker for adding a NEW assistant.
+
+        Only offers slots that are actually empty, so this flow can never be
+        used to accidentally overwrite an already-configured assistant -
+        that's what the "🔄 تحديث" button on an existing assistant's own
+        detail screen is for.
+        """
+        slots = empty_slots if empty_slots is not None else [1, 2, 3]
         rows = [
             [self.ikb(text=f"➕ Assistant {num}", callback_data=f"sess_view_{num}")]
-            for num in (1, 2, 3)
+            for num in slots
         ]
         rows.append(
             [self.ikb(text="🔙 رجوع", callback_data="sess_panel",
