@@ -66,6 +66,44 @@ class Thumbnail:
                     f.write(await resp.read())
             return output_path
 
+    async def get_fallback(self, size=(1280, 720)) -> str:
+        """
+        Returns a local, cached copy of config.DEFAULT_THUMB resized to
+        the exact same canvas the generated "Now Playing" cards use.
+
+        Telegram sizes the photo in a message according to its own
+        aspect ratio, then stretches the inline keyboard underneath to
+        that same width — so if the fallback image has a different
+        aspect ratio than the generated cards (1280x720), the photo
+        renders smaller/larger and the buttons look mismatched every
+        time playback falls back to it. Normalizing it once here (and
+        caching the result) keeps every "Now Playing" panel the same
+        size regardless of which path produced the image.
+        """
+        output = f"cache/default_fallback_{size[0]}x{size[1]}.png"
+        if os.path.exists(output):
+            return output
+
+        try:
+            temp = "cache/temp_default_fallback.jpg"
+            await self.save_thumb(temp, config.DEFAULT_THUMB)
+            return await asyncio.get_event_loop().run_in_executor(
+                None, self._normalize_sync, temp, output, size
+            )
+        except Exception:
+            # Network/parsing failure — fall back to the raw URL rather
+            # than breaking playback over a cosmetic mismatch.
+            return config.DEFAULT_THUMB
+
+    def _normalize_sync(self, temp: str, output: str, size) -> str:
+        try:
+            with Image.open(temp) as img:
+                img.resize(size).convert("RGB").save(output)
+            os.remove(temp)
+            return output
+        except Exception:
+            return config.DEFAULT_THUMB
+
     async def generate(self, song: Track, size=(1280, 720)) -> str:
         try:
             temp = f"cache/temp_{song.id}.jpg"
@@ -78,13 +116,14 @@ class Thumbnail:
             
             # **PERFORMANCE FIX**: Run PIL operations in thread executor to avoid blocking event loop
             # This prevents lag when generating thumbnails for multiple groups simultaneously
-            return await asyncio.get_event_loop().run_in_executor(
+            result = await asyncio.get_event_loop().run_in_executor(
                 None, self._generate_sync, temp, output, song, size
             )
+            if result == config.DEFAULT_THUMB:
+                result = await self.get_fallback(size)
+            return result
         except Exception:
-            return config.DEFAULT_THUMB
-
-    def _generate_sync(self, temp: str, output: str, song: Track, size=(1280, 720)) -> str:
+            return await self.get_fallback(size)
         try:
             # Prepare base image
             with Image.open(temp) as temp_img:
