@@ -132,6 +132,42 @@ def checkUB(play):
 
         if m.chat.id not in db.active_calls:
 
+            # ------------------------------------------------------------------
+            # Require the BOT itself to already be admin before the assistant
+            # is allowed to join at all. This must run first: previously a
+            # public group's invite link (t.me/username) let the assistant
+            # join even while the bot wasn't admin yet, since joining a
+            # public chat doesn't need admin rights. Checking explicitly here
+            # closes that gap for every chat type, not just the cases where
+            # Telegram happens to raise ChatAdminRequired on some other call.
+            # ------------------------------------------------------------------
+
+            try:
+                bot_member = await app.get_chat_member(m.chat.id, "me")
+            except Exception:
+                bot_member = None
+
+            if (
+                bot_member is None
+                or bot_member.status
+                not in (
+                    enums.ChatMemberStatus.ADMINISTRATOR,
+                    enums.ChatMemberStatus.OWNER,
+                )
+            ):
+                await safe_reply(
+                    "<blockquote><b>🔐 Bot Admin Required</b></blockquote>\n\n"
+                    "<blockquote>"
+                    "Please promote me as an <b>administrator</b> first — "
+                    "the assistant account won't join this chat until then.\n\n"
+                    "<b>Required permissions:</b>\n"
+                    "• Manage Voice Chats\n"
+                    "• Invite Users via Link\n"
+                    "• Delete Messages"
+                    "</blockquote>"
+                )
+                return
+
             client = await db.get_client(m.chat.id)
 
             if not client:
