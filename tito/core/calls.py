@@ -678,26 +678,28 @@ class TgCall(PyTgCalls):
         # --------------------------------------------------------------
         # Thumbnail
         # --------------------------------------------------------------
+        # Generating the "Now Playing" card means downloading the
+        # YouTube thumbnail over the network + rendering it with PIL.
+        # None of that is needed to actually join the voice chat, so we
+        # kick it off in the background here and only await the result
+        # later, right before we send the photo — this way the assistant
+        # joins the call immediately instead of waiting on image work.
 
         if (
             config.THUMB_GEN
             and isinstance(media, Track)
         ):
-            try:
-                _thumb = await thumb.generate(media)
-            except Exception as e:
-                logger.warning(
-                    f"Thumbnail generation failed for {chat_id}: {e}"
-                )
-                _thumb = config.DEFAULT_THUMB
+            _thumb_task = asyncio.create_task(thumb.generate(media))
         else:
-            _thumb = config.DEFAULT_THUMB
+            _thumb_task = None
 
         # --------------------------------------------------------------
         # Validate file
         # --------------------------------------------------------------
 
         if not media.file_path:
+            if _thumb_task is not None:
+                _thumb_task.cancel()
             if message:
                 try:
                     await message.edit_text(
@@ -731,6 +733,9 @@ class TgCall(PyTgCalls):
                 logger.error(
                     f"Invalid chat type for {chat_id}: {chat.type}"
                 )
+
+                if _thumb_task is not None:
+                    _thumb_task.cancel()
 
                 if message:
                     try:
@@ -1207,6 +1212,17 @@ class TgCall(PyTgCalls):
                 lock.release()
 
                 try:
+
+                    if _thumb_task is not None:
+                        try:
+                            _thumb = await _thumb_task
+                        except Exception as e:
+                            logger.warning(
+                                f"Thumbnail generation failed for {chat_id}: {e}"
+                            )
+                            _thumb = await thumb.get_fallback()
+                    else:
+                        _thumb = await thumb.get_fallback()
 
                     sent_photo = (
                         await self._send_photo_with_retry(
@@ -2350,41 +2366,17 @@ class TgCall(PyTgCalls):
         # MAP USERBOT CLIENTS TO ASSISTANT NUMBERS
         # ==============================================================
 
-        num_by_identity = {}
-
-        if hasattr(
-            userbot,
-            "one",
-        ):
-
-            num_by_identity[
-                id(userbot.one)
-            ] = 1
-
-        if hasattr(
-            userbot,
-            "two",
-        ):
-
-            num_by_identity[
-                id(userbot.two)
-            ] = 2
-
-        if hasattr(
-            userbot,
-            "three",
-        ):
-
-            num_by_identity[
-                id(userbot.three)
-            ] = 3
+        num_by_identity = {
+            id(client): num
+            for num, client in userbot.by_num.items()
+        }
 
         # ==============================================================
-        # START ALL ASSISTANTS
+        # START ALL ASSISTANTS (in parallel, not one at a time)
         # ==============================================================
 
-        for ub in userbot.clients:
-
+        async def _start_one(ub):
+            num = num_by_identity.get(id(ub))
             try:
 
                 client = PyTgCalls(
@@ -2396,10 +2388,6 @@ class TgCall(PyTgCalls):
 
                 self.clients.append(
                     client
-                )
-
-                num = num_by_identity.get(
-                    id(ub)
                 )
 
                 if num is not None:
@@ -2424,6 +2412,10 @@ class TgCall(PyTgCalls):
                     f"assistant {num or '?'}: {e}",
                     exc_info=True,
                 )
+
+        await asyncio.gather(
+            *(_start_one(ub) for ub in userbot.clients)
+        )
 
         # ==============================================================
         # FINAL STATUS
