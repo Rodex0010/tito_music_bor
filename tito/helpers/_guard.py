@@ -1,18 +1,16 @@
 # ==============================================================================
 # _guard.py - Assistant Containment Guard
 # ==============================================================================
-# Two absolute rules, no exceptions, no "unless":
-#
-#   1. An assistant/userbot account must NEVER be in a group or channel
-#      that the BOT (app) itself isn't currently a member of.
-#   2. An assistant/userbot account must NEVER send/forward/copy any
-#      message, anywhere - not even in a chat the bot IS in. Assistants
-#      only exist to stream audio into voice chats; all actual text
-#      communication goes through the BOT account instead.
-#
+# Single source of truth for one rule: an assistant/userbot account must
+# NEVER be in a group or channel that the BOT (app) itself isn't currently
+# a member of. Every place in the codebase that calls client.join_chat()
+# for an assistant must check bot_is_member() first, and
 # tito/plugins/events/assistant_cleanup.py sweeps and undoes anything that
-# slips through rule 1 (assistant added manually, bot later kicked, etc).
-# install_messaging_guard() (below) enforces rule 2 unconditionally.
+# slips through (assistant added manually, bot later kicked, etc).
+#
+# This exists so a leaked assistant session string, or anyone who gets the
+# bot added somewhere, can't turn into "the assistant is now sitting in a
+# random chat" - the assistant's footprint is always a subset of the bot's.
 # ==============================================================================
 
 from pyrogram import enums
@@ -67,12 +65,12 @@ async def guarded_join(client, chat_id: int, invite_link: str) -> bool:
 # Messaging containment
 # ------------------------------------------------------------------------------
 # Every outgoing "write" method an assistant Client exposes, wrapped so it
-# is a hard no-op - unconditionally, regardless of which chat it targets or
-# whether the bot is in that chat. Assistants stream voice; they never
-# write. This is applied once per assistant client (see
-# install_messaging_guard(), called from Userbot._build_client) so it
-# covers every call site - present and future, anywhere in the codebase -
-# not just the ones audited by hand.
+# refuses to fire into any chat the bot isn't confirmed present in. This is
+# applied once per assistant client (see install_messaging_guard(), called
+# from Userbot._build_client) so it covers every call site - present and
+# future, anywhere in the codebase - not just the ones we've audited by
+# hand. If a chat_id can't even be determined from the call, it's blocked
+# too: fail closed, never fail open.
 # ------------------------------------------------------------------------------
 
 _GUARDED_METHODS = (
@@ -91,24 +89,25 @@ def _extract_chat_id(args: tuple, kwargs: dict):
 
 
 def install_messaging_guard(client) -> None:
-    """Monkey-patch one assistant Client instance so NONE of its
-    message-sending methods can ever fire, in any chat, for any reason.
-    Safe to call once per client, right after it's constructed."""
+    """Monkey-patch one assistant Client instance so none of its
+    message-sending methods can fire into a chat the bot isn't in. Safe to
+    call once per client, right after it's constructed."""
 
     for method_name in _GUARDED_METHODS:
         original = getattr(client, method_name, None)
         if original is None:
             continue
 
-        def _make_wrapper(name):
+        def _make_wrapper(name, orig):
             async def _wrapper(*args, **kwargs):
                 chat_id = _extract_chat_id(args, kwargs)
-                logger.warning(
-                    f"guard: blocked assistant.{name}() targeting "
-                    f"{chat_id!r} - assistants are not allowed to send "
-                    f"messages, period."
-                )
-                return None
+                if chat_id is None or not await bot_is_member(chat_id):
+                    logger.warning(
+                        f"guard: blocked assistant.{name}() into "
+                        f"{chat_id!r} - bot isn't a confirmed member there."
+                    )
+                    return None
+                return await orig(*args, **kwargs)
             return _wrapper
 
-        setattr(client, method_name, _make_wrapper(method_name))
+        setattr(client, method_name, _make_wrapper(method_name, original))
