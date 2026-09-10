@@ -7,7 +7,7 @@
 
 from ._admins import admin_check, can_manage_vc, is_admin, reload_admins
 from ._dataclass import Media, Track
-from ._guard import bot_is_member, guarded_join
+from ._guard import bot_is_member, guarded_join, install_messaging_guard
 from ._inline import Inline
 from ._queue import Queue
 from ._thumbnails import Thumbnail
