@@ -18,6 +18,7 @@ import logging
 from pyrogram import enums, filters, types
 
 from tito import app, config, db, queue, tune
+from tito.helpers import bot_is_member
 from tito.helpers import Media, buttons, can_manage_vc, utils
 
 logger = logging.getLogger(__name__)
@@ -102,7 +103,15 @@ async def _ensure_assistant_joined(chat_id: int) -> bool:
             pass
         return True
 
-    # Assistant isn't in the chat yet - try to join it.
+    # Assistant isn't in the chat yet - try to join it, but only if the
+    # bot itself is confirmed present here. Without this, a chat_id that
+    # slipped in from somewhere other than "the group this command was
+    # run in" could make the assistant join a chat the bot has nothing
+    # to do with.
+    if not await bot_is_member(chat_id):
+        logger.warning(f"radio: blocked - bot not confirmed present in {chat_id}")
+        return False
+
     try:
         chat = await app.get_chat(chat_id)
         invite_link = chat.invite_link or await app.export_chat_invite_link(chat_id)
