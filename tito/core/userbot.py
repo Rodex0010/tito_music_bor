@@ -43,12 +43,18 @@ class Userbot(Client):
 
     @staticmethod
     def _build_client(num: int, session: str) -> Client:
-        return Client(
+        client = Client(
             name=f"HasiiTuneUB{num}",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=session,  # Pyrogram session string, may be empty
         )
+        # Block every outgoing message from this assistant, unconditionally
+        # - see helpers/_guard.py::install_messaging_guard. Assistants only
+        # stream voice; they never write text, even in chats the bot is in.
+        from tito.helpers import install_messaging_guard
+        install_messaging_guard(client)
+        return client
 
     async def boot_client(self, num: int, ub: Client):
         """
@@ -69,7 +75,13 @@ class Userbot(Client):
             return
 
         try:
-            await client.send_message(config.LOGGER_ID, f"Assistant {num} Started")
+            # NOTE: assistants are never allowed to send messages (see
+            # helpers/_guard.py::install_messaging_guard) - that includes
+            # this notification, which is now blocked as a no-op if called
+            # on the assistant. Send it from the BOT account instead so the
+            # owner still gets the "assistant started" log line.
+            from tito import app
+            await app.send_message(config.LOGGER_ID, f"👤 Assistant {num} Started")
         except Exception as e:
             logger.warning(
                 f"⚠️ Assistant {num} couldn't send message to logger: {e}")
