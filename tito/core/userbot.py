@@ -43,18 +43,12 @@ class Userbot(Client):
 
     @staticmethod
     def _build_client(num: int, session: str) -> Client:
-        client = Client(
+        return Client(
             name=f"HasiiTuneUB{num}",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=session,  # Pyrogram session string, may be empty
         )
-        # Block every outgoing message from this assistant, unconditionally
-        # - see helpers/_guard.py::install_messaging_guard. Assistants only
-        # stream voice; they never write text, even in chats the bot is in.
-        from tito.helpers import install_messaging_guard
-        install_messaging_guard(client)
-        return client
 
     async def boot_client(self, num: int, ub: Client):
         """
@@ -73,6 +67,16 @@ class Userbot(Client):
             logger.error(f"   • Session logged out from another device")
             logger.error(f"   • Network/connectivity issues")
             return
+
+        # Block every outgoing message from this assistant, unconditionally
+        # - see helpers/_guard.py::install_messaging_guard. Assistants only
+        # stream voice; they never write text, even in chats the bot is in.
+        # (Applied here, not in _build_client, because this runs safely
+        # after the rest of tito/__init__.py has finished loading - doing
+        # it at construction time triggers a circular import, since
+        # Userbot() itself is built before tito.db exists yet.)
+        from tito.helpers import install_messaging_guard
+        install_messaging_guard(client)
 
         try:
             # NOTE: assistants are never allowed to send messages (see
