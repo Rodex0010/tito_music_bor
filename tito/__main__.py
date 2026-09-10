@@ -79,6 +79,14 @@ async def main():
         # never requires re-adding the bot or redoing any setup.
         tasks.append(asyncio.create_task(db.reconcile_chats()))
 
+        # Containment sweep: make every assistant leave any group/channel
+        # the bot isn't currently a member of. Catches anything an
+        # assistant ended up in outside of this codebase's own join_chat()
+        # calls (manually added, joined before this guard existed, a
+        # session used directly by something else, etc). Runs every boot.
+        from tito.plugins.events.assistant_cleanup import sweep_all_assistants
+        tasks.append(asyncio.create_task(sweep_all_assistants()))
+
         logger.info("\n🎉 Bot started successfully! Ready to play music! 🎵\n")
 
         # Keep running until Ctrl+C
