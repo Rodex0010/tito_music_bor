@@ -11,6 +11,7 @@ import asyncio
 from pyrogram import filters, types, errors, enums
 
 from tito import app, config, logger, userbot
+from tito.helpers import bot_is_member
 
 
 async def _get_invite_link(chat: types.Chat) -> str | None:
@@ -27,6 +28,14 @@ async def _get_invite_link(chat: types.Chat) -> str | None:
 
 
 async def _join_assistant(client, chat_id: int, invite_link: str) -> None:
+    # Hard gate: never join an assistant anywhere the bot isn't confirmed
+    # present, even though this handler only fires on a bot-promotion
+    # event. Re-checking here (instead of trusting the event) means this
+    # still holds even if something else ever calls _join_assistant.
+    if not await bot_is_member(chat_id):
+        logger.warning(f"auto_join: blocked - bot not confirmed present in {chat_id}")
+        return
+
     try:
         member = await app.get_chat_member(chat_id, client.id)
         if member and member.status != enums.ChatMemberStatus.LEFT:
