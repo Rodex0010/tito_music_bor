@@ -22,11 +22,35 @@ from tito.helpers import Track, utils
 
 
 class YouTube:
+    # How long a single cookie file "rests" before it's picked again, and how
+    # many times it's allowed to be used inside a rolling hour. Hammering one
+    # cookie back-to-back (which plain random.choice ends up doing a lot,
+    # especially with only 1-2 files on disk) is what gets it flagged as a
+    # bot - spreading load across cookies and giving each one downtime is
+    # the actual fix, not just rotating away *after* one gets burned.
+    COOKIE_COOLDOWN_SECONDS = 25
+    COOKIE_MAX_USES_PER_HOUR = 30
+
+    # yt-dlp "player client" to impersonate. The mobile clients (android/ios)
+    # skip the nsig/JS-signature challenge that the "web" client currently
+    # trips over, and YouTube's bot-detection is tuned much harder against
+    # "web" than against the app clients - so rotating between them (instead
+    # of always using the default "web" client) on its own meaningfully cuts
+    # down how often any given cookie/IP gets flagged in the first place.
+    _PLAYER_CLIENTS = ["android", "ios", "web"]
+
     def __init__(self):
         self.base = "https://www.youtube.com/watch?v="  # Base YouTube URL
         self.cookies = []  # List of available cookie files
         self.checked = False  # Whether cookies directory has been checked
         self.warned = False  # Whether missing cookies warning has been shown
+
+        # Cookie rotation bookkeeping: last-used timestamp and rolling
+        # per-hour use count for each cookie filename. Used by get_cookies()
+        # to spread requests across every available cookie instead of
+        # letting the same one get hit over and over.
+        self._cookie_last_used: dict[str, float] = {}
+        self._cookie_use_count: dict[str, list] = {}
 
         # Match YouTube URLs
         self.regex = re.compile(
@@ -94,7 +118,39 @@ class YouTube:
                 self.warned = True
                 logger.warning("Cookies are missing; downloads might fail.")
             return None
-        return f"tito/cookies/{random.choice(self.cookies)}"
+
+        now = time.time()
+
+        # A cookie is "available" if it's had at least COOKIE_COOLDOWN_SECONDS
+        # of rest since its last use, and hasn't already been used
+        # COOKIE_MAX_USES_PER_HOUR times in the last rolling hour. Picking
+        # only from this pool (instead of any cookie at random) is what
+        # actually spreads the load out and keeps any single one from
+        # looking like it's making non-stop automated requests.
+        available = []
+        for name in self.cookies:
+            uses = [t for t in self._cookie_use_count.get(name, []) if now - t < 3600]
+            self._cookie_use_count[name] = uses
+            rested = (now - self._cookie_last_used.get(name, 0)) >= self.COOKIE_COOLDOWN_SECONDS
+            if rested and len(uses) < self.COOKIE_MAX_USES_PER_HOUR:
+                available.append(name)
+
+        # If every cookie is currently resting or capped (e.g. only one
+        # cookie file exists, or traffic is heavy), fall back to whichever
+        # one has been idle the longest rather than blocking playback -
+        # still better than plain random, which could reuse the busiest one.
+        pool = available or self.cookies
+        chosen = min(pool, key=lambda n: self._cookie_last_used.get(n, 0))
+
+        self._cookie_last_used[chosen] = now
+        self._cookie_use_count.setdefault(chosen, []).append(now)
+        return f"tito/cookies/{chosen}"
+
+    def _extractor_args(self) -> dict:
+        """Rotate which yt-dlp 'player client' is used per request. See the
+        _PLAYER_CLIENTS docstring above for why this matters for avoiding
+        bot detection."""
+        return {"youtube": {"player_client": [random.choice(self._PLAYER_CLIENTS)]}}
 
     async def sync_cookie_urls(self) -> None:
         """Pull any extra COOKIE_URL links added live via the "🍪 كوكيز
@@ -265,7 +321,7 @@ class YouTube:
                         "quiet": True,
                         "noplaylist": True,
                         "extract_flat": "in_playlist",
-                        
+                        "extractor_args": self._extractor_args(),
                         "cookiefile": cookie
                     }
                     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -301,7 +357,7 @@ class YouTube:
                     ydl_opts = {
                         "quiet": True,
                         "extract_flat": True,
-                        
+                        "extractor_args": self._extractor_args(),
                         "cookiefile": cookie
                     }
                     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -369,7 +425,7 @@ class YouTube:
                 ydl_opts = {
                     "quiet": True,
                     "extract_flat": "in_playlist",
-                    
+                    "extractor_args": self._extractor_args(),
                     "cookiefile": cookie
                 }
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -441,7 +497,7 @@ class YouTube:
             "extractor_retries": 3,
             "nocheckcertificate": True,
             "geo_bypass": True,
-            
+            "extractor_args": self._extractor_args(),
         }
 
         def _extract():
@@ -501,7 +557,7 @@ class YouTube:
                 # android/ios clients don't need the nsig/JS-signature challenge
                 # that the "web" client currently breaks on ("The page needs to
                 # be reloaded." errors) - so put them first and fall back to web.
-                
+                "extractor_args": self._extractor_args(),
             }
 
             def _extract_url():
@@ -658,9 +714,14 @@ class YouTube:
                 "retries": 2,
                 "fragment_retries": 2,
                 "extractor_retries": 5,
-                # No artificial delay between requests - this was adding
-                # dead time to every single download
-                "sleep_interval_requests": 0,
+                # A tiny randomized delay (instead of a flat 0) so requests
+                # don't all leave at perfectly regular, machine-like
+                # intervals - a small human-like jitter is cheap and helps
+                # avoid looking automated, without meaningfully slowing
+                # downloads down.
+                "sleep_interval_requests": 1,
+                "sleep_interval": 1,
+                "max_sleep_interval": 3,
                 # Retries file rename/replace on Windows instead of failing
                 # outright (fixes "Unable to rename file" WinError 2 caused
                 # by antivirus/OS briefly locking the .part file)
@@ -668,7 +729,7 @@ class YouTube:
                 # android/ios clients skip the nsig/JS-signature challenge that
                 # the "web" client currently breaks on ("The page needs to be
                 # reloaded." errors) - try those first, fall back to web.
-                
+                "extractor_args": self._extractor_args(),
             }
 
             if video:
@@ -814,7 +875,11 @@ class YouTube:
                     if cookie:
                         tried_cookies.add(cookie)
 
-                    ydl_opts_attempt = {**ydl_opts, "cookiefile": cookie}
+                    ydl_opts_attempt = {
+                        **ydl_opts,
+                        "cookiefile": cookie,
+                        "extractor_args": self._extractor_args(),
+                    }
 
                     result_path, bot_detected = await asyncio.to_thread(
                         _download, ydl_opts_attempt, cookie
@@ -836,6 +901,13 @@ class YouTube:
                         # age restricted, etc.) won't be fixed by
                         # retrying - stop.
                         break
+
+                    # Small randomized pause before the next retry - hitting
+                    # YouTube again in milliseconds with a different cookie
+                    # still looks automated. A short human-scale gap makes
+                    # each retry look like a separate, unrelated request.
+                    if attempts_left > 0:
+                        await asyncio.sleep(random.uniform(1.5, 3.5))
 
                 return result_path
             finally:
