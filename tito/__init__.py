@@ -83,6 +83,38 @@ boot: float = time.time()
 from tito.core.bot import Bot
 app = Bot()
 
+# --------------------------------------------------------------------------
+# Patch: silence pyrogram.errors.QueryIdInvalid on CallbackQuery.answer().
+#
+# This fires whenever a callback_query is answered too late or twice - the
+# most common causes are the user tapping a stale inline keyboard left over
+# from before a bot restart, or answer() being called a second time for the
+# same query. Either way it's harmless to the user experience, but left
+# unhandled it crashes the whole handler with a full traceback in the logs
+# (see every admin panel: session_manager.py, cookie_manager.py, etc., all
+# call `await query.answer()` as their first line).
+#
+# Patching the method once here - instead of wrapping every single
+# `query.answer()` call across every plugin - means new plugins get the
+# same protection automatically, with zero behavior change for a valid,
+# in-time answer.
+# --------------------------------------------------------------------------
+from pyrogram.types import CallbackQuery
+from pyrogram import errors as _errors
+
+_original_cq_answer = CallbackQuery.answer
+
+
+async def _safe_cq_answer(self, *args, **kwargs):
+    try:
+        return await _original_cq_answer(self, *args, **kwargs)
+    except _errors.QueryIdInvalid:
+        logger.debug("Ignored expired/duplicate callback query (QueryIdInvalid).")
+        return None
+
+
+CallbackQuery.answer = _safe_cq_answer
+
 # Ensure required directories exist
 from tito.core.dir import ensure_dirs
 ensure_dirs()
