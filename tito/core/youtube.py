@@ -115,13 +115,34 @@ class YouTube:
             if url not in config.COOKIES_URL:
                 config.COOKIES_URL.append(url)
 
+    @staticmethod
+    def _to_raw_link(url: str) -> str:
+        """Convert a share/paste link from one of the 4 sources the cookie
+        panel accepts (batbin.me, pastebin.com, paste.ee, rentry.co) into
+        its raw-content URL. Each site uses a different raw-link scheme, so
+        a single generic string replace can't handle all of them - using
+        one that only happens to work for batbin.me silently downloaded the
+        normal HTML share page for the other 3 sites (which is >50 bytes,
+        so it passed the size check and got saved as a "valid" cookie file
+        that yt-dlp then just quietly ignored, as if no cookies existed).
+        """
+        if "batbin.me" in url:
+            return url.replace("batbin.me/", "batbin.me/raw/")
+        if "pastebin.com" in url:
+            return url.replace("pastebin.com/", "pastebin.com/raw/")
+        if "paste.ee" in url:
+            return url.replace("paste.ee/p/", "paste.ee/r/")
+        if "rentry.co" in url:
+            return url.rstrip("/") + "/raw"
+        return url
+
     async def save_cookies(self, urls: list[str]) -> None:
         logger.info("🍪 Saving cookies from urls...")
         saved_count = 0
         for url in urls:
             try:
                 path = f"tito/cookies/cookie{random.randint(10000, 99999)}.txt"
-                link = url.replace("me/", "me/raw/")
+                link = self._to_raw_link(url)
                 async with aiohttp.ClientSession() as session:
                     async with session.get(link) as resp:
                         if resp.status != 200:
@@ -130,6 +151,18 @@ class YouTube:
                         content = await resp.read()
                         if not content or len(content) < 50:
                             logger.error(f"❌ Cookie file empty or invalid from {url}")
+                            continue
+                        # Guard against saving the site's normal HTML page
+                        # (e.g. the raw-link pattern above changes, or a
+                        # 5th source gets added to VALID_SOURCES later
+                        # without updating _to_raw_link) as if it were a
+                        # valid Netscape cookie file.
+                        stripped = content.lstrip()[:20].lower()
+                        if stripped.startswith((b"<!doctype", b"<html")):
+                            logger.error(
+                                f"❌ Got an HTML page instead of raw cookie content from {url} "
+                                f"(raw-link conversion likely wrong for this source)"
+                            )
                             continue
                         with open(path, "wb") as fw:
                             fw.write(content)
