@@ -7,7 +7,7 @@
 from pyrogram import enums, filters, types
 from pyrogram.errors import ChatAdminRequired
 
-from tito import app, config, db
+from tito import app, config, db, logger
 from tito.helpers import utils
 
 
@@ -114,7 +114,16 @@ async def new_chat_member(_, message: types.Message):
             chat_name = utils.esc(chat.title)
             chat_id = chat.id
             chat_username = f"@{chat.username}" if chat.username else "ᴘʀɪᴠᴀᴛᴇ ɢʀᴏᴜᴘ"
-            members_count = await app.get_chat_members_count(chat_id)
+            # Right when the bot is added, Pyrogram sometimes hasn't finished
+            # resolving the new chat's full peer info yet, which makes this
+            # call raise ChannelPrivate even though the bot really is a
+            # member. That's transient/harmless - don't let it kill the rest
+            # of the join notification.
+            try:
+                members_count = await app.get_chat_members_count(chat_id)
+            except Exception as e:
+                logger.warning(f"Couldn't fetch member count for new chat {chat_id}: {e}")
+                members_count = "N/A"
 
             # Get the user who added the bot
             added_by = message.from_user
