@@ -171,8 +171,40 @@ class YouTube:
             if url not in config.COOKIES_URL:
                 config.COOKIES_URL.append(url)
 
+    # aiohttp's default User-Agent ("Python/3.x aiohttp/x.x") gets flagged by
+    # Cloudflare (which sits in front of rentry.co) and served a JS-challenge
+    # HTML page instead of the actual raw content. Pretending to be a normal
+    # browser avoids that.
+    _COOKIE_FETCH_HEADERS = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+        )
+    }
+
     @staticmethod
-    def _to_raw_link(url: str) -> str:
+    def _clean_url(url: str) -> str:
+        """Strip characters that have no business being in a URL but sneak
+        in from copy/paste - invisible zero-width spaces (U+200B and
+        friends) and, if someone pasted a full Markdown link like
+        `[label](https://example.com/x)` into the cookie field instead of a
+        plain URL, pull the real URL out of the parentheses instead of
+        treating the whole markdown string as the link.
+        """
+        # Drop zero-width/invisible unicode characters wherever they land.
+        for ch in ("\u200b", "\u200c", "\u200d", "\ufeff"):
+            url = url.replace(ch, "")
+        url = url.strip()
+
+        # `[some text](https://real-url)` -> `https://real-url`
+        md_match = re.match(r"^\[[^\]]*\]\((https?://[^\s)]+)\)", url)
+        if md_match:
+            return md_match.group(1)
+
+        return url
+
+    @classmethod
+    def _to_raw_link(cls, url: str) -> str:
         """Convert a share/paste link from one of the 4 sources the cookie
         panel accepts (batbin.me, pastebin.com, paste.ee, rentry.co) into
         its raw-content URL. Each site uses a different raw-link scheme, so
@@ -182,12 +214,20 @@ class YouTube:
         so it passed the size check and got saved as a "valid" cookie file
         that yt-dlp then just quietly ignored, as if no cookies existed).
         """
+        url = cls._clean_url(url)
+
+        # Already a raw link (e.g. someone pasted the /raw URL directly) -
+        # converting again just doubles the path (.../raw/raw/...), so leave
+        # it alone.
+        if "/raw/" in url or url.rstrip("/").endswith("/raw"):
+            return url
+
         if "batbin.me" in url:
-            return url.replace("batbin.me/", "batbin.me/raw/")
+            return url.replace("batbin.me/", "batbin.me/raw/", 1)
         if "pastebin.com" in url:
-            return url.replace("pastebin.com/", "pastebin.com/raw/")
+            return url.replace("pastebin.com/", "pastebin.com/raw/", 1)
         if "paste.ee" in url:
-            return url.replace("paste.ee/p/", "paste.ee/r/")
+            return url.replace("paste.ee/p/", "paste.ee/r/", 1)
         if "rentry.co" in url:
             return url.rstrip("/") + "/raw"
         return url
@@ -199,7 +239,7 @@ class YouTube:
             try:
                 path = f"tito/cookies/cookie{random.randint(10000, 99999)}.txt"
                 link = self._to_raw_link(url)
-                async with aiohttp.ClientSession() as session:
+                async with aiohttp.ClientSession(headers=self._COOKIE_FETCH_HEADERS) as session:
                     async with session.get(link) as resp:
                         if resp.status != 200:
                             logger.error(f"❌ Cookie download failed: HTTP {resp.status} from {url}")
