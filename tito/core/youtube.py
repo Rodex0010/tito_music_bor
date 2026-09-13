@@ -37,7 +37,12 @@ class YouTube:
     # "web" than against the app clients - so rotating between them (instead
     # of always using the default "web" client) on its own meaningfully cuts
     # down how often any given cookie/IP gets flagged in the first place.
-    _PLAYER_CLIENTS = ["android", "ios", "web"]
+    # "tv" is included because, as of YouTube's SABR-only rollout
+    # (https://github.com/yt-dlp/yt-dlp/issues/12482), it's currently one of
+    # the clients still handing back real https URLs for android/ios/web
+    # sessions that get stripped down to almost nothing - it accepts cookies
+    # too, so it isn't a downgrade for age/members-only content either.
+    _PLAYER_CLIENTS = ["android", "ios", "web", "tv"]
 
     def __init__(self):
         self.base = "https://www.youtube.com/watch?v="  # Base YouTube URL
@@ -818,36 +823,51 @@ class YouTube:
                 "the page needs to be reloaded",
             )
 
+            # "Requested format is not available" isn't the cookie's fault -
+            # it's usually the android/ios player client returning a format
+            # list with nothing matching "bestaudio/best" for this specific
+            # video (a known yt-dlp/YouTube quirk). The *next* attempt
+            # re-rolls the player client via _extractor_args(), and often
+            # succeeds - so this should be retried too, just without
+            # deleting/blaming the current cookie.
+            FORMAT_RETRY_MARKERS = (
+                "requested format is not available",
+            )
+
             def _is_bot_detection(error_msg: str) -> bool:
                 low = error_msg.lower()
                 return any(marker in low for marker in BOT_DETECTION_MARKERS)
 
+            def _is_format_retryable(error_msg: str) -> bool:
+                low = error_msg.lower()
+                return any(marker in low for marker in FORMAT_RETRY_MARKERS)
+
             def _download(ydl_runtime_opts, bad_cookie_path: Optional[str]):
-                """Returns (file_path_or_None, bot_detected: bool)."""
+                """Returns (file_path_or_None, bot_detected, retryable)."""
                 ydl_instance = None
                 try:
                     ydl_instance = yt_dlp.YoutubeDL(ydl_runtime_opts)
                     info = ydl_instance.extract_info(url, download=True)
                     if not info:
                         logger.error(f"❌ Failed to extract info for {video_id}")
-                        return None, False
+                        return None, False, False
 
                     time.sleep(0.5)
                     located = self._locate_download_file(video_id, video=video)
                     if located:
-                        return located, False
+                        return located, False, False
                     logger.error(f"❌ Download completed but file not found for: {video_id}")
-                    return None, False
+                    return None, False, False
                 except yt_dlp.utils.ExtractorError as ex:
                     error_msg = str(ex)
                     if "not available" in error_msg.lower():
                         logger.error(
                             "❌ Video not available: May be region-blocked or private.")
-                        return None, False
+                        return None, False, False
                     elif "age" in error_msg.lower():
                         logger.error(
                             "❌ Age-restricted video: Cookies required.")
-                        return None, False
+                        return None, False, False
                     bot_detected = _is_bot_detection(error_msg)
                     if bot_detected and bad_cookie_path:
                         logger.warning(
@@ -856,7 +876,7 @@ class YouTube:
                         )
                     else:
                         logger.error("❌ YouTube extraction failed: %s", ex)
-                    return None, bot_detected
+                    return None, bot_detected, bot_detected
                 except yt_dlp.utils.DownloadError as ex:
                     error_msg = str(ex)
                     recovered = self._locate_download_file(video_id, video=video)
@@ -864,15 +884,21 @@ class YouTube:
                         logger.warning(
                             f"⚠️ Renaming failed for {video_id}, using recovered file {Path(recovered).name}"
                         )
-                        return recovered, False
+                        return recovered, False, False
                     if "416" in error_msg or "Requested range not satisfiable" in error_msg:
                         logger.warning(f"⚠️ Range error for {video_id}, skipping")
-                        return None, False
+                        return None, False, False
                     bot_detected = _is_bot_detection(error_msg)
+                    format_retryable = _is_format_retryable(error_msg)
                     if bot_detected and bad_cookie_path:
                         logger.warning(
                             f"⚠️ Cookie {Path(bad_cookie_path).name} looks stale/blocked "
                             f"(bot detection), dropping it and retrying with another one."
+                        )
+                    elif format_retryable:
+                        logger.warning(
+                            f"⚠️ No matching format for {video_id} with this player client, "
+                            f"retrying with a different one."
                         )
                     else:
                         logger.warning(f"⚠️ Download error for {video_id}: {ex}")
@@ -880,11 +906,11 @@ class YouTube:
                         logger.warning(
                             f"⚠️ Using recovered file for {video_id} despite download error"
                         )
-                        return recovered, False
-                    return None, bot_detected
+                        return recovered, False, False
+                    return None, bot_detected, bot_detected or format_retryable
                 except Exception as ex:
                     logger.warning(f"⚠️ Unexpected download error for {video_id}: {ex}")
-                    return None, False
+                    return None, False, False
                 finally:
                     if ydl_instance:
                         try:
@@ -921,7 +947,7 @@ class YouTube:
                         "extractor_args": self._extractor_args(),
                     }
 
-                    result_path, bot_detected = await asyncio.to_thread(
+                    result_path, bot_detected, retryable = await asyncio.to_thread(
                         _download, ydl_opts_attempt, cookie
                     )
 
@@ -936,10 +962,10 @@ class YouTube:
                         except Exception:
                             pass
 
-                    if not bot_detected:
-                        # A non-bot-detection failure (video unavailable,
-                        # age restricted, etc.) won't be fixed by
-                        # retrying - stop.
+                    if not retryable:
+                        # A non-retryable failure (video unavailable, age
+                        # restricted, etc.) won't be fixed by retrying -
+                        # stop.
                         break
 
                     # Small randomized pause before the next retry - hitting
