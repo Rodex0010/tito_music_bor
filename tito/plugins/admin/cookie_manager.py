@@ -17,6 +17,12 @@
 #
 # Command: /cookies or كوكيز - sudo users only (same gate as every other
 # admin command in this bot, app.sudo_filter).
+#
+# FIX IN THIS VERSION:
+# - The cancel button now DELETES the panel message. Before, it tried to
+#   edit the message back to the main panel; when pressed from the main
+#   panel itself the text was identical, Telegram raised MessageNotModified
+#   and nothing visible happened, so the button looked dead.
 # ==============================================================================
 
 import os
@@ -79,9 +85,27 @@ async def _cookie_link_start(_, query: types.CallbackQuery):
 
 @app.on_callback_query(filters.regex(r"^cookie_cancel$") & app.sudo_filter)
 async def _cookie_cancel(_, query: types.CallbackQuery):
+    # Forget whatever input we were waiting for.
     pending.pop(query.from_user.id, None)
-    await query.answer("تم الإلغاء.")
-    await query.message.edit_text(_status_text(), reply_markup=buttons.cookie_panel_markup())
+
+    try:
+        await query.answer("تم الإلغاء.")
+    except Exception as e:
+        logger.debug(f"cookie_cancel: query.answer failed: {e}")
+
+    # Make the panel disappear.
+    try:
+        await query.message.delete()
+        return
+    except Exception as e:
+        logger.warning(f"cookie_cancel: could not delete panel message: {e}")
+
+    # Fallback (e.g. message too old to delete): replace it with a plain
+    # "cancelled" note and remove the buttons so it can't be pressed again.
+    try:
+        await query.message.edit_text("❌ تم الإلغاء.", reply_markup=None)
+    except Exception as e:
+        logger.warning(f"cookie_cancel: could not edit panel message: {e}")
 
 
 def _pending_filter(stage: str):
