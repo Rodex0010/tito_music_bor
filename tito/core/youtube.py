@@ -159,10 +159,20 @@ class YouTube:
         return f"tito/cookies/{chosen}"
 
     def _extractor_args(self) -> dict:
-        """Rotate which yt-dlp 'player client' is used per request. See the
-        _PLAYER_CLIENTS docstring above for why this matters for avoiding
-        bot detection."""
-        return {"youtube": {"player_client": [random.choice(self._PLAYER_CLIENTS)]}}
+        """Extractor args passed to yt-dlp on every request.
+
+        Previously this forced a random 'player client' (android / ios /
+        web / tv) per request. Those app clients now frequently come back
+        with no usable formats ("Requested format is not available"),
+        because YouTube wants PO tokens for them, and forcing a client
+        overrides yt-dlp's own, regularly-updated default client list.
+
+        Returning an empty dict lets yt-dlp pick its default clients, which
+        is what works best together with a JS runtime (Deno) + yt-dlp-ejs
+        installed on the host. To go back to forcing clients, return
+        {"youtube": {"player_client": [random.choice(self._PLAYER_CLIENTS)]}}.
+        """
+        return {}
 
     async def sync_cookie_urls(self) -> None:
         """Pull any extra COOKIE_URL links added live via the "🍪 كوكيز
@@ -871,9 +881,6 @@ class YouTube:
                 "confirm you're not a bot",
                 "429",
                 "too many requests",
-                # JS-challenge (nsig) solving failed for this client/cookie
-                # combo - a fresh cookie or different client often clears it.
-                "the page needs to be reloaded",
             )
 
             # "Requested format is not available" isn't the cookie's fault -
@@ -883,8 +890,15 @@ class YouTube:
             # re-rolls the player client via _extractor_args(), and often
             # succeeds - so this should be retried too, just without
             # deleting/blaming the current cookie.
+            #
+            # "The page needs to be reloaded" is the same kind of problem:
+            # the JS (nsig) challenge failed - usually because the host has
+            # no JS runtime (Deno) or an outdated yt-dlp. It says nothing
+            # about the cookie, so it must NOT delete the cookie file (it
+            # used to, and burned through every good cookie one by one).
             FORMAT_RETRY_MARKERS = (
                 "requested format is not available",
+                "the page needs to be reloaded",
             )
 
             def _is_bot_detection(error_msg: str) -> bool:
