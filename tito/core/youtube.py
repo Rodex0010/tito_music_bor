@@ -313,17 +313,25 @@ class YouTube:
 
         # Wipe old cookie files first so get_cookies() never hands out a
         # stale/expired one that's been sitting around from a previous run.
+        # Files uploaded by hand through the panel ("uploaded_*.txt") are
+        # KEPT: they don't come from COOKIE_URL, so wiping them here meant a
+        # fresh export vanished at the next 6-hour refresh or restart.
+        kept: list[str] = []
         try:
             for file in os.listdir("tito/cookies"):
-                if file.endswith(".txt"):
-                    try:
-                        os.remove(os.path.join("tito/cookies", file))
-                    except Exception as e:
-                        logger.debug(f"refresh_cookies: could not remove {file}: {e}")
+                if not file.endswith(".txt"):
+                    continue
+                if file.startswith("uploaded_"):
+                    kept.append(file)
+                    continue
+                try:
+                    os.remove(os.path.join("tito/cookies", file))
+                except Exception as e:
+                    logger.debug(f"refresh_cookies: could not remove {file}: {e}")
         except FileNotFoundError:
             os.makedirs("tito/cookies", exist_ok=True)
 
-        self.cookies = []
+        self.cookies = kept
         self.checked = False
         self.warned = False
 
@@ -1021,7 +1029,15 @@ class YouTube:
                     if result_path:
                         break
 
-                    if bot_detected and cookie:
+                    # Hand-uploaded cookies ("uploaded_*.txt") are never
+                    # deleted automatically: when the block is really on the
+                    # server's IP, YouTube flags *every* cookie the same way
+                    # and this used to wipe a perfectly good fresh export.
+                    if (
+                        bot_detected
+                        and cookie
+                        and not os.path.basename(cookie).startswith("uploaded_")
+                    ):
                         try:
                             os.remove(cookie)
                             if os.path.basename(cookie) in self.cookies:
