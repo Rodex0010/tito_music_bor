@@ -9,13 +9,177 @@
 # - Assistant availability
 # - Assistant membership
 # - Assistant join
+#
+# FIXES IN THIS VERSION:
+# 1. Assistant membership is now checked FROM THE ASSISTANT'S OWN SIDE
+#    (client.get_chat_member(chat, "me")). The old check used the BOT to
+#    look up the assistant's user id; the bot usually can't resolve that
+#    user (PeerIdInvalid), which was swallowed as "member = None", so the
+#    code thought the assistant was missing and tried to invite it on
+#    EVERY /play until Telegram answered with FloodWait.
+# 2. FloodWait is now handled explicitly everywhere the assistant is
+#    invited: the wait time is remembered per chat and no further invite
+#    attempts are made until it expires. Playback continues instead of
+#    being aborted (the assistant is very likely already in the chat).
+# 3. A positive membership result is cached for a few minutes so the
+#    checks/invites are not repeated on every command.
+# 4. If the assistant can't resolve the group, its peer cache is refreshed
+#    (get_dialogs) and retried once before giving up.
+# 5. Real errors are logged instead of silently swallowed.
 # ==============================================================================
 
 import asyncio
+import logging
+import time
 
 from pyrogram import enums, errors, types
 
 from tito import app, config, db, queue, yt
+
+logger = logging.getLogger(__name__)
+
+
+# How long (seconds) a successful "assistant is in this chat" check is trusted.
+ASSISTANT_VERIFY_TTL = 300
+
+# (chat_id, assistant_id) -> timestamp of last successful verification
+_assistant_verified: dict = {}
+
+# chat_id -> unix time until which we must NOT try to invite the assistant
+_join_flood_until: dict = {}
+
+
+_BOT_ADMIN_MSG = (
+    "<blockquote><b>🔐 Bot Admin Required</b></blockquote>\n\n"
+    "<blockquote>"
+    "To play music in this chat, I need to be an "
+    "<b>administrator</b>.\n\n"
+    "<b>Required permissions:</b>\n"
+    "• Manage Voice Chats\n"
+    "• Invite Users via Link\n"
+    "• Delete Messages\n\n"
+    "Please promote me as admin with the required permissions."
+    "</blockquote>"
+)
+
+
+def _fmt_wait(seconds) -> str:
+    seconds = int(seconds)
+    hours, rem = divmod(seconds, 3600)
+    minutes, secs = divmod(rem, 60)
+
+    parts = []
+
+    if hours:
+        parts.append(f"{hours} ساعة")
+
+    if minutes:
+        parts.append(f"{minutes} دقيقة")
+
+    if secs or not parts:
+        parts.append(f"{secs} ثانية")
+
+    return " و ".join(parts)
+
+
+async def _refresh_peers(client, limit: int = 200) -> None:
+    """
+    Make the assistant re-download its dialogs so its local peer cache
+    (chat id -> access hash) knows about the group. Best effort only.
+    """
+    try:
+        count = 0
+        async for _ in client.get_dialogs(limit=limit):
+            count += 1
+        logger.info(
+            f"Assistant peer cache refreshed ({count} dialogs)."
+        )
+    except Exception as e:
+        logger.warning(
+            f"Could not refresh assistant dialogs: "
+            f"{type(e).__name__}: {e}"
+        )
+
+
+async def _assistant_membership(client, chat_id: int):
+    """
+    Ask the ASSISTANT itself whether it is in the chat.
+
+    Returns the ChatMember object if it can see itself in the chat,
+    otherwise None (not a member / unknown).
+    """
+    for attempt in range(2):
+        try:
+            return await client.get_chat_member(chat_id, "me")
+
+        except errors.UserNotParticipant:
+            logger.info(
+                f"Assistant-side check: not a participant of {chat_id}"
+            )
+            return None
+
+        except (
+            errors.PeerIdInvalid,
+            errors.ChannelInvalid,
+            KeyError,
+        ) as e:
+            if attempt == 0:
+                logger.info(
+                    f"Assistant doesn't know chat {chat_id} yet "
+                    f"({type(e).__name__}); refreshing its peers"
+                )
+                await _refresh_peers(client)
+                continue
+
+            logger.warning(
+                f"Assistant-side check failed for {chat_id}: "
+                f"{type(e).__name__}: {e}"
+            )
+            return None
+
+        except errors.FloodWait as e:
+            logger.warning(
+                f"FloodWait ({e.value}s) during assistant-side "
+                f"membership check for {chat_id}"
+            )
+            return None
+
+        except Exception as e:
+            logger.warning(
+                f"Assistant-side membership check error for {chat_id}: "
+                f"{type(e).__name__}: {e}"
+            )
+            return None
+
+    return None
+
+
+async def _assistant_can_resolve(client, chat_id: int):
+    """
+    Make sure the assistant can resolve the group. If not, refresh its
+    peer cache once and retry.
+
+    Returns (ok: bool, last_exception | None).
+    """
+    last_exc = None
+
+    for attempt in range(2):
+        try:
+            await client.resolve_peer(chat_id)
+            return True, None
+
+        except Exception:
+            try:
+                await client.get_chat(chat_id)
+                return True, None
+
+            except Exception as ex:
+                last_exc = ex
+
+                if attempt == 0:
+                    await _refresh_peers(client)
+
+    return False, last_exc
 
 
 def checkUB(play):
@@ -176,302 +340,422 @@ def checkUB(play):
                 )
                 return
 
-            # --------------------------------------------------------------
-            # First try to check assistant membership.
-            #
-            # IMPORTANT:
-            # We use the bot to check the assistant, but if the bot doesn't
-            # know the assistant peer yet, get_users() refreshes the peer.
-            # --------------------------------------------------------------
-
             member = None
+            assistant_ok = False
+            joined_ok = False
 
-            try:
-                member = await app.get_chat_member(
+            cache_key = (m.chat.id, client.id)
+
+            # --------------------------------------------------------------
+            # 0) Recently verified? Skip all membership work.
+            # --------------------------------------------------------------
+
+            verified_at = _assistant_verified.get(cache_key)
+
+            if (
+                verified_at is not None
+                and time.time() - verified_at < ASSISTANT_VERIFY_TTL
+            ):
+                assistant_ok = True
+
+            # --------------------------------------------------------------
+            # 1) Ask the ASSISTANT itself (most reliable).
+            #
+            # The bot often can't resolve the assistant's user id, which
+            # made the old bot-side check return "not a member" even when
+            # the assistant was already in the group.
+            # --------------------------------------------------------------
+
+            if not assistant_ok:
+
+                assistant_member = await _assistant_membership(
+                    client,
                     m.chat.id,
-                    client.id,
                 )
 
-            except errors.ChannelInvalid:
-                try:
-                    # The bot doesn't have this chat's peer cached yet.
-                    # Force a refresh by fetching the chat directly.
-                    await app.get_chat(m.chat.id)
+                if assistant_member is not None:
 
-                    member = await app.get_chat_member(
-                        m.chat.id,
-                        client.id,
+                    logger.info(
+                        f"Assistant {client.id} status in {m.chat.id}: "
+                        f"{assistant_member.status}"
                     )
 
-                except errors.UserNotParticipant:
-                    member = None
+                    if assistant_member.status in (
+                        enums.ChatMemberStatus.BANNED,
+                        enums.ChatMemberStatus.RESTRICTED,
+                    ):
+                        # Handled by the unban logic below.
+                        member = assistant_member
 
-                except Exception:
-                    await safe_reply(
-                        "⚠️ <b>تعذر التعرف على المجموعة.</b>\n"
-                        "جرّب تشيل البوت وتضيفه تاني للمجموعة، "
-                        "أو ابعت أي رسالة عادية فيها الأول ثم اعد المحاولة."
-                    )
-                    return
-
-            except errors.PeerIdInvalid:
-                try:
-                    # Refresh the bot's peer information.
-                    assistant = await app.get_users(client.id)
-
-                    member = await app.get_chat_member(
-                        m.chat.id,
-                        assistant.id,
-                    )
-
-                except errors.UserNotParticipant:
-                    member = None
-
-                except errors.PeerIdInvalid:
-                    member = None
-
-                except errors.ChatAdminRequired:
-                    await safe_reply(
-                        "<blockquote><b>🔐 Bot Admin Required</b></blockquote>\n\n"
-                        "<blockquote>"
-                        "To play music in this chat, I need to be an "
-                        "<b>administrator</b>.\n\n"
-                        "<b>Required permissions:</b>\n"
-                        "• Manage Voice Chats\n"
-                        "• Invite Users via Link\n"
-                        "• Delete Messages\n\n"
-                        "Please promote me as admin with the required permissions."
-                        "</blockquote>"
-                    )
-                    return
-
-                except Exception:
-                    member = None
-
-            except errors.UserNotParticipant:
-                member = None
-
-            except errors.ChatAdminRequired:
-                await safe_reply(
-                    "<blockquote><b>🔐 Bot Admin Required</b></blockquote>\n\n"
-                    "<blockquote>"
-                    "To play music in this chat, I need to be an "
-                    "<b>administrator</b>.\n\n"
-                    "<b>Required permissions:</b>\n"
-                    "• Manage Voice Chats\n"
-                    "• Invite Users via Link\n"
-                    "• Delete Messages\n\n"
-                    "Please promote me as admin with the required permissions."
-                    "</blockquote>"
-                )
-                return
+                    elif (
+                        assistant_member.status
+                        != enums.ChatMemberStatus.LEFT
+                    ):
+                        assistant_ok = True
 
             # --------------------------------------------------------------
-            # Assistant is banned/restricted
+            # 2) Assistant not confirmed yet -> fall back to the bot-side
+            #    check, ban handling and, only if really needed, the invite.
             # --------------------------------------------------------------
 
-            if member and member.status in [
-                enums.ChatMemberStatus.BANNED,
-                enums.ChatMemberStatus.RESTRICTED,
-            ]:
-                try:
-                    await app.unban_chat_member(
-                        chat_id=m.chat.id,
-                        user_id=client.id,
-                    )
+            if not assistant_ok:
 
-                    # Refresh membership after unban.
+                # ----------------------------------------------------------
+                # Bot-side membership check.
+                #
+                # IMPORTANT:
+                # We use the bot to check the assistant, but if the bot
+                # doesn't know the assistant peer yet, get_users() refreshes
+                # the peer.
+                # ----------------------------------------------------------
+
+                if member is None:
+
                     try:
                         member = await app.get_chat_member(
                             m.chat.id,
                             client.id,
                         )
-                    except Exception:
+
+                    except errors.ChannelInvalid:
+                        try:
+                            # The bot doesn't have this chat's peer cached yet.
+                            # Force a refresh by fetching the chat directly.
+                            await app.get_chat(m.chat.id)
+
+                            member = await app.get_chat_member(
+                                m.chat.id,
+                                client.id,
+                            )
+
+                        except errors.UserNotParticipant:
+                            member = None
+
+                        except Exception:
+                            await safe_reply(
+                                "⚠️ <b>تعذر التعرف على المجموعة.</b>\n"
+                                "جرّب تشيل البوت وتضيفه تاني للمجموعة، "
+                                "أو ابعت أي رسالة عادية فيها الأول ثم اعد المحاولة."
+                            )
+                            return
+
+                    except errors.PeerIdInvalid:
+                        try:
+                            # Refresh the bot's peer information.
+                            assistant = await app.get_users(client.id)
+
+                            member = await app.get_chat_member(
+                                m.chat.id,
+                                assistant.id,
+                            )
+
+                        except errors.UserNotParticipant:
+                            member = None
+
+                        except errors.PeerIdInvalid:
+                            logger.warning(
+                                f"Bot can't resolve assistant {client.id} "
+                                f"(PeerIdInvalid); treating as unknown"
+                            )
+                            member = None
+
+                        except errors.ChatAdminRequired:
+                            await safe_reply(_BOT_ADMIN_MSG)
+                            return
+
+                        except Exception as ex:
+                            logger.warning(
+                                f"Bot-side assistant lookup failed: "
+                                f"{type(ex).__name__}: {ex}"
+                            )
+                            member = None
+
+                    except errors.UserNotParticipant:
                         member = None
 
-                except Exception:
-                    await safe_reply(
-                        m.lang["play_banned"].format(
-                            app.name,
-                            client.id,
-                            client.mention,
-                            (
-                                f"@{client.username}"
-                                if client.username
-                                else None
-                            ),
-                        )
-                    )
-                    return
-
-            # --------------------------------------------------------------
-            # Assistant is not in the group.
-            # Join it using the assistant client.
-            # --------------------------------------------------------------
-
-            if member is None:
-
-                invite_link = None
-
-                # ----------------------------------------------------------
-                # Public supergroup
-                # ----------------------------------------------------------
-
-                if m.chat.username:
-                    invite_link = f"https://t.me/{m.chat.username}"
-
-                # ----------------------------------------------------------
-                # Private supergroup
-                # ----------------------------------------------------------
-
-                else:
-                    try:
-                        chat = await app.get_chat(m.chat.id)
-
-                        invite_link = chat.invite_link
-
-                        if not invite_link:
-                            invite_link = await app.export_chat_invite_link(
-                                m.chat.id
-                            )
-
                     except errors.ChatAdminRequired:
+                        await safe_reply(_BOT_ADMIN_MSG)
+                        return
+
+                # ----------------------------------------------------------
+                # Assistant is banned/restricted
+                # ----------------------------------------------------------
+
+                if member and member.status in [
+                    enums.ChatMemberStatus.BANNED,
+                    enums.ChatMemberStatus.RESTRICTED,
+                ]:
+                    try:
+                        await app.unban_chat_member(
+                            chat_id=m.chat.id,
+                            user_id=client.id,
+                        )
+
+                        # Refresh membership after unban.
+                        try:
+                            member = await app.get_chat_member(
+                                m.chat.id,
+                                client.id,
+                            )
+                        except Exception:
+                            member = None
+
+                    except Exception:
                         await safe_reply(
-                            "<blockquote><b>🔐 Bot Admin Required</b></blockquote>\n\n"
+                            m.lang["play_banned"].format(
+                                app.name,
+                                client.id,
+                                client.mention,
+                                (
+                                    f"@{client.username}"
+                                    if client.username
+                                    else None
+                                ),
+                            )
+                        )
+                        return
+
+                # ----------------------------------------------------------
+                # Assistant is not in the group (as far as we can tell).
+                # Join it using the assistant client.
+                # ----------------------------------------------------------
+
+                if member is None:
+
+                    invite_link = None
+                    flood_notice = None
+
+                    flood_left = (
+                        _join_flood_until.get(m.chat.id, 0)
+                        - time.time()
+                    )
+
+                    umm = None
+
+                    if flood_left > 0:
+
+                        # We are still inside a Telegram FloodWait window
+                        # for inviting the assistant. Do NOT hit the API
+                        # again (that only extends the wait). Carry on:
+                        # the assistant is most likely already in the chat.
+
+                        logger.warning(
+                            f"Skipping assistant invite for {m.chat.id}: "
+                            f"FloodWait active for another "
+                            f"{int(flood_left)}s"
+                        )
+
+                        flood_notice = (
                             "<blockquote>"
-                            "To play music in this chat, I need to be an "
-                            "<b>administrator</b>.\n\n"
-                            "<b>Required permissions:</b>\n"
-                            "• Manage Voice Chats\n"
-                            "• Invite Users via Link\n"
-                            "• Delete Messages\n\n"
-                            "Please promote me as admin with the required permissions."
+                            "⏳ <b>تليجرام حاطط حد مؤقت على دعوة المساعد.</b>\n"
+                            f"المتبقي: {_fmt_wait(flood_left)}\n"
+                            "لو المساعد موجود في الجروب هيكمّل التشغيل عادي، "
+                            "ولو مش موجود ضيفه يدويًا."
                             "</blockquote>"
                         )
-                        return
 
-                    except Exception as ex:
-                        await safe_reply(
-                            m.lang["play_invite_error"].format(
-                                type(ex).__name__
-                            )
-                        )
-                        return
+                    else:
 
-                # ----------------------------------------------------------
-                # Tell user assistant is joining
-                # ----------------------------------------------------------
+                        # ------------------------------------------------------
+                        # Public supergroup
+                        # ------------------------------------------------------
 
-                umm = await safe_reply(
-                    m.lang["play_invite"].format(app.name)
-                )
+                        if m.chat.username:
+                            invite_link = f"https://t.me/{m.chat.username}"
 
-                if umm:
-                    await asyncio.sleep(2)
+                        # ------------------------------------------------------
+                        # Private supergroup
+                        # ------------------------------------------------------
 
-                # ----------------------------------------------------------
-                # Join using the USERBOT / ASSISTANT
-                # ----------------------------------------------------------
-
-                try:
-                    await client.join_chat(invite_link)
-
-                except errors.UserAlreadyParticipant:
-                    pass
-
-                except errors.InviteRequestSent:
-
-                    # Bot must approve the assistant's join request.
-                    try:
-                        await app.approve_chat_join_request(
-                            m.chat.id,
-                            client.id,
-                        )
-
-                    except errors.ChatAdminRequired:
-                        if umm:
+                        else:
                             try:
-                                await umm.edit_text(
+                                chat = await app.get_chat(m.chat.id)
+
+                                invite_link = chat.invite_link
+
+                                if not invite_link:
+                                    invite_link = await app.export_chat_invite_link(
+                                        m.chat.id
+                                    )
+
+                            except errors.ChatAdminRequired:
+                                await safe_reply(_BOT_ADMIN_MSG)
+                                return
+
+                            except errors.FloodWait as fw:
+                                _join_flood_until[m.chat.id] = (
+                                    time.time() + fw.value
+                                )
+                                logger.warning(
+                                    f"FloodWait {fw.value}s while getting "
+                                    f"invite link for {m.chat.id}"
+                                )
+                                await safe_reply(
                                     "<blockquote>"
-                                    "<b>🔐 Bot Admin Required</b>"
-                                    "</blockquote>\n\n"
-                                    "<blockquote>"
-                                    "The assistant requested to join, but the "
-                                    "bot needs admin permissions to approve it."
+                                    "⏳ <b>تليجرام حاطط حد مؤقت.</b>\n"
+                                    f"استنى {_fmt_wait(fw.value)} وجرّب تاني، "
+                                    "أو ضيف المساعد للجروب يدويًا."
                                     "</blockquote>"
                                 )
-                            except Exception:
-                                pass
+                                return
 
-                        return
-
-                    except Exception as ex:
-                        if umm:
-                            try:
-                                await umm.edit_text(
+                            except Exception as ex:
+                                await safe_reply(
                                     m.lang["play_invite_error"].format(
                                         type(ex).__name__
                                     )
                                 )
-                            except Exception:
-                                pass
+                                return
 
-                        return
+                        # ------------------------------------------------------
+                        # Tell user assistant is joining
+                        # ------------------------------------------------------
 
-                except errors.ChatAdminRequired:
-                    if umm:
+                        umm = await safe_reply(
+                            m.lang["play_invite"].format(app.name)
+                        )
+
+                        if umm:
+                            await asyncio.sleep(2)
+
+                        # ------------------------------------------------------
+                        # Join using the USERBOT / ASSISTANT
+                        # ------------------------------------------------------
+
                         try:
-                            await umm.edit_text(
+                            await client.join_chat(invite_link)
+                            joined_ok = True
+
+                        except errors.UserAlreadyParticipant:
+                            joined_ok = True
+
+                        except errors.FloodWait as fw:
+
+                            # Remember it so we don't retry until it expires.
+                            _join_flood_until[m.chat.id] = (
+                                time.time() + fw.value
+                            )
+
+                            logger.warning(
+                                f"FloodWait {fw.value}s while inviting "
+                                f"assistant {client.id} to {m.chat.id}"
+                            )
+
+                            flood_notice = (
                                 "<blockquote>"
-                                "<b>🔐 Bot Admin Required</b>"
-                                "</blockquote>\n\n"
-                                "<blockquote>"
-                                "The bot needs administrator permissions "
-                                "to manage the assistant."
+                                "⏳ <b>تليجرام حاطط حد مؤقت على دعوة المساعد.</b>\n"
+                                f"المدة: {_fmt_wait(fw.value)}\n"
+                                "لو المساعد موجود في الجروب هيكمّل التشغيل عادي، "
+                                "ولو مش موجود ضيفه يدويًا."
                                 "</blockquote>"
                             )
-                        except Exception:
-                            pass
 
-                    return
+                        except errors.InviteRequestSent:
 
-                except Exception as ex:
+                            # Bot must approve the assistant's join request.
+                            try:
+                                await app.approve_chat_join_request(
+                                    m.chat.id,
+                                    client.id,
+                                )
+                                joined_ok = True
+
+                            except errors.ChatAdminRequired:
+                                if umm:
+                                    try:
+                                        await umm.edit_text(
+                                            "<blockquote>"
+                                            "<b>🔐 Bot Admin Required</b>"
+                                            "</blockquote>\n\n"
+                                            "<blockquote>"
+                                            "The assistant requested to join, but the "
+                                            "bot needs admin permissions to approve it."
+                                            "</blockquote>"
+                                        )
+                                    except Exception:
+                                        pass
+
+                                return
+
+                            except Exception as ex:
+                                if umm:
+                                    try:
+                                        await umm.edit_text(
+                                            m.lang["play_invite_error"].format(
+                                                type(ex).__name__
+                                            )
+                                        )
+                                    except Exception:
+                                        pass
+
+                                return
+
+                        except errors.ChatAdminRequired:
+                            if umm:
+                                try:
+                                    await umm.edit_text(
+                                        "<blockquote>"
+                                        "<b>🔐 Bot Admin Required</b>"
+                                        "</blockquote>\n\n"
+                                        "<blockquote>"
+                                        "The bot needs administrator permissions "
+                                        "to manage the assistant."
+                                        "</blockquote>"
+                                    )
+                                except Exception:
+                                    pass
+
+                            return
+
+                        except Exception as ex:
+                            logger.warning(
+                                f"Assistant join failed for {m.chat.id}: "
+                                f"{type(ex).__name__}: {ex}"
+                            )
+
+                            if umm:
+                                try:
+                                    await umm.edit_text(
+                                        m.lang["play_invite_error"].format(
+                                            type(ex).__name__
+                                        )
+                                    )
+                                except Exception:
+                                    pass
+
+                            return
+
+                    # ----------------------------------------------------------
+                    # Delete joining message
+                    # ----------------------------------------------------------
+
                     if umm:
                         try:
-                            await umm.edit_text(
-                                m.lang["play_invite_error"].format(
-                                    type(ex).__name__
-                                )
-                            )
+                            await umm.delete()
                         except Exception:
                             pass
 
-                    return
+                    # ----------------------------------------------------------
+                    # FloodWait notice (we keep going instead of aborting)
+                    # ----------------------------------------------------------
 
-                # ----------------------------------------------------------
-                # Delete joining message
-                # ----------------------------------------------------------
+                    if flood_notice:
+                        await safe_reply(flood_notice)
 
-                if umm:
-                    try:
-                        await umm.delete()
-                    except Exception:
-                        pass
+                    # ----------------------------------------------------------
+                    # IMPORTANT:
+                    # Resolve the GROUP from the USERBOT.
+                    #
+                    # This makes sure the assistant itself knows the group
+                    # before PyTgCalls tries to use it.
+                    # ----------------------------------------------------------
 
-                # ----------------------------------------------------------
-                # IMPORTANT:
-                # Resolve the GROUP from the USERBOT.
-                #
-                # This makes sure the assistant itself knows the group
-                # before PyTgCalls tries to use it.
-                # ----------------------------------------------------------
+                    resolved, ex = await _assistant_can_resolve(
+                        client,
+                        m.chat.id,
+                    )
 
-                try:
-                    await client.resolve_peer(m.chat.id)
-                except Exception:
-                    try:
-                        await client.get_chat(m.chat.id)
-                    except Exception as ex:
+                    if not resolved:
                         await safe_reply(
                             "⚠️ Assistant could not access this group.\n\n"
                             f"<code>{type(ex).__name__}</code>"
@@ -484,17 +768,21 @@ def checkUB(play):
             # This is important before starting PyTgCalls.
             # ------------------------------------------------------------------
 
-            try:
-                await client.resolve_peer(m.chat.id)
-            except Exception:
-                try:
-                    await client.get_chat(m.chat.id)
-                except Exception as ex:
-                    await safe_reply(
-                        "⚠️ The assistant account cannot access this group.\n\n"
-                        f"<code>{type(ex).__name__}</code>"
-                    )
-                    return
+            resolved, ex = await _assistant_can_resolve(
+                client,
+                m.chat.id,
+            )
+
+            if not resolved:
+                await safe_reply(
+                    "⚠️ The assistant account cannot access this group.\n\n"
+                    f"<code>{type(ex).__name__}</code>"
+                )
+                return
+
+            # Remember a positive result so the next commands skip all of it.
+            if assistant_ok or joined_ok:
+                _assistant_verified[cache_key] = time.time()
 
         # ----------------------------------------------------------------------
         # Delete command
