@@ -9,6 +9,15 @@
 # - Multi-assistant support (load balancing)
 # - Live stream support
 # - Thumbnail updates during playback
+#
+# FIXES IN THIS VERSION:
+# 1. Timeout on client.play() so a hanging join can never freeze the chat
+#    lock and pile up the queue forever.
+# 2. FileNotFoundError / NoAudioSourceFound no longer leave a dead queue
+#    behind when there is no active call (they stop + clear instead).
+# 3. Guard for a missing assistant client (client is None).
+# 4. Removed the invalid "-sync ext" ffmpeg option (that's an ffplay flag).
+# 5. Join / retry logs raised from debug to warning so real errors show up.
 # ==============================================================================
 
 import asyncio
@@ -42,6 +51,12 @@ from tito import (
 )
 
 from tito.helpers import Media, Track, buttons, thumb, utils
+
+
+# Max seconds allowed for the assistant to join the voice chat and start
+# streaming (per attempt). If it takes longer, the attempt is aborted so the
+# per-chat lock is released instead of hanging forever.
+PLAY_JOIN_TIMEOUT = 30
 
 
 # ==============================================================================
@@ -676,6 +691,33 @@ class TgCall(PyTgCalls):
         _lang = await lang.get_lang(chat_id)
 
         # --------------------------------------------------------------
+        # FIX: No assistant client available at all
+        # --------------------------------------------------------------
+        # If the assistant isn't registered with PyTgCalls (bad session,
+        # failed start, removed slot...), client is None and every call
+        # below would blow up with "'NoneType' object has no attribute
+        # 'play'". Fail fast, clean the state, and tell the user.
+
+        if client is None:
+            logger.error(
+                f"No assistant PyTgCalls client available for {chat_id}. "
+                f"Check the assistant session string / that it started."
+            )
+
+            await self._stop_impl(chat_id)
+
+            if message:
+                try:
+                    await message.edit_text(
+                        "❌ الحساب المساعد غير متصل. "
+                        "تأكد من الـ Session String وأن المساعد شغّال."
+                    )
+                except Exception:
+                    pass
+
+            return
+
+        # --------------------------------------------------------------
         # Thumbnail
         # --------------------------------------------------------------
         # Generating the "Now Playing" card means downloading the
@@ -753,6 +795,8 @@ class TgCall(PyTgCalls):
         # --------------------------------------------------------------
         # FFmpeg parameters
         # --------------------------------------------------------------
+        # FIX: removed "-sync ext" — that is an ffplay option, not an
+        # ffmpeg one, and ffmpeg aborts with "Unrecognized option 'sync'".
 
         if seek_time > 1:
             ffmpeg_params = (
@@ -767,8 +811,7 @@ class TgCall(PyTgCalls):
                 "-probesize 10M "
                 "-analyzeduration 5M "
                 "-rtbufsize 5M "
-                "-fflags +genpts+igndts "
-                "-sync ext"
+                "-fflags +genpts+igndts"
             )
 
         # --------------------------------------------------------------
@@ -838,6 +881,13 @@ class TgCall(PyTgCalls):
 
         assistant_num = await db.get_assistant_num(chat_id)
 
+        logger.info(
+            f"▶️ play_media start | chat={chat_id} "
+            f"assistant={assistant_num} "
+            f"video={is_video} seek={seek_time} "
+            f"file={media.file_path}"
+        )
+
         # If no assistant is connected at all, there's nothing to
         # serialize against — client will be None and the calls below
         # will simply fail fast through the normal error handling.
@@ -875,7 +925,7 @@ class TgCall(PyTgCalls):
             pass
 
         except Exception as e:
-            logger.debug(
+            logger.warning(
                 f"Error leaving old call for {chat_id}: {e}"
             )
 
@@ -892,12 +942,18 @@ class TgCall(PyTgCalls):
             for attempt in range(max_retries):
 
                 try:
-                    await client.play(
-                        chat_id=chat_id,
-                        stream=stream,
-                        config=types.GroupCallConfig(
-                            auto_start=True
+                    # FIX: wrap the join in a timeout. Without this, a
+                    # hanging handshake holds the per-chat lock forever
+                    # and every later /play just piles up in the queue.
+                    await asyncio.wait_for(
+                        client.play(
+                            chat_id=chat_id,
+                            stream=stream,
+                            config=types.GroupCallConfig(
+                                auto_start=True
+                            ),
                         ),
+                        timeout=PLAY_JOIN_TIMEOUT,
                     )
 
                     playback_started = True
@@ -906,7 +962,7 @@ class TgCall(PyTgCalls):
                 except exceptions.NoActiveGroupCall as e:
 
                     if attempt < max_retries - 1:
-                        logger.debug(
+                        logger.warning(
                             f"No active group call for {chat_id}; "
                             f"retrying "
                             f"{attempt + 1}/{max_retries}"
@@ -938,10 +994,10 @@ class TgCall(PyTgCalls):
                     ):
 
                         if attempt < max_retries - 1:
-                            logger.debug(
+                            logger.warning(
                                 f"Group call transition for {chat_id}; "
                                 f"retrying "
-                                f"{attempt + 1}/{max_retries}"
+                                f"{attempt + 1}/{max_retries}: {e}"
                             )
 
                             if assistant_lock is not None and not _assistant_lock_released:
@@ -965,7 +1021,7 @@ class TgCall(PyTgCalls):
                 except TransportParseException:
 
                     if attempt < max_retries - 1:
-                        logger.debug(
+                        logger.warning(
                             f"Transport negotiation failed for "
                             f"{chat_id}; retrying "
                             f"{attempt + 1}/{max_retries}"
@@ -995,6 +1051,19 @@ class TgCall(PyTgCalls):
 
                     raise
 
+                except (TimeoutError, asyncio.TimeoutError):
+
+                    # Join took longer than PLAY_JOIN_TIMEOUT. Don't retry
+                    # blindly (that would hold the chat lock for minutes);
+                    # bubble up so the outer handler stops + cleans up.
+                    logger.warning(
+                        f"client.play() timed out after "
+                        f"{PLAY_JOIN_TIMEOUT}s for {chat_id} "
+                        f"(attempt {attempt + 1}/{max_retries})"
+                    )
+
+                    raise
+
                 except Exception as e:
 
                     error_msg = str(e).lower()
@@ -1008,7 +1077,7 @@ class TgCall(PyTgCalls):
 
                     if retryable and attempt < max_retries - 1:
 
-                        logger.debug(
+                        logger.warning(
                             f"Connection error for {chat_id}; "
                             f"retrying "
                             f"{attempt + 1}/{max_retries}: {e}"
@@ -1050,6 +1119,11 @@ class TgCall(PyTgCalls):
                 assistant_lock.release()
                 _assistant_lock_released = True
 
+            logger.info(
+                f"✅ Assistant joined voice chat and started "
+                f"streaming in {chat_id}"
+            )
+
             # ----------------------------------------------------------
             # Update playback position
             # ----------------------------------------------------------
@@ -1068,7 +1142,7 @@ class TgCall(PyTgCalls):
                 await db.add_call(chat_id)
 
                 # ======================================================
-                # 🔥 MODIFIED: Beautiful now-playing text with blockquote
+                # Beautiful now-playing text with blockquote
                 # ======================================================
                 text = (
                     "<blockquote> 🔴 ᴛʜᴇ ʀᴇǫᴜᴇꜱᴛᴇᴅ ꜱᴛʀᴇᴀᴍ ꜱᴛᴀʀᴛᴇᴅ 🎵</blockquote>\n"
@@ -1293,6 +1367,9 @@ class TgCall(PyTgCalls):
                 assistant_lock.release()
                 _assistant_lock_released = True
 
+            if _thumb_task is not None:
+                _thumb_task.cancel()
+
             if message:
                 try:
                     await message.edit_text(
@@ -1303,15 +1380,27 @@ class TgCall(PyTgCalls):
                 except Exception:
                     pass
 
-            await self._play_next_impl(
-                chat_id
-            )
+            # FIX: _play_next_impl returns immediately when there is no
+            # active call (db.get_call is False), which used to leave the
+            # failed track sitting in the queue forever. If there's no
+            # call, stop + clear instead.
+            if await db.get_call(chat_id):
+                await self._play_next_impl(
+                    chat_id
+                )
+            else:
+                await self._stop_impl(
+                    chat_id
+                )
 
         except exceptions.NoActiveGroupCall:
 
             if not _assistant_lock_released:
                 assistant_lock.release()
                 _assistant_lock_released = True
+
+            if _thumb_task is not None:
+                _thumb_task.cancel()
 
             await self._stop_impl(
                 chat_id
@@ -1330,6 +1419,9 @@ class TgCall(PyTgCalls):
             if not _assistant_lock_released:
                 assistant_lock.release()
                 _assistant_lock_released = True
+
+            if _thumb_task is not None:
+                _thumb_task.cancel()
 
             error_str = str(e)
 
@@ -1395,6 +1487,9 @@ class TgCall(PyTgCalls):
                 assistant_lock.release()
                 _assistant_lock_released = True
 
+            if _thumb_task is not None:
+                _thumb_task.cancel()
+
             if message:
                 try:
                     await message.edit_text(
@@ -1403,15 +1498,25 @@ class TgCall(PyTgCalls):
                 except Exception:
                     pass
 
-            await self._play_next_impl(
-                chat_id
-            )
+            # FIX: same as FileNotFoundError above — never leave a dead
+            # queue behind when there is no active call.
+            if await db.get_call(chat_id):
+                await self._play_next_impl(
+                    chat_id
+                )
+            else:
+                await self._stop_impl(
+                    chat_id
+                )
 
         except TransportParseException:
 
             if not _assistant_lock_released:
                 assistant_lock.release()
                 _assistant_lock_released = True
+
+            if _thumb_task is not None:
+                _thumb_task.cancel()
 
             logger.warning(
                 f"Transport not found for {chat_id} "
@@ -1439,6 +1544,9 @@ class TgCall(PyTgCalls):
                 assistant_lock.release()
                 _assistant_lock_released = True
 
+            if _thumb_task is not None:
+                _thumb_task.cancel()
+
             await self._stop_impl(
                 chat_id
             )
@@ -1451,17 +1559,22 @@ class TgCall(PyTgCalls):
                 except Exception:
                     pass
 
-        except TimeoutError as e:
+        except (TimeoutError, asyncio.TimeoutError) as e:
 
             if not _assistant_lock_released:
                 assistant_lock.release()
                 _assistant_lock_released = True
+
+            if _thumb_task is not None:
+                _thumb_task.cancel()
 
             logger.warning(
                 f"⏱️ Timeout joining voice chat "
                 f"{chat_id}: {e}"
             )
 
+            # Stop = clear queue + remove call state + leave the call,
+            # so the next /play starts from a clean slate.
             await self._stop_impl(
                 chat_id
             )
@@ -1472,24 +1585,21 @@ class TgCall(PyTgCalls):
                         "⏱️ <b>ᴄᴏɴɴᴇᴄᴛɪᴏɴ ᴛɪᴍᴇᴅ ᴏᴜᴛ!</b>\n\n"
                         "<blockquote>"
                         "ꜰᴀɪʟᴇᴅ ᴛᴏ ᴊᴏɪɴ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ. "
-                        "ᴘʟᴇᴀꜱᴇ ᴄʜᴇᴄᴋ ʏᴏᴜʀ ɴᴇᴛᴡᴏʀᴋ "
-                        "ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ."
+                        "ᴛᴀᴋᴇ ᴄᴀʀᴇ ᴛʜᴀᴛ ᴛʜᴇ ᴀꜱꜱɪꜱᴛᴀɴᴛ ɪꜱ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ "
+                        "ᴀɴᴅ ᴛʜᴇ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ɪꜱ ᴏᴘᴇɴ."
                         "</blockquote>"
                     )
                 except Exception:
                     pass
-
-            await asyncio.sleep(2)
-
-            await self._play_next_impl(
-                chat_id
-            )
 
         except Exception as e:
 
             if not _assistant_lock_released:
                 assistant_lock.release()
                 _assistant_lock_released = True
+
+            if _thumb_task is not None:
+                _thumb_task.cancel()
 
             logger.error(
                 f"Unexpected error in play_media "
@@ -1718,7 +1828,8 @@ class TgCall(PyTgCalls):
 
                         try:
                             await self._stop_impl(
-                                chat_id                            )
+                                chat_id
+                            )
                         except Exception as leave_ex:
                             logger.debug(
                                 f"Could not stop call "
