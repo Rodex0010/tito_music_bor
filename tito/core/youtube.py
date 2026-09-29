@@ -31,6 +31,13 @@ class YouTube:
     COOKIE_COOLDOWN_SECONDS = 25
     COOKIE_MAX_USES_PER_HOUR = 30
 
+    # How many search results to look at when the user searches by text.
+    # Instead of blindly taking result #1 (which for a query like a reciter's
+    # name is often a 10+ hour full-Quran compilation that is longer than
+    # DURATION_LIMIT), we scan these results and pick the first one that
+    # actually fits inside the duration limit.
+    SEARCH_RESULTS_COUNT = 10
+
     # yt-dlp "player client" to impersonate. The mobile clients (android/ios)
     # skip the nsig/JS-signature challenge that the "web" client currently
     # trips over, and YouTube's bot-detection is tuned much harder against
@@ -341,6 +348,44 @@ class YouTube:
             return link.split("&si")[0].split("?si")[0]
         return None
 
+    @staticmethod
+    def _is_live_entry(entry: dict) -> bool:
+        """True if a yt-dlp entry is a live stream (flat search results
+        sometimes only set live_status and leave is_live empty)."""
+        return bool(entry.get("is_live")) or entry.get("live_status") == "is_live"
+
+    def _pick_entry(self, entries: list) -> Optional[dict]:
+        """Choose the best search result instead of blindly taking #1.
+
+        Why: a text search for something like a reciter's name usually has
+        a 10-hour "full Quran" compilation as the top hit, which is longer
+        than config.DURATION_LIMIT and gets rejected with "Streams longer
+        than N minutes are not allowed to play" every single time.
+
+        Order of preference (search-result order is kept inside each step):
+          1. first live stream, or first video whose duration fits the limit
+          2. first entry with an unknown duration (nothing to reject on)
+          3. the very first entry (play.py will then show the limit message)
+        """
+        valid = [e for e in entries if e]
+        if not valid:
+            return None
+
+        limit = getattr(config, "DURATION_LIMIT", 0)
+
+        for entry in valid:
+            if self._is_live_entry(entry):
+                return entry
+            duration = entry.get("duration")
+            if duration and (not limit or duration <= limit):
+                return entry
+
+        for entry in valid:
+            if not entry.get("duration"):
+                return entry
+
+        return valid[0]
+
     async def search(self, query: str, m_id: int) -> Track | None:
         # Check cache (10 min TTL)
         cache_key = query
@@ -406,16 +451,24 @@ class YouTube:
                         "cookiefile": cookie
                     }
                     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                        return ydl.extract_info(f"ytsearch1:{query}", download=False)
+                        # Fetch several results (not just 1) so _pick_entry
+                        # can skip over hours-long compilations.
+                        return ydl.extract_info(
+                            f"ytsearch{self.SEARCH_RESULTS_COUNT}:{query}",
+                            download=False,
+                        )
                         
                 results = await asyncio.to_thread(_extract_search)
                 
                 if not results or "entries" not in results or not results["entries"]:
                     return None
                     
-                data = results["entries"][0]
+                data = self._pick_entry(results["entries"])
+                if not data:
+                    return None
+
                 duration_sec = data.get("duration")
-                is_live = data.get("is_live", False)
+                is_live = self._is_live_entry(data)
                 if duration_sec is None and is_live:
                     duration = "LIVE"
                     duration_sec = 0
