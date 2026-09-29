@@ -641,7 +641,58 @@ class YouTube:
             logger.debug(f"Direct stream URL extraction timed out for {video_id}")
             return None
 
+    async def _stream_url_ok(self, stream_url: str) -> bool:
+        """Cheap check that a resolved direct URL really serves bytes.
+        Asks for just the first 2 bytes (Range request). A 200/206 means
+        ffmpeg should be able to read it; 403/404/etc. means it would fail
+        later with "audio source not found in the file", so the caller
+        falls back to a real download instead.
+        """
+        try:
+            timeout = aiohttp.ClientTimeout(total=10)
+            headers = {"Range": "bytes=0-1", "User-Agent": "Lavf/60.16.100"}
+            async with aiohttp.ClientSession(timeout=timeout) as session:
+                async with session.get(stream_url, headers=headers) as resp:
+                    ok = resp.status in (200, 206)
+                    if not ok:
+                        logger.warning(
+                            f"[source] stream URL probe returned HTTP {resp.status}"
+                        )
+                    return ok
+        except Exception as e:
+            logger.warning(f"[source] stream URL probe failed: {e}")
+            return False
+
     async def download(
+        self,
+        video_id: str,
+        is_live: bool = False,
+        video: bool = False,
+        prefer_stream: bool = False,
+    ) -> Optional[str]:
+        """Thin wrapper around _download_impl that logs which kind of source
+        ended up being handed to the voice chat (direct URL, local file and
+        its size, or nothing). Makes "audio source not found" failures
+        diagnosable straight from the logs."""
+        result = await self._download_impl(
+            video_id,
+            is_live=is_live,
+            video=video,
+            prefer_stream=prefer_stream,
+        )
+        if not result:
+            logger.warning(f"[source] {video_id}: no media source could be resolved")
+        elif result.startswith(("http://", "https://")):
+            logger.info(f"[source] {video_id}: direct stream URL ({result[:70]}...)")
+        else:
+            try:
+                size = os.path.getsize(result)
+            except OSError:
+                size = -1
+            logger.info(f"[source] {video_id}: local file {result} ({size} bytes)")
+        return result
+
+    async def _download_impl(
         self,
         video_id: str,
         is_live: bool = False,
@@ -769,7 +820,12 @@ class YouTube:
             if prefer_stream:
                 stream_url = await self._extract_stream_url(url, video_id)
                 if stream_url:
-                    return stream_url
+                    if await self._stream_url_ok(stream_url):
+                        return stream_url
+                    logger.warning(
+                        f"[source] {video_id}: direct stream URL didn't respond "
+                        f"(403/blocked?), falling back to a normal download."
+                    )
 
         # Create downloads dir
         downloads_dir = Path("downloads")
