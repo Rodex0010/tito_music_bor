@@ -200,9 +200,12 @@ async def play_hndlr(
 
     # Skip duration check for live streams
     if not file.is_live and file.duration_sec > config.DURATION_LIMIT:
+        # TEMP DEBUG: the last line of the message shows what the bot
+        # actually read for this track. Remove the "+ f..." part once fixed.
         await safe_edit(
             sent,
             m.lang["play_duration_limit"].format(config.DURATION_LIMIT // 60)
+            + f"\n\nDEBUG: {file.title} | {file.duration_sec}s | {file.duration} | live={file.is_live} | id={file.id}"
         )
         return
 
@@ -307,27 +310,6 @@ async def play_hndlr(
                 sent,
                 f"<blockquote>❌ Playback error:\n{error_msg}\n\n"
                 f"Support: {config.SUPPORT_CHAT}</blockquote>"
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
             )
         return
     if not tracks:
