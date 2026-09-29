@@ -660,6 +660,23 @@ def checkUB(play):
                                 )
                                 joined_ok = True
 
+                            except errors.FloodWait as fw:
+                                _join_flood_until[m.chat.id] = (
+                                    time.time() + fw.value
+                                )
+
+                                logger.warning(
+                                    f"FloodWait {fw.value}s while approving "
+                                    f"assistant join request for {m.chat.id}"
+                                )
+
+                                flood_notice = (
+                                    "<blockquote>"
+                                    "⏳ <b>تليجرام حاطط حد مؤقت.</b>\n"
+                                    f"المدة: {_fmt_wait(fw.value)}"
+                                    "</blockquote>"
+                                )
+
                             except errors.ChatAdminRequired:
                                 if umm:
                                     try:
