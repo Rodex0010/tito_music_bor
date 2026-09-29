@@ -2,6 +2,13 @@
 # play.py - Core Playback
 # ==============================================================================
 # Handles all /play commands, searching YouTube, managing queues, and initiating playback.
+#
+# FIX IN THIS VERSION:
+# - Stale-queue guard: if there is NO active call and no play is currently
+#   starting for this chat, any leftover tracks in the queue are dead
+#   (a previous join failed) and are cleared before adding the new track.
+#   Previously they made every new /play land at position > 0, so it was
+#   just "Added to queue: N" forever and nothing was ever started.
 # ==============================================================================
 
 from pyrogram import filters
@@ -15,6 +22,10 @@ import asyncio
 import logging
 
 logger = logging.getLogger(__name__)
+
+# Chats where a first track is currently being downloaded / joined.
+# Used so the stale-queue guard never wipes a track that is still starting.
+_starting_chats: set = set()
 
 
 async def safe_edit(message, text, **kwargs):
@@ -210,14 +221,34 @@ async def play_hndlr(
         await utils.play_log(m, file.title, file.duration)
 
     file.user = mention
+
     if force:
         queue.force_add(chat_id, file)
+        _starting_chats.add(chat_id)
     else:
+        has_call = await db.get_call(chat_id)
+
+        # ----------------------------------------------------------------
+        # FIX: stale-queue guard.
+        # No active call + nothing currently starting + chat lock free
+        # means whatever is left in the queue is dead leftovers from a
+        # failed join. Clear it so this track becomes position 0 and is
+        # actually played instead of being "queued" forever.
+        # (No awaits between this check and queue.add below, so a second
+        # command can't slip in between.)
+        # ----------------------------------------------------------------
+        if (
+            not has_call
+            and chat_id not in _starting_chats
+            and not tune.get_lock(chat_id).locked()
+        ):
+            queue.clear(chat_id)
+
         position = queue.add(chat_id, file)  # Returns 0-based index
 
         # If a call is already active OR we are not the first in queue,
         # we return early and let the background queue processor handle it.
-        if await db.get_call(chat_id) or position > 0:
+        if has_call or position > 0:
             # When call is active, position 0 is currently playing
             # So actual waiting position is: position (e.g., 1st waiting = index 1)
             # Display as 1-based for users: index 1 → "1st in queue"
@@ -245,7 +276,7 @@ async def play_hndlr(
                     # Can't send message, continue anyway
                     pass
             
-            # ✨ NEW: Start preloading queued tracks in background
+            # Start preloading queued tracks in background
             try:
                 from tito import preload
                 asyncio.create_task(preload.start_preload(chat_id, count=2))
@@ -255,60 +286,69 @@ async def play_hndlr(
             
             return
 
-    if not file.file_path:
-        file.file_path = await yt.download(
-            file.id,
-            is_live=file.is_live,
-            video=getattr(file, "video", False),
-            prefer_stream=True,
-        )
-        if not file.file_path:
-            if not await db.get_call(chat_id):
-                queue.clear(chat_id)
-            await safe_edit(
-                sent,
-                "<blockquote>❌ Failed to download media.\n\n"
-                "Possible reasons:\n"
-                "• YouTube detected bot activity (update cookies)\n"
-                "• Video is region-blocked or private\n"
-                "• Age-restricted content (requires cookies)</blockquote>"
-            )
-            return
+        # This track is the first one and no call exists: it is now
+        # starting (download + join). Mark it so the stale-queue guard
+        # doesn't wipe it if another /play arrives meanwhile.
+        _starting_chats.add(chat_id)
 
     try:
-        await tune.play_media(
-            chat_id=chat_id, 
-            message=sent, 
-            media=file
-        )
-        # React with emoji on successful play
+        if not file.file_path:
+            file.file_path = await yt.download(
+                file.id,
+                is_live=file.is_live,
+                video=getattr(file, "video", False),
+                prefer_stream=True,
+            )
+            if not file.file_path:
+                if not await db.get_call(chat_id):
+                    queue.clear(chat_id)
+                await safe_edit(
+                    sent,
+                    "<blockquote>❌ Failed to download media.\n\n"
+                    "Possible reasons:\n"
+                    "• YouTube detected bot activity (update cookies)\n"
+                    "• Video is region-blocked or private\n"
+                    "• Age-restricted content (requires cookies)</blockquote>"
+                )
+                return
+
         try:
-            emoji = m.lang["play_emoji"]
-            await m.react(emoji)
-        except Exception:
-            # If reaction fails, continue anyway (not critical)
-            pass
-    except Exception as e:
-        error_msg = str(e)
-        if not await db.get_call(chat_id):
-            queue.clear(chat_id)
-        if "bot" in error_msg.lower() or "sign in" in error_msg.lower():
-            await safe_edit(
-                sent,
-                "<blockquote>❌ YouTube bot detection triggered.\n\n"
-                "Solution:\n"
-                "• Update YouTube cookies in `tito/cookies/` folder\n"
-                "• Wait a few minutes before trying again\n"
-                "• Try /radio for uninterrupted music\n\n"
-                f"Support: {config.SUPPORT_CHAT}</blockquote>"
+            await tune.play_media(
+                chat_id=chat_id, 
+                message=sent, 
+                media=file
             )
-        else:
-            await safe_edit(
-                sent,
-                f"<blockquote>❌ Playback error:\n{error_msg}\n\n"
-                f"Support: {config.SUPPORT_CHAT}</blockquote>"
-            )
-        return
+            # React with emoji on successful play
+            try:
+                emoji = m.lang["play_emoji"]
+                await m.react(emoji)
+            except Exception:
+                # If reaction fails, continue anyway (not critical)
+                pass
+        except Exception as e:
+            error_msg = str(e)
+            if not await db.get_call(chat_id):
+                queue.clear(chat_id)
+            if "bot" in error_msg.lower() or "sign in" in error_msg.lower():
+                await safe_edit(
+                    sent,
+                    "<blockquote>❌ YouTube bot detection triggered.\n\n"
+                    "Solution:\n"
+                    "• Update YouTube cookies in `tito/cookies/` folder\n"
+                    "• Wait a few minutes before trying again\n"
+                    "• Try /radio for uninterrupted music\n\n"
+                    f"Support: {config.SUPPORT_CHAT}</blockquote>"
+                )
+            else:
+                await safe_edit(
+                    sent,
+                    f"<blockquote>❌ Playback error:\n{error_msg}\n\n"
+                    f"Support: {config.SUPPORT_CHAT}</blockquote>"
+                )
+            return
+    finally:
+        _starting_chats.discard(chat_id)
+
     if not tracks:
         return
     added = playlist_to_queue(chat_id, tracks)
