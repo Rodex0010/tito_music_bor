@@ -18,6 +18,14 @@
 # 3. Guard for a missing assistant client (client is None).
 # 4. Removed the invalid "-sync ext" ffmpeg option (that's an ffplay flag).
 # 5. Join / retry logs raised from debug to warning so real errors show up.
+#
+# [AZAN-FIX] FIXES FOR THE AZAN (PRAYER CALL) FEATURE:
+# A. Every failure branch of _play_media_impl now LOGS the real reason
+#    (before, several branches silently stopped playback, so when the azan
+#    ran with message=None nothing at all showed up in the logs).
+# B. The "now playing" panel no longer crashes if the media object has no
+#    `user` / `is_live` / `duration` attribute (the azan passes a plain
+#    Media, not a Track) - it uses getattr() with safe defaults.
 # ==============================================================================
 
 import asyncio
@@ -988,6 +996,13 @@ class TgCall(PyTgCalls):
 
                     error_msg = str(e)
 
+                    # [AZAN-FIX] always log the real RPC error
+                    logger.warning(
+                        f"play: RPCError for {chat_id} "
+                        f"(attempt {attempt + 1}/{max_retries}): "
+                        f"{type(e).__name__}: {e}"
+                    )
+
                     if (
                         "GROUPCALL_INVALID" in error_msg
                         or "GROUPCALL" in error_msg
@@ -1141,15 +1156,25 @@ class TgCall(PyTgCalls):
 
                 await db.add_call(chat_id)
 
+                # [AZAN-FIX] the azan passes a plain Media object that may
+                # not have `user` / `is_live` / `duration`. Use getattr()
+                # with safe defaults so the panel can never crash a
+                # playback that has already started successfully.
+                _title = getattr(media, "title", "") or ""
+                _duration = getattr(media, "duration", "") or ""
+                _user = getattr(media, "user", "") or ""
+                _is_live = getattr(media, "is_live", False)
+                _duration_sec = getattr(media, "duration_sec", 0) or 0
+
                 # ======================================================
                 # Beautiful now-playing text with blockquote
                 # ======================================================
                 text = (
                     "<blockquote> 🔴 ᴛʜᴇ ʀᴇǫᴜᴇꜱᴛᴇᴅ ꜱᴛʀᴇᴀᴍ ꜱᴛᴀʀᴛᴇᴅ 🎵</blockquote>\n"
                     "<blockquote>\n"
-                    f"➤ ᴛɪᴛʟᴇ : {utils.esc(media.title)}\n"
-                    f"➤ ᴅᴜʀᴀᴛɪᴏɴ : {media.duration}\n"
-                    f"➤ ʀᴇǫᴜᴇꜱᴛᴇᴅ ʙʏ : {media.user}\n"
+                    f"➤ ᴛɪᴛʟᴇ : {utils.esc(_title)}\n"
+                    f"➤ ᴅᴜʀᴀᴛɪᴏɴ : {_duration}\n"
+                    f"➤ ʀᴇǫᴜᴇꜱᴛᴇᴅ ʙʏ : {_user}\n"
                     "</blockquote>\n"
                 )
 
@@ -1158,14 +1183,14 @@ class TgCall(PyTgCalls):
                 # ------------------------------------------------------
 
                 if (
-                    not media.is_live
-                    and media.duration_sec
+                    not _is_live
+                    and _duration_sec
                 ):
 
                     import time as time_module
 
                     played = media.time
-                    duration = media.duration_sec
+                    duration = _duration_sec
 
                     bar_length = 12
 
@@ -1361,7 +1386,13 @@ class TgCall(PyTgCalls):
         # failed join for one chat must not block other chats sharing
         # the same assistant account.
 
-        except FileNotFoundError:
+        except FileNotFoundError as e:
+
+            # [AZAN-FIX] log the real reason
+            logger.error(
+                f"play: FileNotFoundError for {chat_id}: {e} "
+                f"(file={getattr(media, 'file_path', None)})"
+            )
 
             if not _assistant_lock_released:
                 assistant_lock.release()
@@ -1395,6 +1426,16 @@ class TgCall(PyTgCalls):
 
         except exceptions.NoActiveGroupCall:
 
+            # [AZAN-FIX] this used to stop silently (and the azan passes
+            # message=None, so nothing was ever shown). Log the cause.
+            logger.error(
+                f"play: NoActiveGroupCall for {chat_id} after "
+                f"{max_retries} attempts - assistant {assistant_num} could "
+                f"not open/join the voice chat. Make sure that assistant is "
+                f"in the group AND is an admin with the 'Manage Video "
+                f"Chats' permission (or open the voice chat manually)."
+            )
+
             if not _assistant_lock_released:
                 assistant_lock.release()
                 _assistant_lock_released = True
@@ -1424,6 +1465,13 @@ class TgCall(PyTgCalls):
                 _thumb_task.cancel()
 
             error_str = str(e)
+
+            # [AZAN-FIX] log the RPC error in every branch below
+            logger.error(
+                f"play: RPC error for {chat_id} "
+                f"(assistant {assistant_num}): "
+                f"{type(e).__name__}: {e}"
+            )
 
             forbidden_errors = [
                 "CHAT_ADMIN_REQUIRED",
@@ -1483,6 +1531,12 @@ class TgCall(PyTgCalls):
 
         except exceptions.NoAudioSourceFound:
 
+            # [AZAN-FIX] log the real reason
+            logger.error(
+                f"play: NoAudioSourceFound for {chat_id} "
+                f"(file={getattr(media, 'file_path', None)})"
+            )
+
             if not _assistant_lock_released:
                 assistant_lock.release()
                 _assistant_lock_released = True
@@ -1538,7 +1592,12 @@ class TgCall(PyTgCalls):
         except (
             ConnectionNotFound,
             TelegramServerError,
-        ):
+        ) as e:
+
+            # [AZAN-FIX] log the real reason
+            logger.error(
+                f"play: {type(e).__name__} for {chat_id}: {e}"
+            )
 
             if not _assistant_lock_released:
                 assistant_lock.release()
