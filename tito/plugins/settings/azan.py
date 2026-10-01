@@ -1,13 +1,17 @@
 # ==============================================================================
-# azan.py - Azan (prayer time) settings
+# azan.py - Azan (prayer time) settings   (حطه في: tito/plugins/settings/azan.py)
 # ==============================================================================
 # تفعيل_الاذان <المدينة> <الدولة>  -> enables the azan for this chat
 # تعطيل_الاذان                    -> disables it
+# /azantest                       -> (owner only) يجرب الأذان فوراً ويطبع الأخطاء
 # ==============================================================================
+
+import traceback
 
 from pyrogram import filters, types
 
-from tito import app, db
+from tito import app, config, db
+from tito.core.azan import PrayerScheduler
 
 
 async def _is_group_admin(message: types.Message) -> bool:
@@ -59,3 +63,16 @@ async def disable_azan(_, message: types.Message):
         country=doc.get("country") if doc else None,
     )
     await message.reply_text("🔕 تم تعطيل الأذان لهذه المجموعة.")
+
+
+# ---- أمر اختبار مؤقت (احذفه بعد ما المشكلة تتحل) ----
+@app.on_message(filters.command(["azantest"], prefixes=["/"]) & filters.group)
+async def azan_test(_, message: types.Message):
+    if not message.from_user or message.from_user.id != config.OWNER_ID:
+        return
+    try:
+        await PrayerScheduler()._announce_and_play(message.chat.id, "Fajr")
+    except Exception:
+        tb = traceback.format_exc()
+        print(tb)
+        await message.reply_text(f"<pre>{tb[-3500:]}</pre>")
