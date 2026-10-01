@@ -1,5 +1,5 @@
 # ==============================================================================
-# azan.py - Prayer Time Scheduler
+# azan.py - Prayer Time Scheduler   (حطه في: tito/core/azan.py)
 # ==============================================================================
 # For every chat that enabled /تفعيل_الاذان:
 #   - fetches today's prayer times (Aladhan API) for the chat's city/country
@@ -7,15 +7,14 @@
 #     assistant, same as normal music playback) and streams the azan file
 #   - sends a text announcement in the chat
 #
-# NOTE (Telegram platform limit): only user accounts (the assistants) can
-# join/stream into a voice chat - a Bot API account cannot join a group call
-# at all. So the participant that appears in the call will always be the
-# assistant, never the bot itself. The common workaround is cosmetic: give
-# the assistant account the bot's name/photo (Settings -> Edit Profile on
-# that account) so it visually reads as the bot when it appears in the call.
+# التعديلات في النسخة دي:
+#   - Media(...) و play_media جوه try واحد، واللوج بيطبع الـ traceback كامل
+#   - _fire_at ملفوفة بـ try/except عشان الـ task ماتموتش بصمت
+#   - الـ tasks بتتخزن عشان بايثون ماتعملهاش garbage collect
 # ==============================================================================
 
 import asyncio
+import traceback
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -38,15 +37,16 @@ API_URL = "http://api.aladhan.com/v1/timingsByCity"
 class PrayerScheduler:
     def __init__(self):
         self._task: asyncio.Task | None = None
+        self._tasks: set[asyncio.Task] = set()
+
+    def _spawn(self, coro) -> None:
+        """create_task + keep a reference so it isn't garbage collected."""
+        task = asyncio.create_task(coro)
+        self._tasks.add(task)
+        task.add_done_callback(self._tasks.discard)
 
     async def _fetch_timings(self, city: str, country: str) -> tuple[dict, str] | None:
-        """Returns (timings, iana_timezone) for the given city, or None.
-
-        Aladhan returns clock-time strings ("15:42") that are already local
-        to the requested city, plus the IANA timezone name for that city in
-        data.meta.timezone. Both pieces are needed - the timings alone are
-        meaningless without knowing which timezone they're local to.
-        """
+        """Returns (timings, iana_timezone) for the given city, or None."""
         params = {
             "city": city,
             "country": country,
@@ -56,6 +56,9 @@ class PrayerScheduler:
             async with aiohttp.ClientSession() as session:
                 async with session.get(API_URL, params=params, timeout=15) as resp:
                     if resp.status != 200:
+                        logger.warning(
+                            f"azan: aladhan returned {resp.status} for {city},{country}"
+                        )
                         return None
                     data = await resp.json()
                     payload = data.get("data", {})
@@ -71,81 +74,96 @@ class PrayerScheduler:
     async def _announce_and_play(self, chat_id: int, prayer_key: str) -> None:
         prayer_name = PRAYERS[prayer_key]
 
+        # 1) text announcement
         try:
             await app.send_message(
                 chat_id,
                 f"🕌 <b>حان الآن موعد أذان {prayer_name}</b>",
             )
-        except Exception as e:
-            logger.warning(f"azan: couldn't send announcement to {chat_id}: {e}")
+        except Exception:
+            logger.error(
+                f"azan: couldn't send announcement to {chat_id}:\n{traceback.format_exc()}"
+            )
 
-        # Use getattr() defensively: if ADHAN_AUDIO_PATH is ever missing from
-        # Config (e.g. an older/unsynced config.py), this must not crash the
-        # scheduled task silently - it should just skip the audio/call step
-        # and log a clear warning instead, same as when it's simply unset.
+        # 2) audio + voice chat
         audio_path = getattr(config, "ADHAN_AUDIO_PATH", "")
         if not audio_path:
             logger.warning(
                 "azan: ADHAN_AUDIO_PATH is not set - sending text announcement "
-                "only, the voice chat will NOT be opened. Set ADHAN_AUDIO_PATH "
-                "in your .env to a path/URL of the azan audio file to enable "
-                "the call + playback."
+                "only, the voice chat will NOT be opened."
             )
-            return  # no audio file configured, text-only announcement
+            return
 
-        media = Media(
-            id="azan",
-            duration="",
-            duration_sec=0,
-            file_path=audio_path,
-            message_id=0,
-            title=f"أذان {prayer_name}",
-            url="",
-        )
-
+        logger.info(f"azan: starting playback in {chat_id} ({prayer_key}) -> {audio_path}")
         try:
+            media = Media(
+                id="azan",
+                duration="",
+                duration_sec=0,
+                file_path=audio_path,
+                message_id=0,
+                title=f"أذان {prayer_name}",
+                url="",
+            )
             await tune.play_media(chat_id, None, media)
-        except Exception as e:
-            logger.warning(f"azan: failed to play in {chat_id}: {e}")
+            logger.info(f"azan: play_media finished OK for {chat_id}")
+        except Exception:
+            # traceback كامل عشان نعرف أنهي سطر بيفشل
+            logger.error(
+                f"azan: FAILED to play in {chat_id}:\n{traceback.format_exc()}"
+            )
 
     async def _schedule_chat_today(self, chat_id: int, city: str, country: str) -> None:
-        result = await self._fetch_timings(city, country)
-        if not result:
-            return
-        timings, tz_name = result
-
         try:
-            tz = ZoneInfo(tz_name)
-        except Exception as e:
-            logger.warning(f"azan: unknown timezone '{tz_name}' for {city},{country}: {e}")
-            return
+            result = await self._fetch_timings(city, country)
+            if not result:
+                return
+            timings, tz_name = result
 
-        # "now" must be computed in the CITY's timezone, not the server's -
-        # otherwise every chat whose timezone differs from the server's
-        # gets prayer times off by the UTC offset difference.
-        now = datetime.now(tz)
-        for key in PRAYERS:
-            raw = timings.get(key)  # e.g. "15:42" - already local to `tz`
-            if not raw:
-                continue
             try:
-                hh, mm = map(int, raw.split()[0].split(":"))
-            except ValueError:
-                continue
+                tz = ZoneInfo(tz_name)
+            except Exception as e:
+                logger.warning(
+                    f"azan: unknown timezone '{tz_name}' for {city},{country}: {e}"
+                )
+                return
 
-            prayer_dt = now.replace(hour=hh, minute=mm, second=0, microsecond=0)
-            delay = (prayer_dt - now).total_seconds()
-            if delay < 0:
-                continue  # already passed for today
+            # "now" لازم يتحسب بتوقيت المدينة مش السيرفر
+            now = datetime.now(tz)
+            for key in PRAYERS:
+                raw = timings.get(key)  # e.g. "15:42"
+                if not raw:
+                    continue
+                try:
+                    hh, mm = map(int, raw.split()[0].split(":"))
+                except ValueError:
+                    continue
 
-            asyncio.create_task(self._fire_at(delay, chat_id, key))
+                prayer_dt = now.replace(hour=hh, minute=mm, second=0, microsecond=0)
+                delay = (prayer_dt - now).total_seconds()
+                if delay < 0:
+                    continue  # already passed for today
+
+                logger.info(
+                    f"azan: scheduled {key} for chat {chat_id} in {int(delay)}s ({raw} {tz_name})"
+                )
+                self._spawn(self._fire_at(delay, chat_id, key))
+        except Exception:
+            logger.error(
+                f"azan: _schedule_chat_today crashed for {chat_id}:\n{traceback.format_exc()}"
+            )
 
     async def _fire_at(self, delay: float, chat_id: int, prayer_key: str) -> None:
-        await asyncio.sleep(delay)
-        # re-check the chat still has azan enabled before playing
-        doc = await db.get_azan(chat_id)
-        if doc and doc.get("enabled"):
-            await self._announce_and_play(chat_id, prayer_key)
+        try:
+            await asyncio.sleep(delay)
+            # re-check the chat still has azan enabled before playing
+            doc = await db.get_azan(chat_id)
+            if doc and doc.get("enabled"):
+                await self._announce_and_play(chat_id, prayer_key)
+        except Exception:
+            logger.error(
+                f"azan: _fire_at crashed for {chat_id}/{prayer_key}:\n{traceback.format_exc()}"
+            )
 
     async def _daily_loop(self) -> None:
         while True:
@@ -156,11 +174,11 @@ class PrayerScheduler:
                     country = doc.get("country")
                     if not city or not country:
                         continue
-                    asyncio.create_task(
-                        self._schedule_chat_today(doc["_id"], city, country)
-                    )
-            except Exception as e:
-                logger.error(f"azan: daily scheduling loop error: {e}")
+                    self._spawn(self._schedule_chat_today(doc["_id"], city, country))
+            except Exception:
+                logger.error(
+                    f"azan: daily scheduling loop error:\n{traceback.format_exc()}"
+                )
 
             # sleep until just after midnight, then re-schedule for the new day
             now = datetime.now()
