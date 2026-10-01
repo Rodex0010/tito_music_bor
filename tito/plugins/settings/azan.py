@@ -1,17 +1,14 @@
 # ==============================================================================
-# azan.py - Azan (prayer time) settings   (tito/plugins/settings/azan.py)
+# azan.py - Azan (prayer time) settings   (حطه في: tito/plugins/settings/azan.py)
 # ==============================================================================
 # تفعيل_الاذان <المدينة> <الدولة>  -> enables the azan for this chat
 # تعطيل_الاذان                    -> disables it
 # /azantest                       -> (owner only) يجرب الأذان فوراً ويطبع الأخطاء
-# /vctest                         -> (owner only) يجرب هل البوت نفسه يقدر يفتح كول
 # ==============================================================================
 
 import traceback
-from random import randint
 
 from pyrogram import filters, types
-from pyrogram.raw import functions
 
 from tito import app, config, db
 from tito.core.azan import PrayerScheduler
@@ -68,10 +65,7 @@ async def disable_azan(_, message: types.Message):
     await message.reply_text("🔕 تم تعطيل الأذان لهذه المجموعة.")
 
 
-# ==============================================================================
-# أوامر اختبار مؤقتة (للأونر فقط) - احذفها بعد ما تخلص التجربة
-# ==============================================================================
-
+# ---- أمر اختبار مؤقت (احذفه بعد ما المشكلة تتحل) ----
 @app.on_message(filters.command(["azantest"], prefixes=["/"]) & filters.group)
 async def azan_test(_, message: types.Message):
     if not message.from_user or message.from_user.id != config.OWNER_ID:
@@ -82,21 +76,3 @@ async def azan_test(_, message: types.Message):
         tb = traceback.format_exc()
         print(tb)
         await message.reply_text(f"<pre>{tb[-3500:]}</pre>")
-
-
-@app.on_message(filters.command(["vctest"], prefixes=["/"]) & filters.group)
-async def vc_test(_, message: types.Message):
-    """يجرب هل حساب البوت نفسه (مش المساعد) يقدر ينشئ كول صوتي."""
-    if not message.from_user or message.from_user.id != config.OWNER_ID:
-        return
-    try:
-        peer = await app.resolve_peer(message.chat.id)
-        await app.invoke(
-            functions.phone.CreateGroupCall(
-                peer=peer,
-                random_id=randint(1, 2**31 - 1),
-            )
-        )
-        await message.reply_text("✅ البوت نفسه قدر يفتح الكول")
-    except Exception as e:
-        await message.reply_text(f"❌ {type(e).__name__}: {e}")
