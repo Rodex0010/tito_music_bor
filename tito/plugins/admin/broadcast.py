@@ -13,15 +13,14 @@ from typing import List, Tuple
 
 from pyrogram import enums, errors, filters, types
 
-import config as _config_module
+from config import Config
 from tito import app, db, lang, logger
 
 
 # ------------------------------------------------------------------------------
-# Owner ID (works whether config.py exposes a `config` object or plain variables)
+# Owner ID (read from the Config class in config.py)
 # ------------------------------------------------------------------------------
-_cfg = getattr(_config_module, "config", _config_module)
-OWNER_ID: int = int(_cfg.OWNER_ID)
+OWNER_ID: int = Config().OWNER_ID
 
 # Message shown to sudo users who try to use the broadcast commands
 BROADCAST_DISABLED_TEXT = "⚠️ أمر البث معطّل حاليًا."
