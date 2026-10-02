@@ -1,7 +1,9 @@
 # ==============================================================================
 # broadcast.py - Mass Messaging
 # ==============================================================================
-# Sudo command to send a message to all active groups and users.
+# Owner-only command to send a message to all active groups and users.
+# Sudo users can still call the command, but they get a "currently disabled"
+# message instead of the broadcast being executed.
 # Supports various flags for pinning, forwarding, copying, etc.
 # ==============================================================================
 
@@ -11,7 +13,23 @@ from typing import List, Tuple
 
 from pyrogram import enums, errors, filters, types
 
+import config as _config_module
 from tito import app, db, lang, logger
+
+
+# ------------------------------------------------------------------------------
+# Owner ID (works whether config.py exposes a `config` object or plain variables)
+# ------------------------------------------------------------------------------
+_cfg = getattr(_config_module, "config", _config_module)
+OWNER_ID: int = int(_cfg.OWNER_ID)
+
+# Message shown to sudo users who try to use the broadcast commands
+BROADCAST_DISABLED_TEXT = "⚠️ أمر البث معطّل حاليًا."
+
+
+def _is_owner(message: types.Message) -> bool:
+    """Return True only if the sender is the bot owner."""
+    return bool(message.from_user and message.from_user.id == OWNER_ID)
 
 
 # Global flag to track if a broadcast is currently running
@@ -21,13 +39,25 @@ broadcasting: bool = False
 @app.on_message(filters.command(["بث", "broadcast"], prefixes=["", "/"]) & app.sudo_filter)
 @lang.language()
 async def broadcast_message(_, message: types.Message) -> None:
-    
+
+    # Owner-only: sudo users are told the command is disabled
+    if not _is_owner(message):
+        try:
+            await message.reply_text(BROADCAST_DISABLED_TEXT)
+        except Exception:
+            pass
+        try:
+            await message.delete()
+        except Exception:
+            pass
+        return
+
     # Auto-delete command message
     try:
         await message.delete()
     except Exception:
         pass
-    
+
     global broadcasting
 
     # Check if another broadcast is already running
@@ -39,7 +69,7 @@ async def broadcast_message(_, message: types.Message) -> None:
     media_group = None
     if message.reply_to_message:
         media_message = message.reply_to_message
-        
+
         # Check if it's part of a media group (album)
         if media_message.media_group_id:
             try:
@@ -90,12 +120,25 @@ async def broadcast_message(_, message: types.Message) -> None:
 @app.on_message(filters.command(["ايقاف_البث", "وقف_البث", "stopbroadcast", "cancelbroadcast"], prefixes=["", "/"]) & app.sudo_filter)
 @lang.language()
 async def stop_broadcast(_, message: types.Message) -> None:
+
+    # Owner-only: sudo users are told the command is disabled
+    if not _is_owner(message):
+        try:
+            await message.reply_text(BROADCAST_DISABLED_TEXT)
+        except Exception:
+            pass
+        try:
+            await message.delete()
+        except Exception:
+            pass
+        return
+
     # Auto-delete command message
     try:
         await message.delete()
     except Exception:
         pass
-    
+
     global broadcasting
 
     if not broadcasting:
@@ -115,6 +158,37 @@ async def stop_broadcast(_, message: types.Message) -> None:
     await message.reply_text(message.lang["gcast_stop"])
 
 
+async def _get_media_group(chat_id: int, message: types.Message) -> List[types.Message]:
+    if not message.media_group_id:
+        return None
+
+    media_group_id = message.media_group_id
+    messages = []
+
+    # Search backward and forward from the current message to find all messages with same media_group_id
+    # Telegram typically sends media group messages with consecutive IDs
+    search_range = 20  # Search 20 messages before and after
+
+    try:
+        # Get messages around the replied message
+        start_id = max(1, message.id - search_range)
+        end_id = message.id + search_range
+
+        for msg_id in range(start_id, end_id + 1):
+            try:
+                msg = await app.get_messages(chat_id, msg_id)
+                if msg and hasattr(msg, 'media_group_id') and msg.media_group_id == media_group_id:
+                    messages.append(msg)
+            except:
+                continue
+
+        # Sort by message ID to maintain order
+        messages.sort(key=lambda x: x.id)
+        return messages if messages else None
+    except Exception as e:
+        return None
+
+
 def _parse_broadcast_command(text: str) -> Tuple[List[str], str]:
     """
     Parse broadcast command to extract flags and message.
@@ -125,55 +199,6 @@ def _parse_broadcast_command(text: str) -> Tuple[List[str], str]:
     Returns:
         Tuple of (flags list, message text)
     """
-    # Handle None or empty text
-    if not text:
-        return [], ""
-
-    # Split command from the rest (preserve everything after command)
-    parts = text.split(None, 1)
-    if len(parts) < 2:
-        return [], ""
-
-    remaining_text = parts[1]
-
-    # Extract flags (words starting with '-') from the beginning
-    flags = []
-    lines = remaining_text.split('\n')
-    first_line_parts = lines[0].split()
-
-
-async def _get_media_group(chat_id: int, message: types.Message) -> List[types.Message]:
-    if not message.media_group_id:
-        return None
-
-    media_group_id = message.media_group_id
-    messages = []
-    
-    # Search backward and forward from the current message to find all messages with same media_group_id
-    # Telegram typically sends media group messages with consecutive IDs
-    search_range = 20  # Search 20 messages before and after
-    
-    try:
-        # Get messages around the replied message
-        start_id = max(1, message.id - search_range)
-        end_id = message.id + search_range
-        
-        for msg_id in range(start_id, end_id + 1):
-            try:
-                msg = await app.get_messages(chat_id, msg_id)
-                if msg and hasattr(msg, 'media_group_id') and msg.media_group_id == media_group_id:
-                    messages.append(msg)
-            except:
-                continue
-                
-        # Sort by message ID to maintain order
-        messages.sort(key=lambda x: x.id)
-        return messages if messages else None
-    except Exception as e:
-        return None
-
-
-def _parse_broadcast_command(text: str) -> Tuple[List[str], str]:
     # Handle None or empty text
     if not text:
         return [], ""
@@ -361,7 +386,7 @@ async def _send_broadcast(
                         for idx, msg in enumerate(media_group):
                             # Use caption from first media or provided text
                             caption = text if (idx == 0 and text) else (msg.caption if idx == 0 else None)
-                            
+
                             if msg.photo:
                                 file_id = msg.photo.file_id if hasattr(msg.photo, 'file_id') else msg.photo[-1].file_id
                                 media_list.append(types.InputMediaPhoto(media=file_id, caption=caption))
@@ -371,11 +396,11 @@ async def _send_broadcast(
                                 media_list.append(types.InputMediaAudio(media=msg.audio.file_id, caption=caption))
                             elif getattr(msg, 'document', None):
                                 media_list.append(types.InputMediaDocument(media=msg.document.file_id, caption=caption))
-                        
+
                         if media_list:
                             sent_messages = await app.send_media_group(chat_id=chat_id, media=media_list)
                             sent_message = sent_messages[0] if sent_messages else None
-                            
+
                             # Handle pinning if requested (pin first message)
                             if sent_message:
                                 if "-pin" in flags:
@@ -407,7 +432,7 @@ async def _send_broadcast(
                                 sent_messages.append(fwd)
                             except Exception as fwd_ex:
                                 continue
-                        
+
                         if sent_messages:
                             sent_message = sent_messages[0]
                             # Handle pinning if requested (pin first message)
@@ -432,7 +457,7 @@ async def _send_broadcast(
                             failed_log += f"{chat_id} - Failed to forward media group\n"
                             await asyncio.sleep(0.3)
                             continue
-                            
+
                 except Exception as mg_ex:
                     failed_log += f"{chat_id} - Media group send failed: {type(mg_ex).__name__}: {str(mg_ex)}\n"
                     await asyncio.sleep(0.3)
@@ -581,7 +606,7 @@ async def _send_broadcast(
             # Retry sending after waiting
             try:
                 retry_sent = None
-                
+
                 # Retry media group if it was a media group
                 if media_group:
                     if "-copy" in flags:
@@ -608,7 +633,7 @@ async def _send_broadcast(
                                     retry_sent = fwd
                             except:
                                 continue
-                
+
                 # Retry single media message
                 elif media_message:
                     # Check if -copy flag for retry as well
