@@ -351,6 +351,14 @@ async def handle_loop(query: types.CallbackQuery, chat_id: int, user: str):
 @app.on_callback_query(filters.regex(r"^help") & ~app.bl_users)
 @lang.language()
 async def _help(_, query: types.CallbackQuery):
+    # Broadcast is owner-only: anyone else is told the command is disabled.
+    # This check MUST come before query.answer(), because a callback query
+    # can only be answered once.
+    if query.data == "help_broadcast" and (
+        not query.from_user or query.from_user.id != app.owner
+    ):
+        return await query.answer("⚠️ أمر البث معطّل حاليًا.", show_alert=True)
+
     await query.answer()
     
     # Handle plain "help" callback - show main menu
@@ -443,4 +451,3 @@ async def _playmode(_, query: types.CallbackQuery):
             chat_id,
         )
     )
-    
